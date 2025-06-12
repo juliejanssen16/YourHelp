@@ -3,39 +3,69 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Character Diary</title>
+    <title>Character Creation & Diary</title>
     <link rel="stylesheet" href="CharacterCreation.css" />
 </head>
 <body>
-<div class="container">
-    <h1>Character Creator</h1>
-    <input id="charName" type="text" placeholder="Character Name" />
-    <input id="charTraits" type="text" placeholder="Traits (comma separated)" />
-    <button id="saveCharBtn">Save Character</button>
 
-    <ul id="charDisplayList"></ul>
-</div>
+<div id="app" class="app">
 
-<div class="container">
-    <h2>Write Diary Entry</h2>
-    <select id="charSelect">
-        <option value="">Select Character</option>
-    </select>
-    <textarea id="entryText" placeholder="Write your entry..."></textarea>
-    <input id="entryTags" type="text" placeholder="Tags (comma separated)" />
-    <select id="moodSelect">
-        <option value="neutral">Neutral</option>
-        <option value="happy">Happy</option>
-        <option value="sad">Sad</option>
-        <option value="anxious">Anxious</option>
-    </select>
-    <button id="saveEntryBtn">Save Entry</button>
-</div>
+    <!-- Character Creation Section -->
+    <section id="characterCreationSection">
+        <h2>Create / Edit Character</h2>
+        <label for="charName">Name:</label>
+        <input type="text" id="charName" placeholder="Enter character name" />
 
-<div class="container">
-    <h2>Diary Entries</h2>
-    <input id="searchInput" type="text" placeholder="Search entries..." />
-    <div id="entriesList"></div>
+        <label for="charColor">Character Color:</label>
+        <input type="color" id="charColor" value="#ff69b4" />
+
+        <fieldset>
+            <legend>Traits</legend>
+            <button class="trait-btn" data-trait="trait1">Brave</button>
+            <button class="trait-btn" data-trait="trait2">Smart</button>
+            <button class="trait-btn" data-trait="trait3">Kind</button>
+            <button class="trait-btn" data-trait="trait4">Funny</button>
+        </fieldset>
+
+        <button id="saveCharBtn">Save Character</button>
+        <button id="cancelCharBtn">Cancel</button>
+    </section>
+
+    <!-- Character List Section -->
+    <section id="characterListSection">
+        <h2>Characters</h2>
+        <ul id="charList"></ul>
+        <button id="addNewCharBtn">Add New Character</button>
+    </section>
+
+    <!-- Diary Entry Section -->
+    <section id="diarySection" class="hidden">
+        <h2>Add Diary Entry</h2>
+        <label for="charSelect">Select Character:</label>
+        <select id="charSelect"></select>
+
+        <textarea id="entryText" rows="5" placeholder="Write your diary entry here..."></textarea>
+
+        <label for="entryTags">Tags (comma separated):</label>
+        <input type="text" id="entryTags" placeholder="e.g. happy, sad" />
+
+        <label for="entryMood">Mood:</label>
+        <select id="entryMood">
+            <option value="Happy">Happy</option>
+            <option value="Sad">Sad</option>
+            <option value="Anxious">Anxious</option>
+            <option value="Excited">Excited</option>
+        </select>
+
+        <button id="saveEntryBtn">Save Entry</button>
+    </section>
+
+    <!-- Diary Entries Overview -->
+    <section id="entriesOverviewSection" class="hidden">
+        <h2>Diary Entries</h2>
+        <div id="allEntriesOverviewList"></div>
+    </section>
+
 </div>
 
 <script src="CharacterCreation.js"></script>
