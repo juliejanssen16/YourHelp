@@ -1,257 +1,139 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const introContainer = document.getElementById('introContainer');
-    const nameInput = document.getElementById('nameUserInput');
-    const submitBtn = document.getElementById('userNameSubmit');
-
-    const app = document.getElementById('app');
-    const characterNameHeader = document.getElementById('characterNameHeader');
-
+    const charNameInput = document.getElementById('charName');
+    const saveCharBtn = document.getElementById('saveCharBtn');
+    const charDisplayList = document.getElementById('charDisplayList');
+    const charSelect = document.getElementById('charSelect');
     const entryText = document.getElementById('entryText');
     const entryTags = document.getElementById('entryTags');
     const moodSelect = document.getElementById('moodSelect');
     const saveEntryBtn = document.getElementById('saveEntryBtn');
-
-    const searchInput = document.getElementById('searchInput');
     const entriesList = document.getElementById('entriesList');
+    const searchInput = document.getElementById('searchInput');
 
-    let characterName = localStorage.getItem('characterName') || '';
+    let characters = JSON.parse(localStorage.getItem('characters')) || [];
     let entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+    let editingCharId = null;
 
-    // Track if editing an entry
-    let editingEntryId = null;
-
-    // Initialize
-    if (characterName) {
-        showApp();
-        renderEntries();
+    function saveCharacters() {
+        localStorage.setItem('characters', JSON.stringify(characters));
     }
 
-    submitBtn.addEventListener('click', () => {
-        const name = nameInput.value.trim();
-        if (name.length === 0) {
-            alert('Please enter a name for your character!');
-            return;
+    function saveEntries() {
+        localStorage.setItem('diaryEntries', JSON.stringify(entries));
+    }
+
+    function updateCharList() {
+        charDisplayList.innerHTML = '';
+        charSelect.innerHTML = '<option value="">Select Character</option>';
+        characters.forEach(char => {
+            const li = document.createElement('li');
+            li.textContent = char.name;
+
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Edit';
+            editBtn.onclick = () => {
+                editingCharId = char.id;
+                charNameInput.value = char.name;
+            };
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = () => {
+                if (confirm(`Delete "${char.name}" and all related entries?`)) {
+                    characters = characters.filter(c => c.id !== char.id);
+                    entries = entries.filter(e => e.characterId !== char.id);
+                    saveCharacters();
+                    saveEntries();
+                    updateCharList();
+                    renderEntries();
+                }
+            };
+
+            li.appendChild(editBtn);
+            li.appendChild(deleteBtn);
+            charDisplayList.appendChild(li);
+
+            const opt = document.createElement('option');
+            opt.value = char.id;
+            opt.textContent = char.name;
+            charSelect.appendChild(opt);
+        });
+    }
+
+    function renderEntries() {
+        const term = searchInput.value.toLowerCase();
+        entriesList.innerHTML = '';
+
+        entries
+            .filter(entry => {
+                return (
+                    entry.text.toLowerCase().includes(term) ||
+                    entry.tags.some(tag => tag.toLowerCase().includes(term))
+                );
+            })
+            .forEach(entry => {
+                const div = document.createElement('div');
+                div.classList.add('entry');
+
+                const char = characters.find(c => c.id === entry.characterId);
+                const charName = char ? char.name : 'Unknown';
+
+                div.innerHTML = `
+                    <p><strong>Character:</strong> ${charName}</p>
+                    <p>${entry.text}</p>
+                    <p><strong>Tags:</strong> ${entry.tags.join(', ')}</p>
+                    <p><strong>Mood:</strong> ${entry.mood}</p>
+                    <p style="font-style: italic;">${new Date(entry.date).toLocaleString()}</p>
+                `;
+
+                entriesList.appendChild(div);
+            });
+    }
+
+    saveCharBtn.addEventListener('click', () => {
+        const name = charNameInput.value.trim();
+        if (!name) return alert('Please enter a name');
+
+        if (editingCharId) {
+            const idx = characters.findIndex(c => c.id === editingCharId);
+            if (idx !== -1) characters[idx].name = name;
+            editingCharId = null;
+        } else {
+            characters.push({ id: Date.now().toString(), name });
         }
-        characterName = name;
-        localStorage.setItem('characterName', characterName);
-        showApp();
+
+        charNameInput.value = '';
+        saveCharacters();
+        updateCharList();
     });
 
     saveEntryBtn.addEventListener('click', () => {
         const text = entryText.value.trim();
-        if (!text) {
-            alert('Diary entry cannot be empty!');
-            return;
-        }
-
-        const tags = entryTags.value
-            .split(',')
-            .map(t => t.trim().toLowerCase())
-            .filter(t => t.length > 0);
-
+        const tags = entryTags.value.split(',').map(t => t.trim()).filter(t => t);
         const mood = moodSelect.value;
-        const date = new Date().toISOString();
+        const characterId = charSelect.value;
 
-        if (editingEntryId !== null) {
-            // Edit mode: update existing entry
-            const idx = entries.findIndex(e => e.id === editingEntryId);
-            if (idx !== -1) {
-                entries[idx].text = text;
-                entries[idx].tags = tags;
-                entries[idx].mood = mood;
-                entries[idx].date = date; // update timestamp on edit
-            }
-            editingEntryId = null;
-            saveEntryBtn.textContent = 'Save Entry';
-        } else {
-            // New entry
-            const entry = {
-                id: Date.now(),
-                text,
-                tags,
-                mood,
-                date
-            };
-            entries.push(entry);
-        }
+        if (!characterId) return alert('Please select a character');
+        if (!text) return alert('Entry cannot be empty');
 
-        localStorage.setItem('diaryEntries', JSON.stringify(entries));
+        entries.push({
+            id: Date.now().toString(),
+            characterId,
+            text,
+            tags,
+            mood,
+            date: new Date().toISOString()
+        });
 
         entryText.value = '';
         entryTags.value = '';
         moodSelect.value = 'neutral';
-
+        saveEntries();
         renderEntries();
     });
 
-    searchInput.addEventListener('input', () => {
-        renderEntries(searchInput.value.trim().toLowerCase());
-    });
+    searchInput.addEventListener('input', renderEntries);
 
-    function showApp() {
-        introContainer.style.display = 'none';
-        app.style.display = 'block';
-        characterNameHeader.textContent = `Character: ${characterName}`;
-    }
-
-    function renderEntries(filter = '') {
-        entriesList.innerHTML = '';
-
-        const filteredEntries = entries.filter(entry => {
-            if (!filter) return true;
-            const inText = entry.text.toLowerCase().includes(filter);
-            const inTags = entry.tags.some(tag => tag.includes(filter));
-            return inText || inTags;
-        });
-
-        if (filteredEntries.length === 0) {
-            entriesList.innerHTML = '<p>No diary entries found.</p>';
-            return;
-        }
-
-        filteredEntries
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .forEach(entry => {
-                const entryEl = document.createElement('div');
-                entryEl.classList.add('entry');
-
-                const dateStr = new Date(entry.date).toLocaleString();
-
-                entryEl.innerHTML = `
-          <div><strong>Date:</strong> ${dateStr}</div>
-          <div><strong>Mood:</strong> ${moodEmoji(entry.mood)} ${entry.mood}</div>
-          <div><strong>Tags:</strong> ${entry.tags.join(', ') || 'None'}</div>
-          <p>${entry.text.replace(/\n/g, '<br>')}</p>
-          <div class="entry-buttons">
-            <button class="edit-btn" data-id="${entry.id}">Edit ✏️</button>
-            <button class="delete-btn" data-id="${entry.id}">Delete 🗑️</button>
-          </div>
-          <hr>
-        `;
-
-                entriesList.appendChild(entryEl);
-            });
-
-        // Attach event listeners for Edit and Delete buttons
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = Number(e.target.dataset.id);
-                startEditEntry(id);
-            });
-        });
-
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = Number(e.target.dataset.id);
-                deleteEntry(id);
-            });
-        });
-    }
-
-    function startEditEntry(id) {
-        const entry = entries.find(e => e.id === id);
-        if (!entry) return;
-
-        entryText.value = entry.text;
-        entryTags.value = entry.tags.join(', ');
-        moodSelect.value = entry.mood;
-        editingEntryId = id;
-        saveEntryBtn.textContent = 'Update Entry';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function deleteEntry(id) {
-        if (confirm('Are you sure you want to delete this entry?')) {
-            entries = entries.filter(e => e.id !== id);
-            localStorage.setItem('diaryEntries', JSON.stringify(entries));
-            if (editingEntryId === id) {
-                // Cancel editing if deleting the edited entry
-                editingEntryId = null;
-                entryText.value = '';
-                entryTags.value = '';
-                moodSelect.value = 'neutral';
-                saveEntryBtn.textContent = 'Save Entry';
-            }
-            renderEntries(searchInput.value.trim().toLowerCase());
-        }
-    }
-
-    function moodEmoji(mood) {
-        switch (mood) {
-            case 'happy': return '😊';
-            case 'sad': return '😢';
-            case 'anxious': return '😰';
-            case 'angry': return '😡';
-            default: return '😐';
-        }
-    }
+    updateCharList();
+    renderEntries();
 });
-
-const cookieConsent = document.getElementById('cookieConsent');
-const acceptCookiesBtn = document.getElementById('acceptCookiesBtn');
-const denyCookiesBtn = document.getElementById('denyCookiesBtn');
-
-let cookiesAllowed = false; // track consent
-
-function hasCookieConsent() {
-    return localStorage.getItem('cookieConsentGiven') === 'true';
-}
-
-function hasCookieDenied() {
-    return localStorage.getItem('cookieConsentDenied') === 'true';
-}
-
-function showCookieBanner() {
-    if (!hasCookieConsent() && !hasCookieDenied()) {
-        cookieConsent.style.display = 'flex';
-    } else {
-        cookieConsent.style.display = 'none';
-    }
-}
-
-acceptCookiesBtn.addEventListener('click', () => {
-    localStorage.setItem('cookieConsentGiven', 'true');
-    localStorage.removeItem('cookieConsentDenied');
-    cookiesAllowed = true;
-    cookieConsent.style.display = 'none';
-    initApp(true); // init app with storage enabled
-});
-
-denyCookiesBtn.addEventListener('click', () => {
-    localStorage.setItem('cookieConsentDenied', 'true');
-    localStorage.removeItem('cookieConsentGiven');
-    cookiesAllowed = false;
-    cookieConsent.style.display = 'none';
-    initApp(false); // init app with NO storage
-});
-
-// The main app logic will be inside this function:
-function initApp(storageAllowed) {
-    // Override localStorage methods if not allowed:
-    if (!storageAllowed) {
-        // Use a dummy storage to block saving
-        window.localStorage.setItem = function () {};
-        window.localStorage.getItem = function () { return null; };
-        window.localStorage.removeItem = function () {};
-    }
-
-    // Now you can run your main app logic here or call your existing code to load/save normally
-
-    // For example:
-    // load characterName, entries from localStorage if storageAllowed
-    // enable or disable saving entries accordingly
-
-    // To keep your existing code, you can move the app init code here,
-    // or better yet, wrap your existing app code in a function that receives storageAllowed.
-}
-
-// On page load:
-if (hasCookieConsent()) {
-    cookiesAllowed = true;
-    initApp(true);
-} else if (hasCookieDenied()) {
-    cookiesAllowed = false;
-    initApp(false);
-} else {
-    showCookieBanner();
-}

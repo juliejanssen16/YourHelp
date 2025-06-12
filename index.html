@@ -2,75 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Character Creation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Character Diary</title>
     <link rel="stylesheet" href="CharacterCreation.css" />
 </head>
 <body>
+<div class="container">
+    <h1>Character Creator</h1>
+    <input id="charName" type="text" placeholder="Character Name" />
+    <button id="saveCharBtn">Save Character</button>
 
-<div id="introContainer">
-    <p>Your character's name:</p>
-    <input type="text" id="nameUserInput" placeholder="Enter character name" />
-    <button id="userNameSubmit">Submit</button>
-
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-
+    <ul id="charDisplayList"></ul>
 </div>
 
-<div id="app" style="display:none;">
-    <h2 id="characterNameHeader"></h2>
-
-    <section id="entryFormSection">
-        <h3>New Diary Entry</h3>
-        <textarea id="entryText" placeholder="Write your diary entry..."></textarea><br />
-
-        <label for="entryTags">Tags (comma separated): </label>
-        <input type="text" id="entryTags" placeholder="backstory, love interest, friends" /><br />
-
-        <label for="moodSelect">Mood: </label>
-        <select id="moodSelect">
-            <option value="happy">😊 Happy</option>
-            <option value="sad">😢 Sad</option>
-            <option value="anxious">😰 Anxious</option>
-            <option value="angry">😡 Angry</option>
-            <option value="neutral" selected>😐 Neutral</option>
-        </select><br />
-
-        <button id="saveEntryBtn">Save Entry</button>
-    </section>
-
-    <section id="searchSection">
-        <h3>Search Entries</h3>
-        <input type="text" id="searchInput" placeholder="Search by text or tag..." />
-    </section>
-
-    <section id="entriesSection">
-        <h3>Diary Entries</h3>
-        <div id="entriesList"></div>
-    </section>
-
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-
+<div class="container">
+    <h2>Write Diary Entry</h2>
+    <select id="charSelect">
+        <option value="">Select Character</option>
+    </select>
+    <textarea id="entryText" placeholder="Write your entry..."></textarea>
+    <input id="entryTags" type="text" placeholder="Tags (comma separated)" />
+    <select id="moodSelect">
+        <option value="neutral">Neutral</option>
+        <option value="happy">Happy</option>
+        <option value="sad">Sad</option>
+        <option value="anxious">Anxious</option>
+    </select>
+    <button id="saveEntryBtn">Save Entry</button>
 </div>
 
-<div id="cookieConsent" class="cookie-banner">
-    <p>
-        We use cookies to save your diary entries locally and improve your experience.
-        By continuing, you agree to our use of cookies.
-    </p>
-    <div class="cookie-buttons">
-        <button id="acceptCookiesBtn">I Accept</button>
-        <button id="denyCookiesBtn">I Deny</button>
-    </div>
+<div class="container">
+    <h2>Diary Entries</h2>
+    <input id="searchInput" type="text" placeholder="Search entries..." />
+    <div id="entriesList"></div>
 </div>
-
 
 <script src="CharacterCreation.js"></script>
 </body>
