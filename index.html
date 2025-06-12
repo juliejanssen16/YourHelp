@@ -1,50 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Set character encoding to UTF-8 for supporting most characters -->
     <meta charset="UTF-8" />
+    <!-- Make the page responsive on different screen sizes -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Title of the browser tab -->
     <title>Character Diary App</title>
+
+    <!-- Link to external CSS file for styling -->
     <link rel="stylesheet" href="CharacterCreation.css" />
+    <!-- Link to Google Font "Baloo 2" for custom font styles -->
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet" />
+
     <style>
-        /* Simple styling for cookie banner */
+        /* Styling for the cookie consent banner at the bottom of the screen */
         #cookie-banner {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: #222;
-            color: white;
-            padding: 15px 20px;
-            font-family: Arial, sans-serif;
-            display: none;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
+            position: fixed; /* Stays at bottom even when scrolling */
+            bottom: 0; left: 0; right: 0; /* Full width at the bottom */
+            background: #222; /* Dark background color */
+            color: white; /* Text color white */
+            padding: 15px 20px; /* Space inside the banner */
+            font-family: Arial, sans-serif; /* Simple readable font */
+            display: none; /* Hidden by default, shown only if needed */
+            justify-content: space-between; /* Space between text and buttons */
+            align-items: center; /* Vertically center items */
+            z-index: 1000; /* Makes sure it appears above other elements */
         }
+        /* Styling for buttons inside the cookie banner */
         #cookie-banner button {
-            background: #ff3d9b;
-            border: none;
-            color: white;
-            padding: 8px 14px;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 3px;
-            font-weight: bold;
+            background: #ff3d9b; /* Pinkish button background */
+            border: none; /* No border */
+            color: white; /* White text */
+            padding: 8px 14px; /* Padding inside the button */
+            margin-left: 10px; /* Space between buttons */
+            cursor: pointer; /* Cursor changes to pointer on hover */
+            border-radius: 3px; /* Slightly rounded corners */
+            font-weight: bold; /* Bold text */
         }
+        /* Special style for the Decline button */
         #cookie-banner button.decline {
-            background: #ff69b4;
+            background: #ff69b4; /* Different pink shade */
         }
     </style>
 </head>
 <body>
+
+<!-- Button to toggle background music on/off -->
 <button id="musicToggleBtn">🔈 Play Music</button>
 
-<div id="sparkles"></div> <!-- Sparkles container -->
+<!-- Container for decorative sparkles effect -->
+<div id="sparkles"></div>
 
+<!-- Section for creating a new character -->
 <section id="characterCreationSection">
     <h2>Create New Character</h2>
+
+    <!-- Input for character name -->
     <label for="charNameInput">Name:</label>
     <input id="charNameInput" type="text" placeholder="Character Name" />
 
+    <!-- Group of buttons for selecting species -->
     <div id="speciesGroup" class="trait-group">
         <p>Species:</p>
         <button class="trait-btn">Human</button>
@@ -52,6 +68,7 @@
         <button class="trait-btn">Orc</button>
     </div>
 
+    <!-- Group of buttons for selecting hair color -->
     <div id="hairGroup" class="trait-group">
         <p>Hair:</p>
         <button class="trait-btn">Black</button>
@@ -59,6 +76,7 @@
         <button class="trait-btn">Red</button>
     </div>
 
+    <!-- Group of buttons for selecting eye color -->
     <div id="eyeColorGroup" class="trait-group">
         <p>Eye Color:</p>
         <button class="trait-btn">Blue</button>
@@ -66,16 +84,25 @@
         <button class="trait-btn">Brown</button>
     </div>
 
+    <!-- Color picker input for character's main color -->
     <label for="charColorPicker">Character Color:</label>
     <input id="charColorPicker" type="color" value="#ff69b4" />
 
+    <!-- Button to save the new character -->
     <button id="saveCharBtn">Save Character</button>
 </section>
 
+<!-- Section listing all saved characters; hidden initially -->
 <section id="characterListSection" class="hidden">
     <h2>Characters</h2>
+
+    <!-- List container for characters -->
     <ul id="charList"></ul>
+
+    <!-- Button to create another new character -->
     <button id="createNewCharBtn">Create New Character</button>
+
+    <!-- Dropdown to sort characters by different criteria -->
     <label for="sortCharacters">Sort Characters:</label>
     <select id="sortCharacters">
         <option value="name-asc">Name Ascending</option>
@@ -86,16 +113,23 @@
     </select>
 </section>
 
+<!-- Main app section for diary entries; hidden initially -->
 <section id="appSection" class="hidden">
+    <!-- Header showing which character's diary is open -->
     <h2 id="characterNameHeader">Diary for: </h2>
+
+    <!-- Dropdown to select which character's entries to show -->
     <label for="selectCharacterEntry">Select Character:</label>
     <select id="selectCharacterEntry"></select>
 
+    <!-- Text area where the user writes diary entries -->
     <textarea id="entryText" rows="5" placeholder="Write your diary entry here..."></textarea>
 
+    <!-- Input for tags to categorize diary entries -->
     <label for="entryTags">Tags (comma separated):</label>
     <input id="entryTags" type="text" placeholder="e.g. happy, vacation" />
 
+    <!-- Dropdown to select mood for the entry -->
     <label for="moodSelect">Mood:</label>
     <select id="moodSelect">
         <option value="neutral">Neutral</option>
@@ -104,9 +138,13 @@
         <option value="anxious">Anxious</option>
     </select>
 
+    <!-- Button to save the diary entry -->
     <button id="saveEntryBtn">Save Diary Entry</button>
 
+    <!-- Filters and search for diary entries -->
     <h3>Filters & Search</h3>
+
+    <!-- Filter by mood dropdown -->
     <label for="filterMood">Filter by Mood:</label>
     <select id="filterMood">
         <option value="all">All</option>
@@ -116,33 +154,42 @@
         <option value="anxious">Anxious</option>
     </select>
 
+    <!-- Input to filter entries by tag -->
     <label for="filterTag">Filter by Tag:</label>
     <input id="filterTag" type="text" placeholder="Tag search" />
 
+    <!-- Input to search text inside entries -->
     <label for="searchInput">Search Text:</label>
     <input id="searchInput" type="text" placeholder="Search entries..." />
 
+    <!-- Sort entries by date -->
     <label for="sortEntries">Sort Entries:</label>
     <select id="sortEntries">
         <option value="date-desc">Newest First</option>
         <option value="date-asc">Oldest First</option>
     </select>
 
+    <!-- List of diary entries -->
     <ul id="entriesList"></ul>
 
+    <!-- Button to show an overview of all entries -->
     <button id="showAllEntriesBtn">Show All Entries Overview</button>
 
+    <!-- Canvas to draw a mood graph -->
     <canvas id="moodGraph" width="600" height="200"></canvas>
 </section>
 
+<!-- Section to show an overview of all diary entries; hidden initially -->
 <section id="allEntriesOverviewSection" class="hidden">
     <h2>All Diary Entries</h2>
     <div id="allEntriesOverviewList"></div>
     <button id="closeOverviewBtn">Close Overview</button>
 </section>
 
+<!-- Background music audio element -->
 <audio id="backgroundMusic" src="cute-music.mp3" loop muted></audio>
 
+<!-- Cookie consent banner shown at the bottom -->
 <div id="cookie-banner">
     <div>
         We use cookies to improve your experience. Do you accept cookies?
@@ -154,53 +201,60 @@
 </div>
 
 <script>
-    // Check stored consent
+    // Get stored cookie consent value from browser storage
     const consent = localStorage.getItem('cookie-consent');
 
+    // Function to show the cookie consent banner
     function showBanner() {
         const banner = document.getElementById('cookie-banner');
-        banner.style.display = 'flex';
-        banner.style.justifyContent = 'space-between';
-        banner.style.alignItems = 'center';
+        banner.style.display = 'flex'; // Make banner visible
+        banner.style.justifyContent = 'space-between'; // Space between text and buttons
+        banner.style.alignItems = 'center'; // Vertically center content
     }
+
+    // Function to hide the cookie banner
     function hideBanner() {
         document.getElementById('cookie-banner').style.display = 'none';
     }
 
-    // Show banner only if consent NOT accepted
+    // Show cookie banner only if user hasn't accepted yet
     if (consent !== 'accepted') {
         showBanner();
     }
 
+    // When user clicks Accept, save consent and hide banner
     document.getElementById('accept-btn').addEventListener('click', () => {
         localStorage.setItem('cookie-consent', 'accepted');
         hideBanner();
     });
 
+    // When user clicks Decline, just hide banner without saving consent
     document.getElementById('decline-btn').addEventListener('click', () => {
-        // Do NOT store decline - so banner will appear again next reload
         hideBanner();
     });
 
-    // Consent check function
+    // Function to check if localStorage can be used (user accepted cookies)
     function canUseLocalStorage() {
         return localStorage.getItem('cookie-consent') === 'accepted';
     }
 
-    // Wrapper function for saving data to localStorage respecting consent
+    // Helper function to save data in localStorage only if consent given
     function saveToLocalStorage(key, value) {
         if (!canUseLocalStorage()) {
+            // If no consent, don't save and log message to console
             console.log(`LocalStorage save blocked for "${key}" because consent not given.`);
             return;
         }
         localStorage.setItem(key, value);
     }
 
-    // Expose globally so CharacterCreation.js can use it
+    // Make the save function available globally so other scripts can use it
     window.saveToLocalStorage = saveToLocalStorage;
 </script>
 
+<!-- Link to main JavaScript file handling character creation and diary logic -->
 <script src="CharacterCreation.js"></script>
-<script src="sparkles.js"></script> <!-- added script for sparkles -->
+<!-- Link to sparkle effects script -->
+<script src="sparkles.js"></script>
 </body>
 </html>
