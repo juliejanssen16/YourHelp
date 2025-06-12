@@ -1,47 +1,105 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #ffe6f0;
-    color: #4d004d;
+    color: #660033;
     margin: 0;
     padding: 20px;
 }
 
 .container {
-    background-color: #fff0f5;
-    border: 2px solid #ffb6c1;
-    border-radius: 12px;
-    padding: 20px;
+    background-color: #fff0f6;
+    border: 2px solid #ff69b4;
+    border-radius: 10px;
+    padding: 15px 20px;
     margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
 }
 
-input, textarea, select, button {
-    display: block;
-    margin: 10px 0;
-    padding: 8px;
+h2, h3 {
+    color: #d61a7f;
+}
+
+input[type="text"], textarea, select {
     width: 100%;
-    max-width: 500px;
-    border: 1px solid #ff99cc;
-    border-radius: 6px;
+    padding: 8px;
+    margin: 6px 0 12px 0;
+    border: 1px solid #ffb6c1;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Comfortaa', cursive;
 }
 
 button {
-    background-color: #ff66a3;
-    color: white;
-    cursor: pointer;
+    background-color: #ff69b4;
     border: none;
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-family: 'Comfortaa', cursive;
 }
 
 button:hover {
-    background-color: #ff3385;
+    background-color: #d61a7f;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.trait-group {
+    margin-bottom: 15px;
+}
+
+.trait-btn {
+    margin-right: 10px;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid #ff69b4;
+    background-color: #fff0f6;
+    cursor: pointer;
+    font-weight: bold;
+    color: #660033;
+    font-family: 'Comfortaa', cursive;
+    transition: background-color 0.2s ease;
+}
+
+.trait-btn.active {
+    background-color: #ff69b4;
+    color: white;
 }
 
 .entry {
-    border-top: 1px solid #ffb6c1;
-    padding: 10px 0;
+    border: 1px solid #ffb6c1;
+    background-color: #fff0f6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
 }
+
+.entry p {
+    margin: 4px 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#charDisplayList li {
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #ffd6e8;
+    border-radius: 6px;
+}
+
+#charDisplayList button {
+    margin-left: 5px;
+}
+
+#entriesList .entry {
+    border-left: 8px solid;
+    transition: border-color 0.3s ease;
+}
+
+#moodGraphContainer {
+    margin-top: 30px;
+}
+

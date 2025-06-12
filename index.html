@@ -3,69 +3,126 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Character Creation & Diary</title>
+    <title>Character Creation and Diary App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Poppins&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="CharacterCreation.css" />
 </head>
 <body>
 
-<div id="app" class="app">
+<!-- Character Creation Section -->
+<div id="characterCreationSection" class="container">
+    <h2>Create Your Character</h2>
+    <label for="charNameInput">Character Name:</label>
+    <input id="charNameInput" type="text" placeholder="Character Name" />
 
-    <!-- Character Creation Section -->
-    <section id="characterCreationSection">
-        <h2>Create / Edit Character</h2>
-        <label for="charName">Name:</label>
-        <input type="text" id="charName" placeholder="Enter character name" />
+    <div class="trait-group" id="speciesGroup">
+        <p>Species:</p>
+        <button type="button" class="trait-btn" data-trait="species">Siren</button>
+        <button type="button" class="trait-btn" data-trait="species">Vampire</button>
+        <button type="button" class="trait-btn" data-trait="species">Elf</button>
+    </div>
 
-        <label for="charColor">Character Color:</label>
-        <input type="color" id="charColor" value="#ff69b4" />
+    <div class="trait-group" id="hairGroup">
+        <p>Hair:</p>
+        <button type="button" class="trait-btn" data-trait="hair">Black</button>
+        <button type="button" class="trait-btn" data-trait="hair">Brown</button>
+        <button type="button" class="trait-btn" data-trait="hair">Blonde</button>
+    </div>
 
-        <fieldset>
-            <legend>Traits</legend>
-            <button class="trait-btn" data-trait="trait1">Brave</button>
-            <button class="trait-btn" data-trait="trait2">Smart</button>
-            <button class="trait-btn" data-trait="trait3">Kind</button>
-            <button class="trait-btn" data-trait="trait4">Funny</button>
-        </fieldset>
+    <div class="trait-group" id="eyeColorGroup">
+        <p>Eye Color:</p>
+        <button type="button" class="trait-btn" data-trait="eyeColor">Blue</button>
+        <button type="button" class="trait-btn" data-trait="eyeColor">Green</button>
+        <button type="button" class="trait-btn" data-trait="eyeColor">Brown</button>
+    </div>
 
-        <button id="saveCharBtn">Save Character</button>
-        <button id="cancelCharBtn">Cancel</button>
-    </section>
+    <label for="charColorPicker">Choose Entry Color:</label>
+    <input type="color" id="charColorPicker" value="#ff69b4" />
 
-    <!-- Character List Section -->
-    <section id="characterListSection">
-        <h2>Characters</h2>
-        <ul id="charList"></ul>
-        <button id="addNewCharBtn">Add New Character</button>
-    </section>
+    <button id="saveCharBtn">Save Character</button>
+</div>
 
-    <!-- Diary Entry Section -->
-    <section id="diarySection" class="hidden">
-        <h2>Add Diary Entry</h2>
-        <label for="charSelect">Select Character:</label>
-        <select id="charSelect"></select>
+<!-- Character List Section -->
+<div id="characterListSection" class="container hidden">
+    <h2>Your Characters</h2>
 
-        <textarea id="entryText" rows="5" placeholder="Write your diary entry here..."></textarea>
-
-        <label for="entryTags">Tags (comma separated):</label>
-        <input type="text" id="entryTags" placeholder="e.g. happy, sad" />
-
-        <label for="entryMood">Mood:</label>
-        <select id="entryMood">
-            <option value="Happy">Happy</option>
-            <option value="Sad">Sad</option>
-            <option value="Anxious">Anxious</option>
-            <option value="Excited">Excited</option>
+    <div>
+        <label for="sortCharacters">Sort Characters:</label>
+        <select id="sortCharacters">
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="date-asc">Creation Date (Oldest)</option>
+            <option value="date-desc">Creation Date (Newest)</option>
+            <option value="entries-desc">Most Entries</option>
         </select>
+    </div>
 
-        <button id="saveEntryBtn">Save Entry</button>
-    </section>
+    <ul id="charList"></ul>
+</div>
 
-    <!-- Diary Entries Overview -->
-    <section id="entriesOverviewSection" class="hidden">
-        <h2>Diary Entries</h2>
+<!-- Diary App Section -->
+<div id="appSection" class="container hidden">
+    <h2 id="characterNameHeader">Diary for:</h2>
+
+    <label for="selectCharacterEntry">Select Character:</label>
+    <select id="selectCharacterEntry"></select>
+
+    <textarea id="entryText" rows="4" cols="50" placeholder="Write your diary entry here..."></textarea>
+
+    <input id="entryTags" type="text" placeholder="Tags (comma separated)" />
+
+    <label for="moodSelect">Mood:</label>
+    <select id="moodSelect">
+        <option value="happy">Happy</option>
+        <option value="sad">Sad</option>
+        <option value="neutral" selected>Neutral</option>
+        <option value="anxious">Anxious</option>
+    </select>
+
+    <button id="saveEntryBtn">Save Entry</button>
+
+    <label for="filterMood">Filter by Mood:</label>
+    <select id="filterMood">
+        <option value="all" selected>All</option>
+        <option value="happy">Happy</option>
+        <option value="sad">Sad</option>
+        <option value="neutral">Neutral</option>
+        <option value="anxious">Anxious</option>
+    </select>
+
+    <label for="filterTag">Filter by Tag:</label>
+    <input id="filterTag" type="text" placeholder="Filter by tag" />
+
+    <label for="searchInput">Search diary entries:</label>
+    <input id="searchInput" type="text" placeholder="Search diary entries" style="margin-bottom: 10px;" />
+
+    <div id="entriesSortingContainer">
+        <label for="sortEntries">Sort Entries:</label>
+        <select id="sortEntries">
+            <option value="date-desc">Newest First</option>
+            <option value="date-asc">Oldest First</option>
+        </select>
+    </div>
+
+    <ul id="entriesList"></ul>
+
+    <!-- Overview of All Entries Section -->
+    <div id="allEntriesOverviewSection" class="container hidden">
+        <h2>All Diary Entries Overview</h2>
+        <button id="closeOverviewBtn">Close Overview</button>
         <div id="allEntriesOverviewList"></div>
-    </section>
+    </div>
 
+    <!-- Button to open overview -->
+    <div id="overviewToggleContainer" style="margin: 10px;">
+        <button id="showAllEntriesBtn">Show All Entries Overview</button>
+    </div>
+
+    <!-- Mood graph container -->
+    <div id="moodGraphContainer" class="container">
+        <h3>Mood Trend Graph</h3>
+        <canvas id="moodGraph" width="600" height="200"></canvas>
+    </div>
 </div>
 
 <script src="CharacterCreation.js"></script>
