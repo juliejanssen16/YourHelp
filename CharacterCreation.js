@@ -523,3 +523,18 @@ function init() {
 }
 
 init();
+
+const music = document.getElementById('backgroundMusic');
+const musicToggleBtn = document.getElementById('musicToggleBtn');
+
+musicToggleBtn.addEventListener('click', () => {
+    if (music.paused) {
+        music.muted = false;
+        music.play();
+        musicToggleBtn.textContent = '🔊 Pause Music';
+    } else {
+        music.pause();
+        musicToggleBtn.textContent = '🔈 Play Music';
+    }
+});
+
