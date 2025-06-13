@@ -1,98 +1,81 @@
-// --- Elements ---
-// Get references to HTML elements by their IDs for later use
-const charNameInput = document.getElementById('charNameInput'); // Input for character name
-const charColorPicker = document.getElementById('charColorPicker'); // Color picker for character color
-const charList = document.getElementById('charList'); // List element to display characters
-const charListSection = document.getElementById('characterListSection'); // Section showing character list
-const charCreationSection = document.getElementById('characterCreationSection'); // Section for creating a character
-const appSection = document.getElementById('appSection'); // Main app section (diary, etc.)
-const saveCharBtn = document.getElementById('saveCharBtn'); // Button to save a new character
-const createNewCharBtn = document.getElementById('createNewCharBtn'); // Button to start creating a new character
-const selectCharacterEntry = document.getElementById('selectCharacterEntry'); // Dropdown to select character for diary
-const characterNameHeader = document.getElementById('characterNameHeader'); // Header showing current character's name
+// Elements
+const charNameInput = document.getElementById('charNameInput');
+const charColorPicker = document.getElementById('charColorPicker');
+const charList = document.getElementById('charList');
+const charListSection = document.getElementById('characterListSection');
+const charCreationSection = document.getElementById('characterCreationSection');
+const appSection = document.getElementById('appSection');
+const saveCharBtn = document.getElementById('saveCharBtn');
+const createNewCharBtn = document.getElementById('createNewCharBtn');
+const selectCharacterEntry = document.getElementById('selectCharacterEntry');
+const characterNameHeader = document.getElementById('characterNameHeader');
 
-const entryText = document.getElementById('entryText'); // Textarea for diary entry content
-const entryTagsInput = document.getElementById('entryTags'); // Input for tags (comma separated)
-const moodSelect = document.getElementById('moodSelect'); // Dropdown to select mood for diary entry
-const filterMood = document.getElementById('filterMood'); // Filter dropdown to filter entries by mood
-const filterTag = document.getElementById('filterTag'); // Filter input to filter entries by tag
-const searchInput = document.getElementById('searchInput'); // Search input to filter entries by text
-const sortEntriesSelect = document.getElementById('sortEntries'); // Dropdown to sort diary entries
-const sortCharactersSelect = document.getElementById('sortCharacters'); // Dropdown to sort characters
+const entryText = document.getElementById('entryText');
+const entryTagsInput = document.getElementById('entryTags');
+const moodSelect = document.getElementById('moodSelect');
+const filterMood = document.getElementById('filterMood');
+const filterTag = document.getElementById('filterTag');
+const searchInput = document.getElementById('searchInput');
+const sortEntriesSelect = document.getElementById('sortEntries');
+const sortCharactersSelect = document.getElementById('sortCharacters');
 
-const entriesList = document.getElementById('entriesList'); // List element to show diary entries
+const entriesList = document.getElementById('entriesList');
 
-const showAllEntriesBtn = document.getElementById('showAllEntriesBtn'); // Button to show all entries overview
-const allEntriesOverviewSection = document.getElementById('allEntriesOverviewSection'); // Section to show all entries grouped by character
-const allEntriesOverviewList = document.getElementById('allEntriesOverviewList'); // Container for all entries overview
-const closeOverviewBtn = document.getElementById('closeOverviewBtn'); // Button to close the all entries overview
+const showAllEntriesBtn = document.getElementById('showAllEntriesBtn');
+const allEntriesOverviewSection = document.getElementById('allEntriesOverviewSection');
+const allEntriesOverviewList = document.getElementById('allEntriesOverviewList');
+const closeOverviewBtn = document.getElementById('closeOverviewBtn');
 
-const moodGraphCanvas = document.getElementById('moodGraph'); // Canvas element for mood graph
-const moodGraphCtx = moodGraphCanvas.getContext('2d'); // Canvas 2D context for drawing graph
+const moodGraphCanvas = document.getElementById('moodGraph');
+const moodGraphCtx = moodGraphCanvas.getContext('2d');
 
-// --- Data arrays ---
-// Arrays to store characters and diary entries in memory
+// Data arrays
 let characters = [];
 let entries = [];
 
-// --- Trait buttons logic ---
-// List of trait categories (species, hair, eyeColor)
+// Trait buttons logic
 const traitGroups = ['species', 'hair', 'eyeColor'];
-
-// Object to store the currently selected trait for each group
 const traitSelections = { species: null, hair: null, eyeColor: null };
 
-// Initialize event listeners for trait buttons for each trait group
+// Initialize trait buttons event listeners
 traitGroups.forEach(group => {
-    // Find the div containing buttons for this group
     const groupDiv = document.getElementById(group + 'Group');
-    if (!groupDiv) return; // Skip if group div not found
-
-    // For each button inside this group div...
+    if (!groupDiv) return;
     groupDiv.querySelectorAll('.trait-btn').forEach(button => {
-        // Add click event listener
         button.addEventListener('click', () => {
-            // When clicked, select the trait and mark button as active
             selectTrait(group, button.textContent, button);
         });
     });
 });
 
-// --- Select trait helper ---
-// Select a trait for a given group and update UI
+// Select trait helper
 function selectTrait(group, trait, button) {
-    // Save the selected trait in the traitSelections object
     traitSelections[group] = trait;
 
-    // Remove active styles from all buttons in this group
+    // Reset buttons styles
     resetTraitGroup(group);
 
-    // Add active style to the clicked button
+    // Mark clicked button active
     button.classList.add('selected-trait-btn');
 }
 
-// --- Reset trait buttons styles for a group ---
-// Remove the 'selected-trait-btn' class from all buttons in the given trait group
+// Reset trait buttons styles for a group
 function resetTraitGroup(group) {
     const groupDiv = document.getElementById(group + 'Group');
     if (!groupDiv) return;
-
     groupDiv.querySelectorAll('.trait-btn').forEach(btn => {
         btn.classList.remove('selected-trait-btn');
     });
 }
 
-// --- Save character button click ---
-// When the user clicks "Save Character" button
+// Save character button click
 saveCharBtn.addEventListener('click', () => {
-    const name = charNameInput.value.trim(); // Get and trim the name input
-
+    const name = charNameInput.value.trim();
     if (!name) {
         alert('Please enter a character name.');
-        return; // Stop if no name
+        return;
     }
-
-    // Check if all traits have been selected
+    // Check all traits selected
     for (let g of traitGroups) {
         if (!traitSelections[g]) {
             alert(`Please select a ${g}.`);
@@ -100,63 +83,58 @@ saveCharBtn.addEventListener('click', () => {
         }
     }
 
-    // Check if the character name is unique (case insensitive)
+    // Check if name unique
     if (characters.some(c => c.name.toLowerCase() === name.toLowerCase())) {
         alert('Character name must be unique.');
         return;
     }
 
-    // Get color from color picker
     const color = charColorPicker.value;
 
-    // Create new character object
     const newChar = {
-        id: Date.now(), // unique id using timestamp
+        id: Date.now(),
         name,
         species: traitSelections.species,
         hair: traitSelections.hair,
         eyeColor: traitSelections.eyeColor,
         color,
-        created: new Date().toISOString(), // save creation time as ISO string
+        created: new Date().toISOString(),
     };
 
-    characters.push(newChar); // Add new character to array
-    saveToLocalStorage(); // Save characters and entries to localStorage
-    updateCharacterList(); // Refresh character list in UI
-    resetCharacterCreation(); // Reset creation form inputs
+    characters.push(newChar);
+    saveData();
+    updateCharacterList();
+    resetCharacterCreation();
 
-    // Switch UI: hide creation section, show character list and main app
+    // Hide creation section, show character list & app section
     charCreationSection.classList.add('hidden');
     charListSection.classList.remove('hidden');
     appSection.classList.remove('hidden');
 
-    // Update character dropdown for diary entry selection
+    // Populate character select for diary
     populateCharacterSelect();
 
-    // Automatically select new character in diary dropdown
+    // Select new character in diary
     selectCharacterEntry.value = newChar.id;
-    onCharacterChange(); // Load diary entries for new character
+    onCharacterChange();
 });
 
-// --- Reset character creation inputs ---
-// Clear all inputs and reset trait selections in the character creation form
+// Reset character creation inputs
 function resetCharacterCreation() {
-    charNameInput.value = ''; // Clear name input
-    charColorPicker.value = '#ff69b4'; // Reset color picker to default pink
+    charNameInput.value = '';
+    charColorPicker.value = '#ff69b4';
     traitGroups.forEach(g => {
-        traitSelections[g] = null; // Clear trait selections
-        resetTraitGroup(g); // Reset button styles for each trait group
+        traitSelections[g] = null;
+        resetTraitGroup(g);
     });
 }
 
-// --- Update character list in UI ---
-// Clear and repopulate the character list element
+// Update character list in UI
 function updateCharacterList() {
-    charList.innerHTML = ''; // Clear existing list
+    charList.innerHTML = '';
+    let sortedChars = [...characters];
 
-    let sortedChars = [...characters]; // Copy array to sort without affecting original
-
-    // Sort characters based on selected option in sort dropdown
+    // Sort characters
     const sortVal = sortCharactersSelect.value;
     if (sortVal === 'name-asc') {
         sortedChars.sort((a,b) => a.name.localeCompare(b.name));
@@ -167,7 +145,6 @@ function updateCharacterList() {
     } else if (sortVal === 'date-desc') {
         sortedChars.sort((a,b) => new Date(b.created) - new Date(a.created));
     } else if (sortVal === 'entries-desc') {
-        // Sort by number of diary entries descending
         sortedChars.sort((a,b) => {
             let countA = entries.filter(e => e.characterId === a.id).length;
             let countB = entries.filter(e => e.characterId === b.id).length;
@@ -175,12 +152,11 @@ function updateCharacterList() {
         });
     }
 
-    // For each character, create a list item with name and traits
     sortedChars.forEach(c => {
         const li = document.createElement('li');
         li.textContent = `${c.name} (${c.species}, Hair: ${c.hair}, Eyes: ${c.eyeColor})`;
 
-        // Add colored circle showing character color
+        // Color circle
         const colorSpan = document.createElement('span');
         colorSpan.style.backgroundColor = c.color;
         colorSpan.style.display = 'inline-block';
@@ -190,7 +166,7 @@ function updateCharacterList() {
         colorSpan.style.marginLeft = '6px';
         li.appendChild(colorSpan);
 
-        // Add Delete button for each character
+        // Delete button
         const delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
         delBtn.title = 'Delete character and all their entries';
@@ -201,432 +177,364 @@ function updateCharacterList() {
         });
         li.appendChild(delBtn);
 
-        charList.appendChild(li); // Add the list item to the character list
+        charList.appendChild(li);
     });
 }
 
-// --- Delete character and their entries ---
-// Remove character and all diary entries associated with them
+// Delete character and their entries
 function deleteCharacter(charId) {
-    characters = characters.filter(c => c.id !== charId); // Remove character
-    entries = entries.filter(e => e.characterId !== charId); // Remove their diary entries
-    saveToLocalStorage(); // Save changes
-    updateCharacterList(); // Update character list UI
-    populateCharacterSelect(); // Update diary character dropdown
-    renderEntries(); // Update diary entries list
+    characters = characters.filter(c => c.id !== charId);
+    entries = entries.filter(e => e.characterId !== charId);
+    saveData();
+    updateCharacterList();
+    populateCharacterSelect();
+    renderEntries();
 }
 
-// --- Populate character select dropdown for diary entry ---
-// Fill the dropdown with all characters for user to select
+// Populate character select dropdown for diary entry
 function populateCharacterSelect() {
-    selectCharacterEntry.innerHTML = ''; // Clear existing options
-
+    selectCharacterEntry.innerHTML = '';
     characters.forEach(c => {
         const opt = document.createElement('option');
-        opt.value = c.id; // Value is character ID
-        opt.textContent = c.name; // Display name
+        opt.value = c.id;
+        opt.textContent = c.name;
         selectCharacterEntry.appendChild(opt);
     });
 
-    // If no characters exist, show character creation form and hide others
     if (characters.length === 0) {
+        // If no characters, go back to creation
         charCreationSection.classList.remove('hidden');
         charListSection.classList.add('hidden');
         appSection.classList.add('hidden');
     }
 }
 
-// --- On character change (in diary) ---
-// When the user selects a different character in the diary dropdown
+// On character change (in diary)
 selectCharacterEntry.addEventListener('change', onCharacterChange);
 
 function onCharacterChange() {
-    const charId = Number(selectCharacterEntry.value); // Get selected character ID
-    const char = characters.find(c => c.id === charId);
-    if (!char) return; // If character not found, do nothing
-
-    // Update header to show current character's name
-    characterNameHeader.textContent = `Diary - ${char.name}`;
-
-    // Clear the entry textarea and mood/tags inputs for new entry
-    entryText.value = '';
-    entryTagsInput.value = '';
-    moodSelect.value = '';
-
-    // Render diary entries filtered by this character
-    renderEntries();
-}
-
-// --- Save diary entry ---
-// When user submits a new diary entry
-document.getElementById('saveEntryBtn').addEventListener('click', () => {
     const charId = Number(selectCharacterEntry.value);
     const char = characters.find(c => c.id === charId);
-    if (!char) {
+    if (!char) return;
+    characterNameHeader.textContent = `Diary for: ${char.name}`;
+    renderEntries();
+    drawMoodGraph(charId);
+}
+
+// Save diary entry
+document.getElementById('saveEntryBtn').addEventListener('click', () => {
+    const charId = Number(selectCharacterEntry.value);
+    if (!charId) {
         alert('Please select a character.');
         return;
     }
-
     const text = entryText.value.trim();
     if (!text) {
-        alert('Please enter diary text.');
+        alert('Please write some text for the diary entry.');
         return;
     }
-
     const mood = moodSelect.value;
-    if (!mood) {
-        alert('Please select a mood.');
-        return;
-    }
+    const tagsRaw = entryTagsInput.value.trim();
+    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim().toLowerCase()).filter(Boolean) : [];
 
-    // Parse tags input, split by commas and trim spaces, filter empty strings
-    let tags = entryTagsInput.value
-        .split(',')
-        .map(t => t.trim().toLowerCase())
-        .filter(t => t.length > 0);
-
-    // Create new diary entry object
     const newEntry = {
-        id: Date.now(), // unique ID by timestamp
-        characterId: charId, // link to character
+        id: Date.now(),
+        characterId: charId,
         text,
         mood,
         tags,
-        created: new Date().toISOString(), // timestamp
+        created: new Date().toISOString(),
     };
 
-    entries.push(newEntry); // Add to entries array
-    saveToLocalStorage(); // Save everything to localStorage
-    renderEntries(); // Update displayed entries list
+    entries.push(newEntry);
+    saveData();
 
-    // Clear form fields for next entry
     entryText.value = '';
     entryTagsInput.value = '';
-    moodSelect.value = '';
+    moodSelect.value = 'neutral';
+
+    renderEntries();
+    drawMoodGraph(charId);
 });
 
-// --- Render diary entries ---
-// Show diary entries filtered and sorted based on user inputs
+// Render diary entries filtered and sorted
 function renderEntries() {
     const charId = Number(selectCharacterEntry.value);
-
-    // Filter entries for the selected character
-    let filteredEntries = entries.filter(e => e.characterId === charId);
-
-    // Filter by mood if a filter is selected
-    if (filterMood.value && filterMood.value !== 'all') {
-        filteredEntries = filteredEntries.filter(e => e.mood === filterMood.value);
+    if (!charId) {
+        entriesList.innerHTML = '<li>No character selected.</li>';
+        return;
     }
 
-    // Filter by tag if entered
+    let filtered = entries.filter(e => e.characterId === charId);
+
+    // Filter by mood
+    const moodFilter = filterMood.value;
+    if (moodFilter !== 'all') {
+        filtered = filtered.filter(e => e.mood === moodFilter);
+    }
+
+    // Filter by tag
     const tagFilter = filterTag.value.trim().toLowerCase();
     if (tagFilter) {
-        filteredEntries = filteredEntries.filter(e => e.tags.includes(tagFilter));
+        filtered = filtered.filter(e => e.tags.includes(tagFilter));
     }
 
-    // Filter by search text in diary text (case insensitive)
-    const searchText = searchInput.value.trim().toLowerCase();
-    if (searchText) {
-        filteredEntries = filteredEntries.filter(e => e.text.toLowerCase().includes(searchText));
+    // Search text
+    const searchVal = searchInput.value.trim().toLowerCase();
+    if (searchVal) {
+        filtered = filtered.filter(e => e.text.toLowerCase().includes(searchVal));
     }
 
-    // Sort entries based on selected sort option
-    const sortVal = sortEntriesSelect.value;
-    if (sortVal === 'date-desc') {
-        filteredEntries.sort((a,b) => new Date(b.created) - new Date(a.created));
-    } else if (sortVal === 'date-asc') {
-        filteredEntries.sort((a,b) => new Date(a.created) - new Date(b.created));
-    } else if (sortVal === 'mood-asc') {
-        filteredEntries.sort((a,b) => a.mood.localeCompare(b.mood));
-    } else if (sortVal === 'mood-desc') {
-        filteredEntries.sort((a,b) => b.mood.localeCompare(a.mood));
+    // Sort entries
+    if (sortEntriesSelect.value === 'date-asc') {
+        filtered.sort((a, b) => new Date(a.created) - new Date(b.created));
+    } else {
+        filtered.sort((a, b) => new Date(b.created) - new Date(a.created));
     }
 
-    // Clear the entries list container before adding new ones
     entriesList.innerHTML = '';
 
-    // Create a list item for each entry
-    filteredEntries.forEach(entry => {
+    if (filtered.length === 0) {
+        entriesList.innerHTML = '<li>No diary entries found.</li>';
+        return;
+    }
+
+    filtered.forEach(entry => {
         const li = document.createElement('li');
 
-        // Format date nicely
-        const date = new Date(entry.created);
-        const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        const dateStr = new Date(entry.created).toLocaleString();
+        const tagsStr = entry.tags.length ? `Tags: ${entry.tags.join(', ')}` : '';
+        li.innerHTML = `
+          <div>
+            <strong>${dateStr}</strong> - Mood: <em>${entry.mood}</em><br />
+            ${tagsStr ? `<small>${tagsStr}</small><br />` : ''}
+            <p>${entry.text.replace(/\n/g, '<br />')}</p>
+            <button class="delete-entry-btn">Delete Entry</button>
+          </div>
+        `;
 
-        // Entry main text
-        const textP = document.createElement('p');
-        textP.textContent = entry.text;
+        li.querySelector('.delete-entry-btn').addEventListener('click', () => {
+            if (confirm('Delete this diary entry?')) {
+                deleteEntry(entry.id);
+            }
+        });
 
-        // Mood label with color coding
-        const moodSpan = document.createElement('span');
-        moodSpan.textContent = `Mood: ${entry.mood}`;
-        moodSpan.classList.add('mood-label');
-        moodSpan.style.color = getMoodColor(entry.mood);
-
-        // Tags display
-        const tagsSpan = document.createElement('span');
-        tagsSpan.textContent = 'Tags: ' + entry.tags.join(', ');
-        tagsSpan.classList.add('tags-label');
-
-        // Date display
-        const dateSpan = document.createElement('span');
-        dateSpan.textContent = dateStr;
-        dateSpan.classList.add('date-label');
-
-        // Append all parts to the list item
-        li.appendChild(textP);
-        li.appendChild(moodSpan);
-        li.appendChild(document.createTextNode(' | '));
-        li.appendChild(tagsSpan);
-        li.appendChild(document.createTextNode(' | '));
-        li.appendChild(dateSpan);
-
-        entriesList.appendChild(li); // Add entry to the list
+        entriesList.appendChild(li);
     });
-
-    // Draw the mood graph based on current filtered entries
-    drawMoodGraph(filteredEntries);
 }
 
-// --- Helper to get mood color ---
-// Return a color string based on mood name
-function getMoodColor(mood) {
-    switch (mood) {
-        case 'happy': return 'green';
-        case 'sad': return 'blue';
-        case 'angry': return 'red';
-        case 'neutral': return 'gray';
-        case 'excited': return 'orange';
-        default: return 'black';
-    }
+// Delete diary entry by id
+function deleteEntry(entryId) {
+    entries = entries.filter(e => e.id !== entryId);
+    saveData();
+    renderEntries();
+    drawMoodGraph(Number(selectCharacterEntry.value));
 }
 
-// --- Save all data to localStorage ---
-// Store characters and entries arrays as JSON strings
-function saveToLocalStorage() {
+// Save all data to localStorage
+function saveData() {
     localStorage.setItem('characters', JSON.stringify(characters));
     localStorage.setItem('entries', JSON.stringify(entries));
 }
 
-// --- Load data from localStorage ---
-// Read saved data and parse JSON into arrays, or set empty arrays if none saved
-function loadFromLocalStorage() {
-    const savedChars = localStorage.getItem('characters');
-    const savedEntries = localStorage.getItem('entries');
-
-    if (savedChars) characters = JSON.parse(savedChars);
-    if (savedEntries) entries = JSON.parse(savedEntries);
+// Load all data from localStorage
+function loadData() {
+    const charsRaw = localStorage.getItem('characters');
+    if (charsRaw) {
+        characters = JSON.parse(charsRaw);
+    }
+    const entriesRaw = localStorage.getItem('entries');
+    if (entriesRaw) {
+        entries = JSON.parse(entriesRaw);
+    }
 }
 
-// --- Show all entries overview ---
-// When user clicks "Show All Entries", display a grouped view by character
+// Show all entries overview
 showAllEntriesBtn.addEventListener('click', () => {
-    allEntriesOverviewList.innerHTML = ''; // Clear overview
-
-    characters.forEach(char => {
-        // Create a container for each character's entries
-        const charDiv = document.createElement('div');
-        charDiv.classList.add('char-overview');
-
-        // Character name header with color circle
-        const charHeader = document.createElement('h3');
-        charHeader.textContent = char.name;
-        const colorDot = document.createElement('span');
-        colorDot.style.backgroundColor = char.color;
-        colorDot.style.display = 'inline-block';
-        colorDot.style.width = '12px';
-        colorDot.style.height = '12px';
-        colorDot.style.borderRadius = '50%';
-        colorDot.style.marginLeft = '8px';
-        charHeader.appendChild(colorDot);
-
-        charDiv.appendChild(charHeader);
-
-        // Get all entries for this character
-        const charEntries = entries.filter(e => e.characterId === char.id);
-
-        if (charEntries.length === 0) {
-            // Show message if no entries
-            const noEntriesP = document.createElement('p');
-            noEntriesP.textContent = 'No entries';
-            charDiv.appendChild(noEntriesP);
-        } else {
-            // List entries for this character
-            const ul = document.createElement('ul');
-            charEntries.forEach(entry => {
-                const li = document.createElement('li');
-                li.textContent = `${entry.mood} - ${entry.text.substring(0, 50)}...`;
-                ul.appendChild(li);
-            });
-            charDiv.appendChild(ul);
-        }
-
-        allEntriesOverviewList.appendChild(charDiv);
-    });
-
-    // Show the overview section and hide main app
     allEntriesOverviewSection.classList.remove('hidden');
     appSection.classList.add('hidden');
+    charListSection.classList.add('hidden');
+    charCreationSection.classList.add('hidden');
+    renderAllEntriesOverview();
 });
 
-// --- Close the all entries overview ---
-// When user clicks "Close" button on overview
+// Close overview
 closeOverviewBtn.addEventListener('click', () => {
     allEntriesOverviewSection.classList.add('hidden');
     appSection.classList.remove('hidden');
+    charListSection.classList.remove('hidden');
 });
 
-// --- Sort change listeners ---
-// When user changes sorting of characters or entries, update lists accordingly
-sortCharactersSelect.addEventListener('change', updateCharacterList);
-sortEntriesSelect.addEventListener('change', renderEntries);
+// Render all entries overview (grouped by character)
+function renderAllEntriesOverview() {
+    allEntriesOverviewList.innerHTML = '';
+    if (entries.length === 0) {
+        allEntriesOverviewList.textContent = 'No diary entries available.';
+        return;
+    }
 
-// --- Filter inputs listeners ---
-// When user types or changes filters, update displayed diary entries
+    const grouped = {};
+
+    entries.forEach(e => {
+        if (!grouped[e.characterId]) grouped[e.characterId] = [];
+        grouped[e.characterId].push(e);
+    });
+
+    for (const charId in grouped) {
+        const char = characters.find(c => c.id === Number(charId));
+        if (!char) continue;
+
+        const div = document.createElement('div');
+        div.innerHTML = `<h3>${char.name} (${grouped[charId].length} entries)</h3>`;
+
+        grouped[charId].forEach(entry => {
+            const dateStr = new Date(entry.created).toLocaleString();
+            const tagsStr = entry.tags.length ? `Tags: ${entry.tags.join(', ')}` : '';
+            const p = document.createElement('p');
+            p.innerHTML = `<strong>${dateStr}</strong> - Mood: <em>${entry.mood}</em><br />
+                ${tagsStr ? `<small>${tagsStr}</small><br />` : ''}
+                ${entry.text.replace(/\n/g, '<br />')}`;
+            div.appendChild(p);
+        });
+
+        allEntriesOverviewList.appendChild(div);
+    }
+}
+
+// Draw simple mood graph for selected character
+function drawMoodGraph(charId) {
+    const width = moodGraphCanvas.width;
+    const height = moodGraphCanvas.height;
+
+    moodGraphCtx.clearRect(0, 0, width, height);
+
+    const charEntries = entries
+        .filter(e => e.characterId === charId)
+        .sort((a, b) => new Date(a.created) - new Date(b.created));
+
+    if (charEntries.length < 2) {
+        moodGraphCtx.fillStyle = '#888';
+        moodGraphCtx.font = '16px Arial';
+        moodGraphCtx.fillText('Not enough entries to draw mood graph.', 20, height / 2);
+        return;
+    }
+
+    // Map moods to numeric values for plotting
+    const moodMap = {
+        'happy': 3,
+        'neutral': 2,
+        'anxious': 1,
+        'sad': 0,
+    };
+
+    const padding = 40;
+    const graphWidth = width - 2 * padding;
+    const graphHeight = height - 2 * padding;
+
+    // Draw axis lines
+    moodGraphCtx.strokeStyle = '#ff69b4';
+    moodGraphCtx.lineWidth = 2;
+
+    // Y axis labels
+    const moodsSorted = ['sad', 'anxious', 'neutral', 'happy'];
+    moodGraphCtx.fillStyle = '#ff69b4';
+    moodGraphCtx.font = '12px Arial';
+
+    for (let i = 0; i < moodsSorted.length; i++) {
+        const y = padding + (graphHeight / (moodsSorted.length - 1)) * i;
+        moodGraphCtx.fillText(moodsSorted[moodsSorted.length - 1 - i], 5, y + 4);
+        moodGraphCtx.beginPath();
+        moodGraphCtx.moveTo(padding, y);
+        moodGraphCtx.lineTo(width - padding, y);
+        moodGraphCtx.strokeStyle = '#ffd6e8';
+        moodGraphCtx.stroke();
+    }
+
+    // X axis labels: Dates evenly spaced
+    const n = charEntries.length;
+    for (let i = 0; i < n; i++) {
+        const x = padding + (graphWidth / (n - 1)) * i;
+        if (i % Math.ceil(n/10) === 0 || i === n - 1) {
+            const dateStr = new Date(charEntries[i].created).toLocaleDateString();
+            moodGraphCtx.fillStyle = '#ff69b4';
+            moodGraphCtx.fillText(dateStr, x - 20, height - 10);
+        }
+    }
+
+    // Plot line
+    moodGraphCtx.strokeStyle = '#ff1493';
+    moodGraphCtx.lineWidth = 3;
+    moodGraphCtx.beginPath();
+
+    charEntries.forEach((e, i) => {
+        const x = padding + (graphWidth / (n - 1)) * i;
+        const moodValue = moodMap[e.mood] !== undefined ? moodMap[e.mood] : 2;
+        const y = padding + graphHeight - (moodValue / 3) * graphHeight;
+        if (i === 0) {
+            moodGraphCtx.moveTo(x, y);
+        } else {
+            moodGraphCtx.lineTo(x, y);
+        }
+        // Draw points
+        moodGraphCtx.fillStyle = '#ff69b4';
+        moodGraphCtx.beginPath();
+        moodGraphCtx.arc(x, y, 5, 0, 2 * Math.PI);
+        moodGraphCtx.fill();
+    });
+
+    moodGraphCtx.stroke();
+}
+
+// Sort characters event
+sortCharactersSelect.addEventListener('change', () => {
+    updateCharacterList();
+});
+
+// Filters events for entries
 filterMood.addEventListener('change', renderEntries);
 filterTag.addEventListener('input', renderEntries);
 searchInput.addEventListener('input', renderEntries);
+sortEntriesSelect.addEventListener('change', renderEntries);
 
-// --- Create new character button ---
-// Show character creation form and hide others
+// Create new character button in character list section
 createNewCharBtn.addEventListener('click', () => {
     charCreationSection.classList.remove('hidden');
     charListSection.classList.add('hidden');
     appSection.classList.add('hidden');
-    resetCharacterCreation();
 });
 
-// --- Mood graph drawing ---
-// Draw a simple graph showing count of each mood in current filtered entries
-// --- Draw circular pink mood graph ---
-function drawMoodGraph(entriesToDraw) {
-    const ctx = moodGraphCtx;
-    const canvas = moodGraphCanvas;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (entriesToDraw.length === 0) return;
-
-    // Count entries per mood
-    const moodCounts = {};
-    entriesToDraw.forEach(entry => {
-        moodCounts[entry.mood] = (moodCounts[entry.mood] || 0) + 1;
-    });
-
-    const total = entriesToDraw.length;
-    const moods = Object.keys(moodCounts);
-
-    // Pink color palette
-    const pinkColors = {
-        happy: '#ffb6c1',
-        sad: '#ffc0cb',
-        angry: '#ff69b4',
-        neutral: '#f99fbc',
-        excited: '#ff85a2',
-        default: '#ffccdc'
-    };
-
-    // Chart position & radius
-    const padding = 20;
-    const legendWidth = 120;
-    const chartAreaWidth = canvas.width - legendWidth - padding * 2;
-    const radius = Math.min(chartAreaWidth, canvas.height) / 2 - padding;
-    const centerX = radius + padding;
-    const centerY = canvas.height / 2;
-
-    // Draw donut segments
-    let startAngle = 0;
-    moods.forEach(mood => {
-        const count = moodCounts[mood];
-        const angle = (count / total) * 2 * Math.PI;
-        const color = pinkColors[mood] || pinkColors.default;
-
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, radius, startAngle, startAngle + angle);
-        ctx.closePath();
-        ctx.fillStyle = color;
-        ctx.fill();
-
-        startAngle += angle;
-    });
-
-    // Draw inner white circle for donut effect
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius * 0.4, 0, 2 * Math.PI);
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-
-    // Center label
-    ctx.fillStyle = '#ff69b4';
-    ctx.font = '16px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(`${total} mood${total !== 1 ? 's' : ''}`, centerX, centerY + 6);
-
-    // Draw Legend on the right
-    const legendX = chartAreaWidth + padding * 2;
-    let legendY = padding;
-    const boxSize = 14;
-    const spacing = 22;
-
-    // Optional legend title
-    ctx.fillStyle = '#ff69b4';
-    ctx.font = '14px sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText("Legend", legendX, legendY);
-
-    legendY += 10;
-
-    moods.forEach(mood => {
-        const color = pinkColors[mood] || pinkColors.default;
-
-        // Color box
-        ctx.fillStyle = color;
-        ctx.fillRect(legendX, legendY, boxSize, boxSize);
-
-        // Mood label
-        ctx.fillStyle = '#333';
-        ctx.font = '13px sans-serif';
-        ctx.fillText(mood.charAt(0).toUpperCase() + mood.slice(1), legendX + boxSize + 6, legendY + boxSize - 2);
-
-        legendY += spacing;
-    });
-}
-
-
-
-// --- Background music toggle ---
-// Toggle background music playback on button click
-const bgMusic = document.getElementById('bgMusic');
-const toggleMusicBtn = document.getElementById('toggleMusicBtn');
-
-toggleMusicBtn.addEventListener('click', () => {
-    if (bgMusic.paused) {
-        bgMusic.play();
-        toggleMusicBtn.textContent = 'Pause Music';
-    } else {
-        bgMusic.pause();
-        toggleMusicBtn.textContent = 'Play Music';
-    }
-});
-
-// --- Initialize app on page load ---
+// Initialize app
 function init() {
-    loadFromLocalStorage(); // Load saved characters and entries
-    updateCharacterList(); // Show characters in list
-    populateCharacterSelect(); // Fill diary character select dropdown
+    loadData();
 
-    if (characters.length > 0) {
-        // If we have characters, select the first one by default
-        selectCharacterEntry.value = characters[0].id;
-        onCharacterChange();
-    } else {
-        // No characters: show character creation form
+    if (characters.length === 0) {
         charCreationSection.classList.remove('hidden');
         charListSection.classList.add('hidden');
         appSection.classList.add('hidden');
+    } else {
+        charCreationSection.classList.add('hidden');
+        charListSection.classList.remove('hidden');
+        appSection.classList.remove('hidden');
+        updateCharacterList();
+        populateCharacterSelect();
+        selectCharacterEntry.value = characters[0].id;
+        onCharacterChange();
     }
 }
 
+init();
 
+const music = document.getElementById('backgroundMusic');
+const musicToggleBtn = document.getElementById('musicToggleBtn');
 
-init(); // Run initialization when script loads
+musicToggleBtn.addEventListener('click', () => {
+    if (music.paused) {
+        music.muted = false;
+        music.play();
+        musicToggleBtn.textContent = '🔊 Pause Music';
+    } else {
+        music.pause();
+        musicToggleBtn.textContent = '🔈 Play Music';
+    }
+});
+

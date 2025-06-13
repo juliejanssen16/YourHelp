@@ -1,48 +1,40 @@
-/* Set the default font for the whole page to 'Baloo 2' with cursive and sans-serif fallback.
-   Also, add some margin around the page and set a light pink background color and dark text color */
 body {
     font-family: 'Baloo 2', cursive, sans-serif;
     margin: 20px;
-    background-color: #fff0f6; /* very light pink */
-    color: #333; /* dark gray text */
+    background-color: #fff0f6;
+    color: #333;
 }
 
-/* Utility class to hide any element by setting display to none */
 .hidden {
     display: none;
 }
 
-/* Add space below groups of traits (like species, hair, eyes) */
 .trait-group {
     margin-bottom: 10px;
 }
 
-/* Style trait buttons with pink border and text, white background, some padding, and rounded corners */
 .trait-btn {
     margin: 2px;
     padding: 5px 10px;
-    cursor: pointer; /* cursor changes to pointer on hover to show it’s clickable */
-    border: 1px solid #ff69b4; /* pink border */
+    cursor: pointer;
+    border: 1px solid #ff69b4;
     background-color: white;
-    color: #ff69b4; /* pink text */
-    border-radius: 4px; /* rounded corners */
-    transition: background-color 0.3s ease; /* smooth color change on hover */
+    color: #ff69b4;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
-/* Change button background to pink and text to white when hovered */
 .trait-btn:hover {
     background-color: #ff69b4;
     color: white;
 }
 
-/* For trait buttons that are selected: pink background, white text, and bold font */
 .selected-trait-btn {
     background-color: #ff69b4;
     color: white;
     font-weight: bold;
 }
 
-/* Style all buttons with pink background, white text, padding, rounded corners, and pointer cursor */
 button {
     margin-top: 10px;
     padding: 8px 15px;
@@ -53,57 +45,48 @@ button {
     cursor: pointer;
 }
 
-/* Darker pink background on button hover for feedback */
 button:hover {
     background-color: #ff3d9b;
 }
 
-/* Style text inputs, textareas, and dropdown selects:
-   full width, some padding, margin below, pink border, and rounded corners */
 input[type="text"],
 textarea,
 select {
     width: 100%;
     padding: 7px;
     margin: 5px 0 15px;
-    box-sizing: border-box; /* includes padding and border in total width */
+    box-sizing: border-box;
     border: 2px solid #ff69b4;
     border-radius: 4px;
 }
 
-/* Style the character list items to remove bullet points and add spacing */
 #charList li {
     margin-bottom: 8px;
-    list-style-type: none; /* remove bullet */
+    list-style-type: none;
 }
 
-/* Buttons inside character list items are red with small padding and smaller font */
 #charList li button {
     background-color: #ff4d4d;
     padding: 4px 7px;
     font-size: 0.8em;
-    margin-left: 10px; /* space from text */
+    margin-left: 10px;
 }
 
-/* Darker red when hovering over these buttons */
 #charList li button:hover {
     background-color: #cc0000;
 }
 
-/* Diary entry list items have spacing and no bullet points */
 #entriesList li {
     margin-bottom: 15px;
     list-style-type: none;
 }
 
-/* Each diary entry block has a light pink background, padding, and rounded corners */
 #entriesList li div {
     background-color: #ffe6f0;
     padding: 10px;
     border-radius: 6px;
 }
 
-/* Style delete buttons for diary entries: red background, small padding, white text, rounded corners */
 .delete-entry-btn {
     background-color: #ff4d4d;
     padding: 4px 7px;
@@ -115,12 +98,10 @@ select {
     color: white;
 }
 
-/* Darker red when hovering over delete buttons */
 .delete-entry-btn:hover {
     background-color: #cc0000;
 }
 
-/* Style for all diary entries overview blocks: light pink background, padding, rounded corners, spacing below */
 #allEntriesOverviewList div {
     background-color: #ffe6f0;
     padding: 10px;
@@ -128,7 +109,6 @@ select {
     margin-bottom: 8px;
 }
 
-/* Style the canvas (graph area) with margin, pink border, rounded corners, and matching background */
 canvas {
     margin-top: 20px;
     border: 1px solid #ff69b4;
@@ -136,32 +116,29 @@ canvas {
     background-color: #fff0f6;
 }
 
-/* Sparkles container fills the whole screen but doesn’t block clicks */
 #sparkles {
-    pointer-events: none; /* lets clicks pass through */
+    pointer-events: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     overflow: visible;
-    z-index: 9999; /* very high, so sparkles are on top */
+    z-index: 9999;
 }
 
-/* Each sparkle is a small pink-white circle with shadow and animation */
 .sparkle {
     position: fixed;
     width: 8px;
     height: 8px;
     background: linear-gradient(45deg, #ff69b4, #fff);
-    border-radius: 50%; /* round */
+    border-radius: 50%;
     opacity: 0.8;
     filter: drop-shadow(0 0 2px #ff69b4);
-    animation-name: fallDrift, fadeout; /* two animations */
+    animation-name: fallDrift, fadeout;
     animation-timing-function: linear, ease-out;
-    animation-iteration-count: 1, 1; /* run once */
-    animation-fill-mode: forwards, forwards; /* keep end state */
-    will-change: transform, opacity; /* optimize animations */
+    animation-iteration-count: 1, 1;
+    animation-fill-mode: forwards, forwards;
+    will-change: transform, opacity;
 }
 
-/* Special sparkle style: star shape with box shadow lines */
 .sparkle.star {
     width: 10px;
     height: 10px;
@@ -176,82 +153,28 @@ canvas {
     border-radius: 2px;
 }
 
-/* Animation for sparkles falling and drifting sideways */
+
+/* Animations */
+
 @keyframes fallDrift {
     0% {
-        transform: translateX(0) translateY(-10px); /* start above screen */
+        transform: translateX(0) translateY(-10px);
     }
     50% {
-        transform: translateX(15px) translateY(50vh); /* drift right and halfway down */
+        transform: translateX(15px) translateY(50vh);
     }
     100% {
-        transform: translateX(0) translateY(110vh); /* end below screen */
+        transform: translateX(0) translateY(110vh);
     }
 }
 
-/* Animation for sparkle fade out */
 @keyframes fadeout {
     0%, 80% {
-        opacity: 0.8; /* mostly visible */
+        opacity: 0.8;
     }
     100% {
-        opacity: 0; /* fade out completely */
+        opacity: 0;
     }
 }
 
-/* Styles for the cookie consent banner: fixed at bottom with pink transparent background */
-.cookie-consent-banner {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    background: #ff69b4cc; /* pink with transparency */
-    color: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255,105,180,0.6);
-    font-family: 'Baloo 2', cursive, sans-serif;
-    display: flex; /* flexbox layout */
-    align-items: center; /* vertical center */
-    justify-content: space-between; /* space between content and buttons */
-    z-index: 10000; /* on top of almost everything */
-}
 
-/* Paragraph inside banner has no margin and expands to fill space */
-.cookie-consent-banner p {
-    margin: 0;
-    flex-grow: 1;
-    font-size: 1rem;
-}
-
-/* Links inside banner are white and underlined */
-.cookie-consent-banner a {
-    color: white;
-    text-decoration: underline;
-}
-
-/* Buttons inside banner are white with pink text and rounded corners */
-.cookie-consent-banner button {
-    background-color: white;
-    color: #ff69b4;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 10px;
-    transition: background-color 0.3s ease;
-}
-
-/* On hover, buttons invert colors: pink background and white text */
-.cookie-consent-banner button:hover {
-    background-color: #ff3d9b;
-    color: white;
-}
-
-#moodGraph {
-    border-radius: 50%;
-    box-shadow: 0 0 8px #ff69b4;
-    margin-top: 10px;
-    background-color: #fff0f5;
-}
