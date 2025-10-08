@@ -1,171 +1,385 @@
-<!DOCTYPE html>
-<!-- This tells the browser that this is an HTML5 document -->
-
+<!doctype html>
 <html lang="en">
-<!-- The root of your HTML page; 'lang="en"' sets the language to English -->
-
 <head>
-    <!-- The head section contains metadata and links to styles/scripts -->
-    <meta charset="UTF-8" />
-    <!-- Sets the character encoding so special symbols display correctly -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pink Character Creator</title>
+    <style>
+        :root{
+            --bg: #fff0f6;
+            --card: #ffd6e8;
+            --accent: #ff5da2;
+            --muted: #ffecf6;
+            --text: #4a2a3a;
+            --glass: rgba(255,255,255,0.6);
+            --shadow: 0 6px 18px rgba(197, 82, 140, 0.12);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#ffeef9);color:var(--text)}
+        .wrap{max-width:1100px;margin:28px auto;padding:20px}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Makes the page responsive on mobile devices -->
+        header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+        .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffa9d6);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px;box-shadow:var(--shadow)}
+        h1{margin:0;font-size:22px}
+        p.lead{margin:0;color:#6a3747}
 
-    <title>Character Diary App</title>
-    <!-- The title that appears in the browser tab -->
+        .container{display:grid;grid-template-columns:360px 1fr;gap:18px;margin-top:18px}
 
-    <link rel="stylesheet" href="CharacterCreation.css" />
-    <!-- Links to your CSS file for styling the page -->
+        .card{background:var(--card);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
 
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet" />
-    <!-- Imports a Google font to use on the page -->
+        form .field{margin-bottom:12px}
+        label{display:block;font-size:13px;margin-bottom:6px}
+        input[type=text],select,textarea,input[type=color]{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(74,42,58,0.08);font-size:14px;background:linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0.35))}
+        .row{display:flex;gap:10px}
+        .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:white;border:none;cursor:pointer;font-weight:600}
+        .btn.ghost{background:transparent;border:1px solid rgba(74,42,58,0.07);color:var(--text)}
+        .small{font-size:13px;padding:8px 10px}
+
+        /* character preview */
+        .preview{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+        .avatar{width:220px;height:220px;border-radius:20px;background:linear-gradient(160deg,#fffaf9,#ffdff0);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:6px solid var(--muted)}
+
+        /* simple face built from divs */
+        .face{width:120px;height:120px;border-radius:50%;background:linear-gradient(180deg,#fff,#ffd6ea);position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
+        .eyes{display:flex;gap:22px;margin-top:16px}
+        .eye{width:12px;height:12px;border-radius:50%;background:#4a2a3a}
+        .mouth{width:40px;height:18px;border-radius:12px;background:#4a2a3a;margin-top:10px}
+
+        .pet-hint{font-size:13px;color:#6a3747}
+        .reaction{font-weight:700}
+
+        /* saved list */
+        .list{display:grid;gap:8px;margin-top:10px}
+        .item{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.5));border:1px solid rgba(74,42,58,0.03)}
+        .item .meta{flex:1}
+        .tag{font-size:12px;background:rgba(255,255,255,0.7);padding:6px 8px;border-radius:999px;border:1px solid rgba(74,42,58,0.03)}
+
+        footer{margin-top:16px;text-align:center;color:#6a3747;font-size:13px}
+
+        /* cookie banner */
+        .cookie{position:fixed;left:16px;right:16px;bottom:16px;background:linear-gradient(90deg,#fff,#ffeef8);padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+
+        /* responsive */
+        @media (max-width:880px){.container{grid-template-columns:1fr}.avatar{width:180px;height:180px}.face{width:100px;height:100px}}
+    </style>
 </head>
-
 <body>
-<!-- All visible content of your page goes inside the body tag -->
+<div class="wrap">
+    <header>
+        <div class="logo">CC</div>
+        <div>
+            <h1>Pink Character Creator</h1>
+            <p class="lead">Create characters, name them, choose gender & pronouns, pet them for reactions, and save locally.</p>
+        </div>
+    </header>
 
-<button id="musicToggleBtn">🔈 Play Music</button>
-<!-- Button to toggle background music on and off -->
+    <div class="container">
+        <div class="card">
+            <form id="creator">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input id="name" type="text" placeholder="e.g. Luna" required />
+                </div>
 
-<div id="sparkles"></div>
-<!-- A container for animated sparkles (decorative effect) -->
+                <div class="field">
+                    <label>Gender</label>
+                    <div class="row">
+                        <select id="gender">
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="nonbinary">Non-binary</option>
+                            <option value="other">Other</option>
+                            <option value="unspecified">Prefer not to say</option>
+                        </select>
+                        <input id="age" type="text" placeholder="Age (optional)" />
+                    </div>
+                </div>
 
-<!-- Character Creation Section -->
-<section id="characterCreationSection">
-    <h2>Create New Character</h2>
+                <div class="field">
+                    <label for="pronouns">Pronouns</label>
+                    <select id="pronouns">
+                        <option value="she/her">she/her</option>
+                        <option value="he/him">he/him</option>
+                        <option value="they/them">they/them</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                    <input id="pronounsCustom" type="text" placeholder="e.g. xe/xem" style="margin-top:8px;display:none" />
+                </div>
 
-    <label for="charNameInput">Name:</label>
-    <!-- Label for the character name input field -->
-    <input id="charNameInput" type="text" placeholder="Character Name" />
-    <!-- Input where users type their character's name -->
+                <div class="field">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" rows="3" placeholder="Short description"></textarea>
+                </div>
 
-    <!-- Species selection -->
-    <div id="speciesGroup" class="trait-group">
-        <p>Species:</p>
-        <button class="trait-btn">Human</button>
-        <button class="trait-btn">Elf</button>
-        <button class="trait-btn">Orc</button>
+                <div class="field">
+                    <label for="color">Character Color</label>
+                    <input type="color" id="color" value="#ffd6ea" />
+                </div>
+
+                <div class="row" style="margin-top:8px">
+                    <button class="btn" type="submit">Save Character</button>
+                    <button class="btn ghost" type="button" id="clear">Clear</button>
+                </div>
+            </form>
+
+            <div style="margin-top:12px">
+                <strong>Saved Characters</strong>
+                <div class="list" id="savedList"></div>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="preview">
+                <div id="avatarWrap" class="avatar" title="Pet me!" tabindex="0" role="button">
+                    <div class="face" id="face">
+                        <div class="eyes" id="eyes">
+                            <div class="eye"></div>
+                            <div class="eye"></div>
+                        </div>
+                        <div class="mouth" id="mouth"></div>
+                    </div>
+                    <div id="hearts" style="position:absolute;left:50%;transform:translateX(-50%);bottom:8px;pointer-events:none"></div>
+                </div>
+
+                <div>
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div style="text-align:left">
+                            <div style="font-size:20px;font-weight:700" id="previewName">—</div>
+                            <div style="font-size:13px;color:#6a3747" id="previewMeta">—</div>
+                        </div>
+                        <div style="flex:1"></div>
+                        <div style="text-align:right">
+                            <div class="tag" id="petCount">Pets: 0</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px;color:#6a3747" id="previewBio">No character selected.</div>
+                    <div style="margin-top:12px" class="pet-hint">Click or tap the avatar to pet them. Watch the reaction!</div>
+                    <div style="margin-top:8px;font-size:14px">Last reaction: <span class="reaction" id="reaction">—</span></div>
+                </div>
+            </div>
+
+            <footer>
+                <small>Characters are stored locally in your browser using <strong>localStorage</strong>. Clearing site data will remove them.</small>
+            </footer>
+        </div>
     </div>
 
-    <!-- Hair color selection -->
-    <div id="hairGroup" class="trait-group">
-        <p>Hair:</p>
-        <button class="trait-btn">Black</button>
-        <button class="trait-btn">Blonde</button>
-        <button class="trait-btn">Red</button>
+</div>
+
+<div id="cookie" class="cookie" style="display:none">
+    <div>
+        <strong>We use local storage & cookies</strong>
+        <div style="font-size:13px;color:#6a3747;margin-top:6px">This app stores characters locally in your browser. By accepting you allow local-saving and a cookie to remember your choice.</div>
     </div>
-
-    <!-- Eye color selection -->
-    <div id="eyeColorGroup" class="trait-group">
-        <p>Eye Color:</p>
-        <button class="trait-btn">Blue</button>
-        <button class="trait-btn">Green</button>
-        <button class="trait-btn">Brown</button>
+    <div style="display:flex;gap:8px;align-items:center">
+        <button id="acceptCookie" class="btn small">Accept</button>
+        <button id="denyCookie" class="btn ghost small">Decline</button>
     </div>
+</div>
 
-    <!-- Color picker for choosing a custom color -->
-    <label for="charColorPicker">Character Color:</label>
-    <input id="charColorPicker" type="color" value="#ff69b4" />
+<script>
+    const $ = sel => document.querySelector(sel);
+    const el = (id) => document.getElementById(id);
 
-    <!-- Button to save the created character -->
-    <button id="saveCharBtn">Save Character</button>
-</section>
+    // Cookie helpers
+    function setCookie(name, value, days){
+        const d = new Date();
+        d.setTime(d.getTime() + (days*24*60*60*1000));
+        document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+    }
+    function getCookie(name){
+        const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return v ? v.pop() : null;
+    }
 
-<!-- Character List Section -->
-<section id="characterListSection" class="hidden">
-    <h2>Characters</h2>
-    <ul id="charList"></ul>
-    <!-- List of created characters will appear here -->
+    // LocalStorage key
+    const KEY = 'pinkcc.characters.v2';
+    let characters = [];
+    let activeId = null;
 
-    <button id="createNewCharBtn">Create New Character</button>
-    <!-- Button to go back and create another character -->
+    // On load
+    window.addEventListener('DOMContentLoaded', ()=>{
+        if(!getCookie('pinkcc_consent')) el('cookie').style.display = 'flex';
+        loadCharacters();
+        bindForm();
+        bindAvatarPet();
+        renderPreview();
+    });
 
-    <!-- Dropdown to sort characters -->
-    <label for="sortCharacters">Sort Characters:</label>
-    <select id="sortCharacters">
-        <option value="name-asc">Name Ascending</option>
-        <option value="name-desc">Name Descending</option>
-        <option value="date-asc">Date Created Ascending</option>
-        <option value="date-desc">Date Created Descending</option>
-        <option value="entries-desc">Most Entries</option>
-    </select>
-</section>
+    // Cookie buttons
+    el('acceptCookie').addEventListener('click', ()=>{ setCookie('pinkcc_consent','1',365); el('cookie').style.display='none'; });
+    el('denyCookie').addEventListener('click', ()=>{ setCookie('pinkcc_consent','0',365); el('cookie').style.display='none'; });
 
-<!-- Diary Entry Section -->
-<section id="appSection" class="hidden">
-    <h2 id="characterNameHeader">Diary for: </h2>
+    // Bind form
+    function bindForm(){
+        const form = el('creator');
+        const pronouns = el('pronouns');
+        pronouns.addEventListener('change', ()=>{ el('pronounsCustom').style.display = pronouns.value==='custom'?'block':'none'; });
 
-    <!-- Select a character to write a diary entry for -->
-    <label for="selectCharacterEntry">Select Character:</label>
-    <select id="selectCharacterEntry"></select>
+        form.addEventListener('submit', e=>{
+            e.preventDefault();
+            saveCharacterFromForm();
+        });
 
-    <!-- Text area for writing the diary entry -->
-    <textarea id="entryText" rows="5" placeholder="Write your diary entry here..."></textarea>
+        el('clear').addEventListener('click', ()=>{
+            form.reset();
+            el('pronounsCustom').style.display='none';
+            updateFaceColor('#ffd6ea');
+        });
 
-    <!-- Add tags to entries (like "happy", "school", etc.) -->
-    <label for="entryTags">Tags (comma separated):</label>
-    <input id="entryTags" type="text" placeholder="e.g. happy, vacation" />
+        el('color').addEventListener('input', ()=>{ updateFaceColor(el('color').value); });
+    }
 
-    <!-- Mood selection dropdown -->
-    <label for="moodSelect">Mood:</label>
-    <select id="moodSelect">
-        <option value="neutral">Neutral</option>
-        <option value="happy">Happy</option>
-        <option value="sad">Sad</option>
-        <option value="anxious">Anxious</option>
-    </select>
+    // Save character from form
+    function saveCharacterFromForm(){
+        const name = el('name').value.trim() || 'Unnamed';
+        const gender = el('gender').value;
+        const pronouns = el('pronouns').value==='custom'? (el('pronounsCustom').value.trim()||'they/them') : el('pronouns').value;
+        const bio = el('bio').value.trim();
+        const age = el('age').value.trim();
+        const color = el('color').value;
 
-    <!-- Button to save the diary entry -->
-    <button id="saveEntryBtn">Save Diary Entry</button>
+        const isEdit = activeId && characters.find(c=>c.id===activeId);
+        if(isEdit){
+            const ch = characters.find(c=>c.id===activeId);
+            Object.assign(ch,{name,gender,pronouns,bio,age,color});
+        } else {
+            const id = 'c_'+Date.now();
+            characters.push({id,name,gender,pronouns,bio,age,color,petCount:0,created:Date.now()});
+        }
+        persist();
+        renderSavedList();
+        renderPreview();
+        el('creator').reset(); el('pronounsCustom').style.display='none'; activeId=null; updateFaceColor('#ffd6ea');
+    }
 
-    <!-- Filters and search options for diary entries -->
-    <h3>Filters & Search</h3>
+    // Persist to localStorage
+    function persist(){ try{ localStorage.setItem(KEY,JSON.stringify(characters)); }catch(e){console.warn('Failed storing',e);} }
 
-    <label for="filterMood">Filter by Mood:</label>
-    <select id="filterMood">
-        <option value="all">All</option>
-        <option value="neutral">Neutral</option>
-        <option value="happy">Happy</option>
-        <option value="sad">Sad</option>
-        <option value="anxious">Anxious</option>
-    </select>
+    // Load characters
+    function loadCharacters(){
+        try{
+            const raw=localStorage.getItem(KEY);
+            if(raw) characters=JSON.parse(raw);
+        }catch(e){console.warn('load failed',e)}
+        renderSavedList();
+    }
 
-    <label for="filterTag">Filter by Tag:</label>
-    <input id="filterTag" type="text" placeholder="Tag search" />
+    // Render saved list
+    function renderSavedList(){
+        const container = el('savedList'); container.innerHTML='';
+        if(!characters.length){ container.innerHTML='<div style="color:#9a516f">No saved characters yet.</div>'; return; }
+        characters.slice().reverse().forEach(ch=>{
+            const it = document.createElement('div'); it.className='item';
+            const faceMini = document.createElement('div');
+            faceMini.style.width='46px'; faceMini.style.height='46px'; faceMini.style.borderRadius='10px';
+            faceMini.style.background=ch.color; faceMini.style.display='flex'; faceMini.style.alignItems='center'; faceMini.style.justifyContent='center';
+            faceMini.innerText = ch.name.charAt(0).toUpperCase(); faceMini.style.fontWeight=700; faceMini.style.color='#4a2a3a';
+            const meta = document.createElement('div'); meta.className='meta';
+            meta.innerHTML = `<div style="font-weight:700">${escapeHtml(ch.name)} <span style="font-weight:500;color:#6a3747;font-size:13px">${ch.pronouns? '· '+escapeHtml(ch.pronouns):''}</span></div><div style="font-size:13px;color:#6a3747">${escapeHtml(ch.bio||'')}</div>`;
+            const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px';
+            const loadBtn = document.createElement('button'); loadBtn.className='btn small'; loadBtn.innerText='Load'; loadBtn.addEventListener('click', ()=>{loadCharacterToEditor(ch.id)});
+            const delBtn = document.createElement('button'); delBtn.className='btn ghost small'; delBtn.innerText='Delete'; delBtn.addEventListener('click', ()=>{ if(confirm('Delete this character?')) deleteCharacter(ch.id); });
+            actions.appendChild(loadBtn); actions.appendChild(delBtn);
+            it.appendChild(faceMini); it.appendChild(meta); it.appendChild(actions);
+            container.appendChild(it);
+        });
+    }
 
-    <label for="searchInput">Search Text:</label>
-    <input id="searchInput" type="text" placeholder="Search entries..." />
+    // Load character to form
+    function loadCharacterToEditor(id){
+        const ch = characters.find(c=>c.id===id); if(!ch) return;
+        activeId = ch.id;
+        el('name').value = ch.name; el('gender').value=ch.gender; el('bio').value=ch.bio || ''; el('age').value=ch.age || '';
+        el('color').value = ch.color || '#ffd6ea';
+        updateFaceColor(el('color').value);
+        if(['she/her','he/him','they/them'].includes(ch.pronouns)){ el('pronouns').value = ch.pronouns; el('pronounsCustom').style.display='none'; }
+        else { el('pronouns').value='custom'; el('pronounsCustom').style.display='block'; el('pronounsCustom').value = ch.pronouns; }
+        renderPreview(ch.id);
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
 
-    <!-- Dropdown to sort diary entries -->
-    <label for="sortEntries">Sort Entries:</label>
-    <select id="sortEntries">
-        <option value="date-desc">Newest First</option>
-        <option value="date-asc">Oldest First</option>
-    </select>
+    // Delete character
+    function deleteCharacter(id){ characters = characters.filter(c=>c.id!==id); persist(); renderSavedList(); if(activeId===id){ activeId=null; renderPreview(); updateFaceColor('#ffd6ea'); } }
 
-    <!-- List where diary entries will be displayed -->
-    <ul id="entriesList"></ul>
+    // Render preview
+    function renderPreview(id){
+        const ch = characters.find(c=>c.id===id) || (activeId? characters.find(c=>c.id===activeId): null);
+        const nameEl = el('previewName'); const metaEl = el('previewMeta'); const bioEl = el('previewBio'); const petEl = el('petCount');
+        if(ch){
+            nameEl.textContent=ch.name;
+            metaEl.textContent=`${ch.gender}${ch.age?' · '+ch.age+' yrs':''} ${ch.pronouns?' · '+ch.pronouns:''}`;
+            bioEl.textContent=ch.bio||'—';
+            petEl.textContent=`Pets: ${ch.petCount||0}`;
+            activeId=ch.id;
+            updateFaceColor(ch.color||'#ffd6ea');
+        } else {
+            nameEl.textContent='—'; metaEl.textContent='—'; bioEl.textContent='No character selected.'; petEl.textContent='Pets: 0';
+            updateFaceColor('#ffd6ea');
+        }
+    }
 
-    <!-- Button to view all entries across all characters -->
-    <button id="showAllEntriesBtn">Show All Entries Overview</button>
+    // Update face color
+    function updateFaceColor(color){ el('face').style.background=color; }
 
-    <!-- Canvas for drawing a graph (like mood over time) -->
-    <canvas id="moodGraph" width="600" height="200"></canvas>
-</section>
+    // Avatar petting logic
+    function bindAvatarPet(){
+        const wrap = el('avatarWrap'); let lastPet=0;
+        wrap.addEventListener('click', petAction);
+        wrap.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') petAction(); });
+        function petAction(){
+            const ch = characters.find(c=>c.id===activeId);
+            popHeart(); animateFace();
+            if(!ch){ showReaction('Whoops — no character loaded. Save or load one to pet!'); return; }
+            ch.petCount = (ch.petCount||0)+1;
+            persist(); renderPreview(activeId);
+            const now = Date.now(); const since = now-lastPet; lastPet=now;
+            let msg='';
+            if(since<1500){ msg="Overwhelmed with cuddles! 💖"; }
+            else if(ch.petCount%10===0) msg=`${ch.name} is ecstatic! ${ch.petCount} pets!`;
+            else if(ch.petCount%5===0) msg=`${ch.name} purrs loudly.`;
+            else if(Math.random()<0.2) msg=`${ch.name} gives a happy chirp.`;
+            else msg = ['nuzzles you','purrs','wags their tail','giggles happily'][Math.floor(Math.random()*4)];
+            showReaction(capitalize(msg));
+        }
+    }
 
-<!-- Overview Section to see all diary entries at once -->
-<section id="allEntriesOverviewSection" class="hidden">
-    <h2>All Diary Entries</h2>
-    <div id="allEntriesOverviewList"></div>
-    <button id="closeOverviewBtn">Close Overview</button>
-</section>
+    // Heart animation
+    function popHeart(){
+        const hs = el('hearts');
+        const heart = document.createElement('div'); heart.innerText='💗';
+        heart.style.position='absolute'; heart.style.bottom='16px';
+        heart.style.left=(50+(Math.random()*60-30))+'%';
+        heart.style.transform='translateX(-50%) scale(0.6)'; heart.style.fontSize='18px'; heart.style.opacity='0'; heart.style.pointerEvents='none';
+        hs.appendChild(heart);
+        const anim = heart.animate([
+            {transform:'translateX(-50%) translateY(0) scale(0.6)', opacity:0},
+            {transform:'translateX(-50%) translateY(-40px) scale(1)', opacity:1},
+            {transform:'translateX(-50%) translateY(-80px) scale(0.8)', opacity:0}
+        ],{duration:700,easing:'cubic-bezier(.2,.8,.2,1)'});
+        anim.onfinish = ()=> heart.remove();
+    }
 
-<!-- Audio element that holds background music -->
-<audio id="backgroundMusic" src="cute-music.mp3" loop muted></audio>
+    // Face animation
+    function animateFace(){
+        const face = el('face'); const mouth = el('mouth'); const eyes = el('eyes');
+        mouth.animate([{transform:'scaleY(1)'},{transform:'scaleY(0.3)'},{transform:'scaleY(1)'}],{duration:400,iterations:1,easing:'ease-out'});
+        eyes.animate([{transform:'translateY(0)'},{transform:'translateY(2px)'},{transform:'translateY(0)'}],{duration:350});
+    }
 
-<!-- Link to JavaScript files that handle functionality -->
-<script src="CharacterCreation.js"></script>
-<script src="sparkles.js"></script> <!-- Sparkle effect script -->
-</body>
-</html>
+    // Show reaction
+    function showReaction(text){ el('reaction').textContent = text; }
+
+    // Helpers
+    function escapeHtml(t){ return (t||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    // Keyboard shortcut: N for random name
+    window.addEventListener('keydown', (e)=>{
+        if(e.key.toLowerCase()==='n' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
+            el('name').value = ['Luna','Nova','Astra','Poppy','Mina','Kira'][Math.floor(Math.random()*6)];
+        }
+    });
+</script>
