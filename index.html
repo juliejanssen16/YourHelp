@@ -49,6 +49,82 @@
         .pet-hint{font-size:13px;color:#6a3747}
         .reaction{font-weight:700}
 
+        /* ----------------- Ears ----------------- */
+
+        /* Cat ears (triangles) */
+        .face.ears-cat::before,
+        .face.ears-cat::after {
+            content: '';
+            position: absolute;
+            top: -28px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(45deg, #ff9ad6, #ff5da2);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .face.ears-cat::before { left: 16px; transform: rotate(-15deg); }
+        .face.ears-cat::after  { right: 16px; transform: rotate(15deg); }
+
+        /* Dog ears (floppy triangles) */
+        .face.ears-dog::before,
+        .face.ears-dog::after {
+            content: '';
+            position: absolute;
+            top: -18px;
+            width: 24px;
+            height: 36px;
+            background: linear-gradient(45deg, #ffe0e6, #ffb3c6);
+            border-radius: 50% 50% 0 0;
+        }
+        .face.ears-dog::before { left: 12px; transform: rotate(-10deg); }
+        .face.ears-dog::after  { right: 12px; transform: rotate(10deg); }
+
+        /* Bunny ears (two long rounded ears) */
+        .face.ears-bunny::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 22px;
+            width: 16px;
+            height: 36px;
+            border-radius: 12px 12px 0 0;
+            background: linear-gradient(180deg, #fff, #ffcee7);
+            transform: rotate(-10deg);
+        }
+        .face.ears-bunny::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: 22px;
+            width: 16px;
+            height: 36px;
+            border-radius: 12px 12px 0 0;
+            background: linear-gradient(180deg, #fff, #ffcee7);
+            transform: rotate(10deg);
+        }
+
+        /* Fox ears (two sharp triangles) */
+        .face.ears-fox::before {
+            content: '';
+            position: absolute;
+            top: -26px;
+            left: 20px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(45deg, #ff7f5a, #ff3d1a);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .face.ears-fox::after {
+            content: '';
+            position: absolute;
+            top: -26px;
+            right: 20px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(45deg, #ff7f5a, #ff3d1a);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
         /* saved list */
         .list{display:grid;gap:8px;margin-top:10px}
         .item{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.5));border:1px solid rgba(74,42,58,0.03)}
@@ -63,6 +139,7 @@
         /* responsive */
         @media (max-width:880px){.container{grid-template-columns:1fr}.avatar{width:180px;height:180px}.face{width:100px;height:100px}}
     </style>
+
 </head>
 <body>
 <div class="wrap">
@@ -116,6 +193,18 @@
                     <label for="color">Character Color</label>
                     <input type="color" id="color" value="#ffd6ea" />
                 </div>
+
+                <div class="field">
+                    <label for="ears">Ears</label>
+                    <select id="ears">
+                        <option value="none">None</option>
+                        <option value="cat">Cat 🐱</option>
+                        <option value="dog">Dog 🐶</option>
+                        <option value="bunny">Bunny 🐰</option>
+                        <option value="fox">Fox 🦊</option>
+                    </select>
+                </div>
+
 
                 <div class="row" style="margin-top:8px">
                     <button class="btn" type="submit">Save Character</button>
@@ -181,9 +270,9 @@
 
 <script>
     const $ = sel => document.querySelector(sel);
-    const el = (id) => document.getElementById(id);
+    const el = id => document.getElementById(id);
 
-    // Cookie helpers
+    // ----------------- Cookie helpers -----------------
     function setCookie(name, value, days){
         const d = new Date();
         d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -194,45 +283,55 @@
         return v ? v.pop() : null;
     }
 
-    // LocalStorage key
-    const KEY = 'pinkcc.characters.v2';
+    // ----------------- Local storage -----------------
+    const KEY = 'pinkcc.characters.v3';
     let characters = [];
     let activeId = null;
 
-    // On load
+    // ----------------- Init -----------------
     window.addEventListener('DOMContentLoaded', ()=>{
-        if(!getCookie('pinkcc_consent')) el('cookie').style.display = 'flex';
+        if(!getCookie('pinkcc_consent')) el('cookie').style.display='flex';
         loadCharacters();
         bindForm();
         bindAvatarPet();
         renderPreview();
     });
 
-    // Cookie buttons
+    // ----------------- Cookie buttons -----------------
     el('acceptCookie').addEventListener('click', ()=>{ setCookie('pinkcc_consent','1',365); el('cookie').style.display='none'; });
     el('denyCookie').addEventListener('click', ()=>{ setCookie('pinkcc_consent','0',365); el('cookie').style.display='none'; });
 
-    // Bind form
+    // ----------------- Form binding -----------------
     function bindForm(){
         const form = el('creator');
-        const pronouns = el('pronouns');
-        pronouns.addEventListener('change', ()=>{ el('pronounsCustom').style.display = pronouns.value==='custom'?'block':'none'; });
 
+        // Pronouns custom toggle
+        el('pronouns').addEventListener('change', ()=>{
+            el('pronounsCustom').style.display = el('pronouns').value==='custom' ? 'block' : 'none';
+        });
+
+        // Color live update
+        el('color').addEventListener('input', ()=>{ updateFaceColor(el('color').value); });
+
+        // Ears live update
+        el('ears').addEventListener('change', ()=>{ updateFaceEars(el('ears').value); });
+
+        // Form submit
         form.addEventListener('submit', e=>{
             e.preventDefault();
             saveCharacterFromForm();
         });
 
+        // Clear button
         el('clear').addEventListener('click', ()=>{
             form.reset();
             el('pronounsCustom').style.display='none';
             updateFaceColor('#ffd6ea');
+            updateFaceEars('none');
         });
-
-        el('color').addEventListener('input', ()=>{ updateFaceColor(el('color').value); });
     }
 
-    // Save character from form
+    // ----------------- Save character -----------------
     function saveCharacterFromForm(){
         const name = el('name').value.trim() || 'Unnamed';
         const gender = el('gender').value;
@@ -240,71 +339,95 @@
         const bio = el('bio').value.trim();
         const age = el('age').value.trim();
         const color = el('color').value;
+        const ears = el('ears').value;
 
         const isEdit = activeId && characters.find(c=>c.id===activeId);
         if(isEdit){
             const ch = characters.find(c=>c.id===activeId);
-            Object.assign(ch,{name,gender,pronouns,bio,age,color});
+            Object.assign(ch,{name,gender,pronouns,bio,age,color,ears});
         } else {
             const id = 'c_'+Date.now();
-            characters.push({id,name,gender,pronouns,bio,age,color,petCount:0,created:Date.now()});
+            characters.push({id,name,gender,pronouns,bio,age,color,ears,petCount:0,created:Date.now()});
         }
+
         persist();
         renderSavedList();
         renderPreview();
-        el('creator').reset(); el('pronounsCustom').style.display='none'; activeId=null; updateFaceColor('#ffd6ea');
+        el('creator').reset();
+        el('pronounsCustom').style.display='none';
+        activeId=null;
+        updateFaceColor('#ffd6ea');
+        updateFaceEars('none');
     }
 
-    // Persist to localStorage
+    // ----------------- Persist & load -----------------
     function persist(){ try{ localStorage.setItem(KEY,JSON.stringify(characters)); }catch(e){console.warn('Failed storing',e);} }
-
-    // Load characters
     function loadCharacters(){
         try{
-            const raw=localStorage.getItem(KEY);
-            if(raw) characters=JSON.parse(raw);
-        }catch(e){console.warn('load failed',e)}
+            const raw = localStorage.getItem(KEY);
+            if(raw) characters = JSON.parse(raw);
+        }catch(e){console.warn('Load failed',e);}
         renderSavedList();
     }
 
-    // Render saved list
+    // ----------------- Render saved list -----------------
     function renderSavedList(){
-        const container = el('savedList'); container.innerHTML='';
+        const container = el('savedList');
+        container.innerHTML='';
         if(!characters.length){ container.innerHTML='<div style="color:#9a516f">No saved characters yet.</div>'; return; }
+
         characters.slice().reverse().forEach(ch=>{
             const it = document.createElement('div'); it.className='item';
             const faceMini = document.createElement('div');
             faceMini.style.width='46px'; faceMini.style.height='46px'; faceMini.style.borderRadius='10px';
             faceMini.style.background=ch.color; faceMini.style.display='flex'; faceMini.style.alignItems='center'; faceMini.style.justifyContent='center';
-            faceMini.innerText = ch.name.charAt(0).toUpperCase(); faceMini.style.fontWeight=700; faceMini.style.color='#4a2a3a';
+            faceMini.innerText = ch.name.charAt(0).toUpperCase();
+            faceMini.style.fontWeight=700; faceMini.style.color='#4a2a3a';
+
             const meta = document.createElement('div'); meta.className='meta';
             meta.innerHTML = `<div style="font-weight:700">${escapeHtml(ch.name)} <span style="font-weight:500;color:#6a3747;font-size:13px">${ch.pronouns? '· '+escapeHtml(ch.pronouns):''}</span></div><div style="font-size:13px;color:#6a3747">${escapeHtml(ch.bio||'')}</div>`;
+
             const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px';
-            const loadBtn = document.createElement('button'); loadBtn.className='btn small'; loadBtn.innerText='Load'; loadBtn.addEventListener('click', ()=>{loadCharacterToEditor(ch.id)});
-            const delBtn = document.createElement('button'); delBtn.className='btn ghost small'; delBtn.innerText='Delete'; delBtn.addEventListener('click', ()=>{ if(confirm('Delete this character?')) deleteCharacter(ch.id); });
+            const loadBtn = document.createElement('button'); loadBtn.className='btn small'; loadBtn.innerText='Load';
+            loadBtn.addEventListener('click', ()=>{ loadCharacterToEditor(ch.id); });
+            const delBtn = document.createElement('button'); delBtn.className='btn ghost small'; delBtn.innerText='Delete';
+            delBtn.addEventListener('click', ()=>{ if(confirm('Delete this character?')) deleteCharacter(ch.id); });
             actions.appendChild(loadBtn); actions.appendChild(delBtn);
+
             it.appendChild(faceMini); it.appendChild(meta); it.appendChild(actions);
             container.appendChild(it);
         });
     }
 
-    // Load character to form
+    // ----------------- Load character to form -----------------
     function loadCharacterToEditor(id){
         const ch = characters.find(c=>c.id===id); if(!ch) return;
         activeId = ch.id;
-        el('name').value = ch.name; el('gender').value=ch.gender; el('bio').value=ch.bio || ''; el('age').value=ch.age || '';
-        el('color').value = ch.color || '#ffd6ea';
+        el('name').value = ch.name; el('gender').value = ch.gender; el('bio').value = ch.bio||''; el('age').value = ch.age||'';
+        el('color').value = ch.color||'#ffd6ea';
         updateFaceColor(el('color').value);
-        if(['she/her','he/him','they/them'].includes(ch.pronouns)){ el('pronouns').value = ch.pronouns; el('pronounsCustom').style.display='none'; }
-        else { el('pronouns').value='custom'; el('pronounsCustom').style.display='block'; el('pronounsCustom').value = ch.pronouns; }
+
+        el('ears').value = ch.ears||'none';
+        updateFaceEars(el('ears').value);
+
+        if(['she/her','he/him','they/them'].includes(ch.pronouns)){
+            el('pronouns').value = ch.pronouns; el('pronounsCustom').style.display='none';
+        } else {
+            el('pronouns').value='custom'; el('pronounsCustom').style.display='block'; el('pronounsCustom').value=ch.pronouns;
+        }
         renderPreview(ch.id);
         window.scrollTo({top:0,behavior:'smooth'});
     }
 
-    // Delete character
-    function deleteCharacter(id){ characters = characters.filter(c=>c.id!==id); persist(); renderSavedList(); if(activeId===id){ activeId=null; renderPreview(); updateFaceColor('#ffd6ea'); } }
+    // ----------------- Delete character -----------------
+    function deleteCharacter(id){
+        characters = characters.filter(c=>c.id!==id);
+        persist();
+        renderSavedList();
+        if(activeId===id){ activeId=null; renderPreview(); updateFaceColor('#ffd6ea'); updateFaceEars('none'); }
+    }
 
-    // Render preview
+    // ----------------- Preview -----------------
     function renderPreview(id){
         const ch = characters.find(c=>c.id===id) || (activeId? characters.find(c=>c.id===activeId): null);
         const nameEl = el('previewName'); const metaEl = el('previewMeta'); const bioEl = el('previewBio'); const petEl = el('petCount');
@@ -315,16 +438,23 @@
             petEl.textContent=`Pets: ${ch.petCount||0}`;
             activeId=ch.id;
             updateFaceColor(ch.color||'#ffd6ea');
+            updateFaceEars(ch.ears||'none');
         } else {
             nameEl.textContent='—'; metaEl.textContent='—'; bioEl.textContent='No character selected.'; petEl.textContent='Pets: 0';
             updateFaceColor('#ffd6ea');
+            updateFaceEars('none');
         }
     }
 
-    // Update face color
+    // ----------------- Face updates -----------------
     function updateFaceColor(color){ el('face').style.background=color; }
+    function updateFaceEars(style){
+        const face = el('face');
+        face.classList.remove('ears-cat','ears-dog','ears-bunny','ears-fox');
+        if(style && style!=='none') face.classList.add('ears-'+style);
+    }
 
-    // Avatar petting logic
+    // ----------------- Avatar petting -----------------
     function bindAvatarPet(){
         const wrap = el('avatarWrap'); let lastPet=0;
         wrap.addEventListener('click', petAction);
@@ -346,7 +476,7 @@
         }
     }
 
-    // Heart animation
+    // ----------------- Heart animation -----------------
     function popHeart(){
         const hs = el('hearts');
         const heart = document.createElement('div'); heart.innerText='💗';
@@ -362,22 +492,22 @@
         anim.onfinish = ()=> heart.remove();
     }
 
-    // Face animation
+    // ----------------- Face animation -----------------
     function animateFace(){
         const face = el('face'); const mouth = el('mouth'); const eyes = el('eyes');
         mouth.animate([{transform:'scaleY(1)'},{transform:'scaleY(0.3)'},{transform:'scaleY(1)'}],{duration:400,iterations:1,easing:'ease-out'});
         eyes.animate([{transform:'translateY(0)'},{transform:'translateY(2px)'},{transform:'translateY(0)'}],{duration:350});
     }
 
-    // Show reaction
+    // ----------------- Show reaction -----------------
     function showReaction(text){ el('reaction').textContent = text; }
 
-    // Helpers
+    // ----------------- Helpers -----------------
     function escapeHtml(t){ return (t||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
-    // Keyboard shortcut: N for random name
-    window.addEventListener('keydown', (e)=>{
+    // ----------------- Keyboard shortcut -----------------
+    window.addEventListener('keydown', e=>{
         if(e.key.toLowerCase()==='n' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
             el('name').value = ['Luna','Nova','Astra','Poppy','Mina','Kira'][Math.floor(Math.random()*6)];
         }
