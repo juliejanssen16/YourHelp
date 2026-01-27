@@ -120,6 +120,12 @@
         border-radius: 12px;
       }
 
+      /* NEW: remove ugly black outline on programmatic focus targets */
+      section:focus,
+      [tabindex="-1"]:focus {
+        outline: none !important;
+      }
+
       /* Skip link */
       .skip {
         position: absolute;
