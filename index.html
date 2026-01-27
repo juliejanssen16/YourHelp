@@ -1,515 +1,1144 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Pink Character Creator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Autism — Understanding, Support, Neurodiversity</title>
+    <meta
+      name="description"
+      content="A modern, pastel-themed informational website about autism: understanding, support, and neurodiversity-affirming practices."
+    />
+
     <style>
-        :root{
-            --bg: #fff0f6;
-            --card: #ffd6e8;
-            --accent: #ff5da2;
-            --muted: #ffecf6;
-            --text: #4a2a3a;
-            --glass: rgba(255,255,255,0.6);
-            --shadow: 0 6px 18px rgba(197, 82, 140, 0.12);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      /* -----------------------------
+       Pastel Pro Theme: Pink + Blue
+       ----------------------------- */
+
+      :root {
+        /* Core palette */
+        --bg: #fbfbff;
+        --panel: rgba(255, 255, 255, 0.78);
+        --panel-strong: rgba(255, 255, 255, 0.92);
+        --text: #1a1b2e;
+        --muted: rgba(26, 27, 46, 0.72);
+
+        --pink: #ffd2e9;
+        --pink-strong: #ffb9dc;
+        --blue: #cfe8ff;
+        --blue-strong: #a8d6ff;
+
+        --accent: #7aa7ff;
+        --accent-2: #ff79b0;
+
+        /* Shadows */
+        --shadow-sm: 0 8px 24px rgba(20, 25, 50, 0.08);
+        --shadow-md: 0 18px 50px rgba(20, 25, 50, 0.12);
+        --shadow-lg: 0 30px 80px rgba(20, 25, 50, 0.14);
+
+        /* Borders */
+        --border: rgba(30, 34, 64, 0.1);
+        --border-strong: rgba(30, 34, 64, 0.16);
+
+        /* Radius */
+        --r-lg: 28px;
+        --r-md: 18px;
+        --r-sm: 14px;
+
+        /* Spacing */
+        --max: 1120px;
+        --pad: clamp(16px, 3vw, 28px);
+
+        /* Motion */
+        --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+        --dur: 520ms;
+
+        /* Typography */
+        --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      /* High-contrast assist mode */
+      :root[data-contrast="high"] {
+        --panel: rgba(255, 255, 255, 0.92);
+        --muted: rgba(26, 27, 46, 0.82);
+        --border: rgba(30, 34, 64, 0.18);
+        --shadow-sm: 0 10px 26px rgba(20, 25, 50, 0.12);
+        --shadow-md: 0 22px 56px rgba(20, 25, 50, 0.18);
+      }
+
+      /* Reduced motion */
+      :root[data-motion="reduced"] * {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--text);
+        background: radial-gradient(
+            1100px 600px at 12% 6%,
+            rgba(255, 210, 233, 0.7),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 520px at 92% 10%,
+            rgba(207, 232, 255, 0.85),
+            transparent 50%
+          ),
+          radial-gradient(
+            900px 540px at 50% 95%,
+            rgba(255, 185, 220, 0.35),
+            transparent 55%
+          ),
+          var(--bg);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 3px solid rgba(122, 167, 255, 0.75);
+        outline-offset: 3px;
+        border-radius: 12px;
+      }
+
+      /* Skip link */
+      .skip {
+        position: absolute;
+        left: -999px;
+        top: 10px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--panel-strong);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        z-index: 1000;
+      }
+      .skip:focus {
+        left: 10px;
+      }
+
+      /* Layout */
+      .wrap {
+        width: min(var(--max), calc(100% - (var(--pad) * 2)));
+        margin-inline: auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: linear-gradient(
+          to bottom,
+          rgba(251, 251, 255, 0.88),
+          rgba(251, 251, 255, 0.55)
+        );
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        gap: 14px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: radial-gradient(
+            18px 18px at 30% 30%,
+            rgba(255, 255, 255, 0.95),
+            transparent 60%
+          ),
+          linear-gradient(135deg, var(--pink-strong), var(--blue-strong));
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+      .logo::after {
+        content: "";
+        position: absolute;
+        inset: -40% -40%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 255, 255, 0.65),
+          transparent 55%
+        );
+        transform: rotate(18deg);
+      }
+
+      .navlinks {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .chip {
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid var(--border);
+        box-shadow: 0 8px 22px rgba(20, 25, 50, 0.06);
+        transition: transform var(--dur) var(--ease),
+          background var(--dur) var(--ease);
+        font-weight: 650;
+        color: rgba(26, 27, 46, 0.82);
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .chip:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.75);
+      }
+      .chip[data-active="true"] {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 210, 233, 0.75),
+          rgba(207, 232, 255, 0.75)
+        );
+        border-color: var(--border-strong);
+      }
+
+      .btn {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+        font-weight: 700;
+        transition: transform var(--dur) var(--ease),
+          box-shadow var(--dur) var(--ease);
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+      .btn.primary {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 185, 220, 0.85),
+          rgba(168, 214, 255, 0.85)
+        );
+        border-color: rgba(30, 34, 64, 0.14);
+      }
+
+      main {
+        padding: 34px 0 70px;
+      }
+
+      /* Hero */
+      .hero {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 22px;
+        align-items: stretch;
+        margin-top: 20px;
+      }
+      @media (max-width: 960px) {
+        .hero {
+          grid-template-columns: 1fr;
         }
-        *{box-sizing:border-box}
-        html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#ffeef9);color:var(--text)}
-        .wrap{max-width:1100px;margin:28px auto;padding:20px}
+      }
 
-        header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-        .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffa9d6);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px;box-shadow:var(--shadow)}
-        h1{margin:0;font-size:22px}
-        p.lead{margin:0;color:#6a3747}
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        box-shadow: var(--shadow-md);
+        padding: clamp(18px, 3.2vw, 28px);
+        position: relative;
+        overflow: hidden;
+      }
 
-        .container{display:grid;grid-template-columns:360px 1fr;gap:18px;margin-top:18px}
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(
+            700px 220px at 10% 10%,
+            rgba(255, 185, 220, 0.45),
+            transparent 55%
+          ),
+          radial-gradient(
+            520px 260px at 88% 0%,
+            rgba(168, 214, 255, 0.45),
+            transparent 55%
+          );
+        opacity: 0.55;
+        pointer-events: none;
+      }
+      .card > * {
+        position: relative;
+      }
 
-        .card{background:var(--card);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(30px, 3.6vw, 46px);
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+      }
+      .lead {
+        margin: 0 0 18px;
+        font-size: clamp(15px, 1.55vw, 18px);
+        color: var(--muted);
+        line-height: 1.55;
+        max-width: 60ch;
+      }
 
-        form .field{margin-bottom:12px}
-        label{display:block;font-size:13px;margin-bottom:6px}
-        input[type=text],select,textarea,input[type=color]{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(74,42,58,0.08);font-size:14px;background:linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0.35))}
-        .row{display:flex;gap:10px}
-        .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:white;border:none;cursor:pointer;font-weight:600}
-        .btn.ghost{background:transparent;border:1px solid rgba(74,42,58,0.07);color:var(--text)}
-        .small{font-size:13px;padding:8px 10px}
+      .pillrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0 4px;
+      }
+      .pill {
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 26px rgba(20, 25, 50, 0.06);
+        font-weight: 650;
+        color: rgba(26, 27, 46, 0.8);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--accent-2), var(--accent));
+        box-shadow: 0 8px 20px rgba(122, 167, 255, 0.3);
+      }
 
-        /* character preview */
-        .preview{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
-        .avatar{width:220px;height:220px;border-radius:20px;background:linear-gradient(160deg,#fffaf9,#ffdff0);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:6px solid var(--muted)}
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
 
-        /* simple face built from divs */
-        .face{width:120px;height:120px;border-radius:50%;background:linear-gradient(180deg,#fff,#ffd6ea);position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
-        .eyes{display:flex;gap:22px;margin-top:16px}
-        .eye{width:12px;height:12px;border-radius:50%;background:#4a2a3a}
-        .mouth{width:40px;height:18px;border-radius:12px;background:#4a2a3a;margin-top:10px}
+      /* Side panel */
+      .side {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
 
-        .pet-hint{font-size:13px;color:#6a3747}
-        .reaction{font-weight:700}
-
-        /* ----------------- Ears ----------------- */
-
-        /* Cat ears (triangles) */
-        .face.ears-cat::before,
-        .face.ears-cat::after {
-            content: '';
-            position: absolute;
-            top: -28px;
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(45deg, #ff9ad6, #ff5da2);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      .statgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 520px) {
+        .statgrid {
+          grid-template-columns: 1fr;
         }
-        .face.ears-cat::before { left: 16px; transform: rotate(-15deg); }
-        .face.ears-cat::after  { right: 16px; transform: rotate(15deg); }
+      }
 
-        /* Dog ears (floppy triangles) */
-        .face.ears-dog::before,
-        .face.ears-dog::after {
-            content: '';
-            position: absolute;
-            top: -18px;
-            width: 24px;
-            height: 36px;
-            background: linear-gradient(45deg, #ffe0e6, #ffb3c6);
-            border-radius: 50% 50% 0 0;
+      .stat {
+        padding: 16px;
+        border-radius: var(--r-md);
+        background: rgba(255, 255, 255, 0.62);
+        border: 1px solid var(--border);
+        box-shadow: 0 12px 28px rgba(20, 25, 50, 0.07);
+      }
+      .stat .k {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(26, 27, 46, 0.6);
+        margin-bottom: 8px;
+        font-weight: 750;
+      }
+      .stat .v {
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+
+      .toggleRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: var(--r-md);
+        background: rgba(255, 255, 255, 0.62);
+        border: 1px solid var(--border);
+        box-shadow: 0 12px 28px rgba(20, 25, 50, 0.07);
+      }
+      .toggleRow p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.35;
+      }
+      .toggleRow strong {
+        color: rgba(26, 27, 46, 0.88);
+      }
+
+      .switch {
+        width: 54px;
+        height: 32px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        position: relative;
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      .switch::after {
+        content: "";
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        top: 2px;
+        left: 2px;
+        border-radius: 999px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 185, 220, 0.95),
+          rgba(168, 214, 255, 0.95)
+        );
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--dur) var(--ease);
+      }
+      .switch[aria-checked="true"]::after {
+        transform: translateX(22px);
+      }
+
+      /* Sections */
+      section {
+        margin-top: 24px;
+      }
+      .sectionHead {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 26px 0 12px;
+      }
+      h2 {
+        margin: 0;
+        font-size: clamp(20px, 2.2vw, 28px);
+        letter-spacing: -0.02em;
+      }
+      .sub {
+        margin: 0;
+        color: var(--muted);
+        max-width: 70ch;
+        line-height: 1.5;
+      }
+
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      @media (max-width: 980px) {
+        .grid3 {
+          grid-template-columns: 1fr;
         }
-        .face.ears-dog::before { left: 12px; transform: rotate(-10deg); }
-        .face.ears-dog::after  { right: 12px; transform: rotate(10deg); }
+      }
 
-        /* Bunny ears (two long rounded ears) */
-        .face.ears-bunny::before {
-            content: '';
-            position: absolute;
-            top: -30px;
-            left: 22px;
-            width: 16px;
-            height: 36px;
-            border-radius: 12px 12px 0 0;
-            background: linear-gradient(180deg, #fff, #ffcee7);
-            transform: rotate(-10deg);
-        }
-        .face.ears-bunny::after {
-            content: '';
-            position: absolute;
-            top: -30px;
-            right: 22px;
-            width: 16px;
-            height: 36px;
-            border-radius: 12px 12px 0 0;
-            background: linear-gradient(180deg, #fff, #ffcee7);
-            transform: rotate(10deg);
-        }
+      .mini {
+        padding: 18px;
+        border-radius: var(--r-lg);
+        background: rgba(255, 255, 255, 0.62);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--dur) var(--ease),
+          box-shadow var(--dur) var(--ease);
+        overflow: hidden;
+        position: relative;
+      }
+      .mini:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
 
-        /* Fox ears (two sharp triangles) */
-        .face.ears-fox::before {
-            content: '';
-            position: absolute;
-            top: -26px;
-            left: 20px;
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(45deg, #ff7f5a, #ff3d1a);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-        .face.ears-fox::after {
-            content: '';
-            position: absolute;
-            top: -26px;
-            right: 20px;
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(45deg, #ff7f5a, #ff3d1a);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
+      .mini::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        background: radial-gradient(
+            320px 120px at 20% 0%,
+            rgba(255, 210, 233, 0.35),
+            transparent 60%
+          ),
+          radial-gradient(
+            340px 150px at 90% 10%,
+            rgba(207, 232, 255, 0.4),
+            transparent 65%
+          );
+        opacity: 0.65;
+        pointer-events: none;
+      }
+      .mini > * {
+        position: relative;
+      }
 
-        /* saved list */
-        .list{display:grid;gap:8px;margin-top:10px}
-        .item{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.5));border:1px solid rgba(74,42,58,0.03)}
-        .item .meta{flex:1}
-        .tag{font-size:12px;background:rgba(255,255,255,0.7);padding:6px 8px;border-radius:999px;border:1px solid rgba(74,42,58,0.03)}
+      .mini h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        letter-spacing: -0.01em;
+      }
+      .mini p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
 
-        footer{margin-top:16px;text-align:center;color:#6a3747;font-size:13px}
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.64);
+        border: 1px solid var(--border);
+        margin-top: 12px;
+        font-weight: 650;
+        color: rgba(26, 27, 46, 0.78);
+        font-size: 13px;
+      }
 
-        /* cookie banner */
-        .cookie{position:fixed;left:16px;right:16px;bottom:16px;background:linear-gradient(90deg,#fff,#ffeef8);padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+      /* Quote panel */
+      .quote {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+      .mark {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 185, 220, 0.85),
+          rgba(168, 214, 255, 0.85)
+        );
+        border: 1px solid rgba(30, 34, 64, 0.1);
+        box-shadow: var(--shadow-sm);
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+      }
+      blockquote {
+        margin: 0;
+        color: rgba(26, 27, 46, 0.85);
+        line-height: 1.55;
+        font-size: 16px;
+      }
+      cite {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-style: normal;
+        font-size: 13px;
+      }
 
-        /* responsive */
-        @media (max-width:880px){.container{grid-template-columns:1fr}.avatar{width:180px;height:180px}.face{width:100px;height:100px}}
+      /* Footer */
+      footer {
+        margin-top: 28px;
+        padding: 24px 0 16px;
+        color: rgba(26, 27, 46, 0.7);
+      }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--border);
+        padding-top: 18px;
+      }
+
+      /* Reveal animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity var(--dur) var(--ease),
+          transform var(--dur) var(--ease);
+      }
+      .reveal.is-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
+  </head>
 
-</head>
-<body>
-<div class="wrap">
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+
     <header>
-        <div class="logo">CC</div>
-        <div>
-            <h1>Pink Character Creator</h1>
-            <p class="lead">Create characters, name them, choose gender & pronouns, pet them for reactions, and save locally.</p>
+      <div class="wrap nav" aria-label="Primary navigation">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <div
+              style="
+                font-size: 14px;
+                opacity: 0.8;
+                font-weight: 800;
+                letter-spacing: -0.01em;
+              "
+            >
+              Spectrum Studio
+            </div>
+            <div style="font-size: 12px; opacity: 0.62; font-weight: 700">
+              Autism • Neurodiversity • Support
+            </div>
+          </div>
         </div>
+
+        <nav class="navlinks">
+          <a class="chip" href="#understanding">Understanding</a>
+          <a class="chip" href="#support">Support</a>
+          <a class="chip" href="#sensory">Sensory</a>
+          <a class="chip" href="#resources">Resources</a>
+          <button
+            class="btn primary"
+            id="scrollTopBtn"
+            type="button"
+            aria-label="Scroll to top"
+          >
+            ↑ Top
+          </button>
+        </nav>
+      </div>
     </header>
 
-    <div class="container">
-        <div class="card">
-            <form id="creator">
-                <div class="field">
-                    <label for="name">Name</label>
-                    <input id="name" type="text" placeholder="e.g. Luna" required />
-                </div>
+    <main id="content" class="wrap">
+      <div class="hero">
+        <div class="card reveal">
+          <h1>Autism, explained with respect — and designed with care.</h1>
+          <p class="lead">
+            Autism is a neurodevelopmental difference that shapes communication,
+            sensory processing, and patterns of thinking. This page takes a
+            <strong>neurodiversity-affirming</strong> approach: informed,
+            practical, and human.
+          </p>
 
-                <div class="field">
-                    <label>Gender</label>
-                    <div class="row">
-                        <select id="gender">
-                            <option value="female">Female</option>
-                            <option value="male">Male</option>
-                            <option value="nonbinary">Non-binary</option>
-                            <option value="other">Other</option>
-                            <option value="unspecified">Prefer not to say</option>
-                        </select>
-                        <input id="age" type="text" placeholder="Age (optional)" />
-                    </div>
-                </div>
+          <div class="pillrow" aria-label="Key principles">
+            <span class="pill"
+              ><span class="dot"></span> Support over “fixing”</span
+            >
+            <span class="pill"
+              ><span class="dot"></span> Clear communication</span
+            >
+            <span class="pill"
+              ><span class="dot"></span> Sensory-friendly options</span
+            >
+          </div>
 
-                <div class="field">
-                    <label for="pronouns">Pronouns</label>
-                    <select id="pronouns">
-                        <option value="she/her">she/her</option>
-                        <option value="he/him">he/him</option>
-                        <option value="they/them">they/them</option>
-                        <option value="custom">Custom...</option>
-                    </select>
-                    <input id="pronounsCustom" type="text" placeholder="e.g. xe/xem" style="margin-top:8px;display:none" />
-                </div>
-
-                <div class="field">
-                    <label for="bio">Bio</label>
-                    <textarea id="bio" rows="3" placeholder="Short description"></textarea>
-                </div>
-
-                <div class="field">
-                    <label for="color">Character Color</label>
-                    <input type="color" id="color" value="#ffd6ea" />
-                </div>
-
-                <div class="field">
-                    <label for="ears">Ears</label>
-                    <select id="ears">
-                        <option value="none">None</option>
-                        <option value="cat">Cat 🐱</option>
-                        <option value="dog">Dog 🐶</option>
-                        <option value="bunny">Bunny 🐰</option>
-                        <option value="fox">Fox 🦊</option>
-                    </select>
-                </div>
-
-
-                <div class="row" style="margin-top:8px">
-                    <button class="btn" type="submit">Save Character</button>
-                    <button class="btn ghost" type="button" id="clear">Clear</button>
-                </div>
-            </form>
-
-            <div style="margin-top:12px">
-                <strong>Saved Characters</strong>
-                <div class="list" id="savedList"></div>
-            </div>
-
+          <div class="hero-actions">
+            <a class="btn" href="#resources">
+              <span aria-hidden="true">✨</span> Browse resources
+            </a>
+            <a class="btn" href="#support">
+              <span aria-hidden="true">🧠</span> Practical support
+            </a>
+            <a class="btn" href="#sensory">
+              <span aria-hidden="true">🎛️</span> Sensory settings
+            </a>
+          </div>
         </div>
 
-        <div class="card">
-            <div class="preview">
-                <div id="avatarWrap" class="avatar" title="Pet me!" tabindex="0" role="button">
-                    <div class="face" id="face">
-                        <div class="eyes" id="eyes">
-                            <div class="eye"></div>
-                            <div class="eye"></div>
-                        </div>
-                        <div class="mouth" id="mouth"></div>
-                    </div>
-                    <div id="hearts" style="position:absolute;left:50%;transform:translateX(-50%);bottom:8px;pointer-events:none"></div>
-                </div>
-
-                <div>
-                    <div style="display:flex;gap:12px;align-items:center">
-                        <div style="text-align:left">
-                            <div style="font-size:20px;font-weight:700" id="previewName">—</div>
-                            <div style="font-size:13px;color:#6a3747" id="previewMeta">—</div>
-                        </div>
-                        <div style="flex:1"></div>
-                        <div style="text-align:right">
-                            <div class="tag" id="petCount">Pets: 0</div>
-                        </div>
-                    </div>
-                    <div style="margin-top:8px;color:#6a3747" id="previewBio">No character selected.</div>
-                    <div style="margin-top:12px" class="pet-hint">Click or tap the avatar to pet them. Watch the reaction!</div>
-                    <div style="margin-top:8px;font-size:14px">Last reaction: <span class="reaction" id="reaction">—</span></div>
-                </div>
+        <aside class="side">
+          <div class="card reveal" style="padding: 18px">
+            <div class="sectionHead" style="margin: 0 0 10px">
+              <h2 style="font-size: 18px">Quick guide</h2>
+              <p class="sub" style="font-size: 13px">A few grounding truths.</p>
             </div>
 
-            <footer>
-                <small>Characters are stored locally in your browser using <strong>localStorage</strong>. Clearing site data will remove them.</small>
-            </footer>
+            <div class="statgrid" role="list">
+              <div class="stat" role="listitem">
+                <div class="k">Autism is</div>
+                <div class="v">a spectrum of traits</div>
+              </div>
+              <div class="stat" role="listitem">
+                <div class="k">Needs vary</div>
+                <div class="v">by context + energy</div>
+              </div>
+              <div class="stat" role="listitem">
+                <div class="k">Support helps</div>
+                <div class="v">without changing identity</div>
+              </div>
+              <div class="stat" role="listitem">
+                <div class="k">Best practice</div>
+                <div class="v">listen, adapt, collaborate</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal" style="padding: 18px">
+            <div class="sectionHead" style="margin: 0 0 12px">
+              <h2 style="font-size: 18px">Sensory settings</h2>
+              <p class="sub" style="font-size: 13px">Make this page calmer.</p>
+            </div>
+
+            <div class="toggleRow">
+              <div>
+                <strong>Reduce motion</strong>
+                <p>Less animation + no smooth scrolling.</p>
+              </div>
+              <button
+                class="switch"
+                id="motionSwitch"
+                type="button"
+                role="switch"
+                aria-checked="false"
+                aria-label="Reduce motion"
+              ></button>
+            </div>
+
+            <div class="toggleRow" style="margin-top: 10px">
+              <div>
+                <strong>Boost contrast</strong>
+                <p>Sharper borders + stronger clarity.</p>
+              </div>
+              <button
+                class="switch"
+                id="contrastSwitch"
+                type="button"
+                role="switch"
+                aria-checked="false"
+                aria-label="Boost contrast"
+              ></button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section
+        id="understanding"
+        class="reveal"
+        aria-labelledby="h-understanding"
+      >
+        <div class="sectionHead">
+          <div>
+            <h2 id="h-understanding">Understanding autism</h2>
+            <p class="sub">
+              Autism shows up differently for different people. These are common
+              areas — not a checklist.
+            </p>
+          </div>
         </div>
-    </div>
 
-</div>
+        <div class="grid3">
+          <article class="mini">
+            <h3>Communication & social style</h3>
+            <p>
+              Some people prefer direct language, find small talk tiring, or
+              process conversations more slowly. It’s not “lack of empathy” —
+              often it’s a difference in signaling and processing.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">💬</span> Clarity helps</span
+            >
+          </article>
 
-<div id="cookie" class="cookie" style="display:none">
-    <div>
-        <strong>We use local storage & cookies</strong>
-        <div style="font-size:13px;color:#6a3747;margin-top:6px">This app stores characters locally in your browser. By accepting you allow local-saving and a cookie to remember your choice.</div>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center">
-        <button id="acceptCookie" class="btn small">Accept</button>
-        <button id="denyCookie" class="btn ghost small">Decline</button>
-    </div>
-</div>
+          <article class="mini">
+            <h3>Sensory processing</h3>
+            <p>
+              Lights, sound, textures, smells — sensory input can be intense or
+              muted. What’s “fine” one day can be overwhelming another day.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🎧</span> Adjust the environment</span
+            >
+          </article>
 
-<script>
-    const $ = sel => document.querySelector(sel);
-    const el = id => document.getElementById(id);
+          <article class="mini">
+            <h3>Patterns, routines, focus</h3>
+            <p>
+              Many autistic people thrive with predictability, deep interests,
+              and structured routines. Change can be costly — not because it’s
+              “wrong,” but because it takes energy.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🧩</span> Support energy
+              management</span
+            >
+          </article>
+        </div>
+      </section>
 
-    // ----------------- Cookie helpers -----------------
-    function setCookie(name, value, days){
-        const d = new Date();
-        d.setTime(d.getTime() + (days*24*60*60*1000));
-        document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
-    }
-    function getCookie(name){
-        const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-        return v ? v.pop() : null;
-    }
+      <section id="support" class="reveal" aria-labelledby="h-support">
+        <div class="sectionHead">
+          <div>
+            <h2 id="h-support">Support that respects autonomy</h2>
+            <p class="sub">
+              Good support isn’t about forcing someone to look “normal.” It’s
+              about reducing friction and building safety.
+            </p>
+          </div>
+        </div>
 
-    // ----------------- Local storage -----------------
-    const KEY = 'pinkcc.characters.v3';
-    let characters = [];
-    let activeId = null;
+        <div class="grid3">
+          <article class="mini">
+            <h3>Ask, don’t assume</h3>
+            <p>
+              “What helps in moments like this?” beats guessing. Needs can
+              change depending on stress, sleep, and setting.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">✅</span> Collaborative</span
+            >
+          </article>
 
-    // ----------------- Init -----------------
-    window.addEventListener('DOMContentLoaded', ()=>{
-        if(!getCookie('pinkcc_consent')) el('cookie').style.display='flex';
-        loadCharacters();
-        bindForm();
-        bindAvatarPet();
-        renderPreview();
-    });
+          <article class="mini">
+            <h3>Make instructions concrete</h3>
+            <p>
+              Use clear steps, written follow-ups, examples, and fewer hidden
+              expectations. That’s inclusive design — not special treatment.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">📌</span> Reduce ambiguity</span
+            >
+          </article>
 
-    // ----------------- Cookie buttons -----------------
-    el('acceptCookie').addEventListener('click', ()=>{ setCookie('pinkcc_consent','1',365); el('cookie').style.display='none'; });
-    el('denyCookie').addEventListener('click', ()=>{ setCookie('pinkcc_consent','0',365); el('cookie').style.display='none'; });
+          <article class="mini">
+            <h3>Respect stimming</h3>
+            <p>
+              Stimming can regulate emotions and sensory load. If it’s safe,
+              it’s often helpful — not a “bad habit.”
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🌿</span> Self-regulation</span
+            >
+          </article>
+        </div>
 
-    // ----------------- Form binding -----------------
-    function bindForm(){
-        const form = el('creator');
+        <div class="card" style="margin-top: 14px">
+          <div class="quote">
+            <div class="mark" aria-hidden="true">“</div>
+            <div>
+              <blockquote>
+                A useful rule: support should reduce pain and increase choice —
+                without erasing identity. If something demands masking at any
+                cost, it’s worth rethinking.
+              </blockquote>
+              <cite>— Neurodiversity-affirming framing</cite>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        // Pronouns custom toggle
-        el('pronouns').addEventListener('change', ()=>{
-            el('pronounsCustom').style.display = el('pronouns').value==='custom' ? 'block' : 'none';
+      <section id="sensory" class="reveal" aria-labelledby="h-sensory">
+        <div class="sectionHead">
+          <div>
+            <h2 id="h-sensory">Sensory-friendly ideas</h2>
+            <p class="sub">
+              Quick adjustments that often reduce overload. Take what fits,
+              ignore what doesn’t.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <article class="mini">
+            <h3>Sound</h3>
+            <p>
+              Noise-cancelling headphones, predictable playlists, “quiet
+              corners,” or asking for a lower-volume space.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🔇</span> Lower intensity</span
+            >
+          </article>
+          <article class="mini">
+            <h3>Light</h3>
+            <p>
+              Warm lamps over overhead lights, screen dimming, sunglasses
+              indoors (yes, it can be legit).
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">💡</span> Soften glare</span
+            >
+          </article>
+          <article class="mini">
+            <h3>Transitions</h3>
+            <p>
+              Timers, previewing changes, written plans, and
+              “one-step-at-a-time” checklists.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">⏳</span> Predictability</span
+            >
+          </article>
+        </div>
+      </section>
+
+      <section id="resources" class="reveal" aria-labelledby="h-resources">
+        <div class="sectionHead">
+          <div>
+            <h2 id="h-resources">Resources & next steps</h2>
+            <p class="sub">
+              Want this to be for a school project, a portfolio piece, or your
+              personal advocacy page? You can customize the sections and add
+              local helplines/orgs.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <article class="mini">
+            <h3>Self-advocacy</h3>
+            <p>
+              Add a page: “What helps me” with preferred communication, sensory
+              needs, and recovery time.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🗣️</span> Personal profile</span
+            >
+          </article>
+
+          <article class="mini">
+            <h3>Work/school accommodations</h3>
+            <p>
+              Include examples: written instructions, flexible lighting, breaks,
+              predictable schedules, async options.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🏫</span> Practical supports</span
+            >
+          </article>
+
+          <article class="mini">
+            <h3>Community</h3>
+            <p>
+              Curate autistic-led voices, peer groups, and
+              neurodiversity-affirming providers.
+            </p>
+            <span class="tag"
+              ><span aria-hidden="true">🤝</span> Connection</span
+            >
+          </article>
+        </div>
+
+        <div class="hero-actions" style="margin-top: 16px">
+          <button class="btn" id="copyLinkBtn" type="button">
+            <span aria-hidden="true">🔗</span> Copy page link
+          </button>
+          <button class="btn primary" id="toastBtn" type="button">
+            <span aria-hidden="true">💖</span> Little affirmation
+          </button>
+        </div>
+      </section>
+
+      <footer>
+        <div class="foot">
+          <div style="font-weight: 750">
+            © <span id="year"></span> Spectrum Studio
+          </div>
+          <div style="opacity: 0.85">
+            Designed with pastel calm •
+            <span style="font-weight: 700">pink + blue</span> • soft shadows ✨
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <div
+      id="toast"
+      aria-live="polite"
+      aria-atomic="true"
+      style="
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%) translateY(18px);
+        opacity: 0;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(30, 34, 64, 0.14);
+        box-shadow: 0 18px 60px rgba(20, 25, 50, 0.18);
+        padding: 12px 14px;
+        border-radius: 16px;
+        z-index: 2000;
+        transition: opacity var(--dur) var(--ease),
+          transform var(--dur) var(--ease);
+        max-width: min(560px, calc(100% - 24px));
+        color: rgba(26, 27, 46, 0.86);
+        font-weight: 650;
+      "
+    ></div>
+
+    <script>
+      // -----------------------------
+      // Tiny JS for UX polish
+      // -----------------------------
+
+      const root = document.documentElement;
+      const toast = document.getElementById("toast");
+
+      // Persist settings
+      const savedMotion = localStorage.getItem("motion") || "normal";
+      const savedContrast = localStorage.getItem("contrast") || "normal";
+      if (savedMotion === "reduced") root.dataset.motion = "reduced";
+      if (savedContrast === "high") root.dataset.contrast = "high";
+
+      // Hook up switches
+      const motionSwitch = document.getElementById("motionSwitch");
+      const contrastSwitch = document.getElementById("contrastSwitch");
+
+      function syncSwitches() {
+        const motionReduced = root.dataset.motion === "reduced";
+        const contrastHigh = root.dataset.contrast === "high";
+        motionSwitch.setAttribute("aria-checked", String(motionReduced));
+        contrastSwitch.setAttribute("aria-checked", String(contrastHigh));
+      }
+      syncSwitches();
+
+      motionSwitch.addEventListener("click", () => {
+        const next = root.dataset.motion === "reduced" ? "normal" : "reduced";
+        if (next === "normal") delete root.dataset.motion;
+        else root.dataset.motion = "reduced";
+        localStorage.setItem("motion", next);
+        syncSwitches();
+        showToast(
+          next === "reduced" ? "Motion reduced 🌿" : "Motion restored ✨"
+        );
+      });
+
+      contrastSwitch.addEventListener("click", () => {
+        const next = root.dataset.contrast === "high" ? "normal" : "high";
+        if (next === "normal") delete root.dataset.contrast;
+        else root.dataset.contrast = "high";
+        localStorage.setItem("contrast", next);
+        syncSwitches();
+        showToast(
+          next === "high" ? "Contrast boosted 🔎" : "Contrast normal 💫"
+        );
+      });
+
+      // Scroll to top
+      document.getElementById("scrollTopBtn").addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: root.dataset.motion === "reduced" ? "auto" : "smooth",
+        });
+      });
+
+      // Active nav highlighting
+      const navLinks = Array.from(document.querySelectorAll(".navlinks .chip"));
+      const sections = navLinks
+        .map((a) => document.querySelector(a.getAttribute("href")))
+        .filter(Boolean);
+
+      const activeObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            navLinks.forEach((a) => (a.dataset.active = "false"));
+            const hit = navLinks.find(
+              (a) => a.getAttribute("href") === "#" + e.target.id
+            );
+            if (hit) hit.dataset.active = "true";
+          });
+        },
+        { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 }
+      );
+
+      sections.forEach((sec) => activeObs.observe(sec));
+
+      // Reveal animations (respect reduced motion)
+      const revealEls = Array.from(document.querySelectorAll(".reveal"));
+      if (root.dataset.motion === "reduced") {
+        revealEls.forEach((el) => el.classList.add("is-in"));
+      } else {
+        const revealObs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) e.target.classList.add("is-in");
+            });
+          },
+          { threshold: 0.12 }
+        );
+        revealEls.forEach((el) => revealObs.observe(el));
+      }
+
+      // Footer year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Copy link
+      document
+        .getElementById("copyLinkBtn")
+        .addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            showToast("Link copied 🔗");
+          } catch {
+            showToast(
+              "Couldn’t copy automatically — you can copy from the address bar 🙂"
+            );
+          }
         });
 
-        // Color live update
-        el('color').addEventListener('input', ()=>{ updateFaceColor(el('color').value); });
+      // Gentle affirmation
+      const affirmations = [
+        "You deserve support that fits you, not the other way around 💙",
+        "Your needs are real — and you’re allowed to honor them 🩷",
+        "You’re not “too much.” You’re a full person with a real nervous system 🌿",
+        "Clarity and comfort are valid goals ✨",
+      ];
+      document.getElementById("toastBtn").addEventListener("click", () => {
+        const msg =
+          affirmations[Math.floor(Math.random() * affirmations.length)];
+        showToast(msg);
+      });
 
-        // Ears live update
-        el('ears').addEventListener('change', ()=>{ updateFaceEars(el('ears').value); });
-
-        // Form submit
-        form.addEventListener('submit', e=>{
-            e.preventDefault();
-            saveCharacterFromForm();
-        });
-
-        // Clear button
-        el('clear').addEventListener('click', ()=>{
-            form.reset();
-            el('pronounsCustom').style.display='none';
-            updateFaceColor('#ffd6ea');
-            updateFaceEars('none');
-        });
-    }
-
-    // ----------------- Save character -----------------
-    function saveCharacterFromForm(){
-        const name = el('name').value.trim() || 'Unnamed';
-        const gender = el('gender').value;
-        const pronouns = el('pronouns').value==='custom'? (el('pronounsCustom').value.trim()||'they/them') : el('pronouns').value;
-        const bio = el('bio').value.trim();
-        const age = el('age').value.trim();
-        const color = el('color').value;
-        const ears = el('ears').value;
-
-        const isEdit = activeId && characters.find(c=>c.id===activeId);
-        if(isEdit){
-            const ch = characters.find(c=>c.id===activeId);
-            Object.assign(ch,{name,gender,pronouns,bio,age,color,ears});
-        } else {
-            const id = 'c_'+Date.now();
-            characters.push({id,name,gender,pronouns,bio,age,color,ears,petCount:0,created:Date.now()});
-        }
-
-        persist();
-        renderSavedList();
-        renderPreview();
-        el('creator').reset();
-        el('pronounsCustom').style.display='none';
-        activeId=null;
-        updateFaceColor('#ffd6ea');
-        updateFaceEars('none');
-    }
-
-    // ----------------- Persist & load -----------------
-    function persist(){ try{ localStorage.setItem(KEY,JSON.stringify(characters)); }catch(e){console.warn('Failed storing',e);} }
-    function loadCharacters(){
-        try{
-            const raw = localStorage.getItem(KEY);
-            if(raw) characters = JSON.parse(raw);
-        }catch(e){console.warn('Load failed',e);}
-        renderSavedList();
-    }
-
-    // ----------------- Render saved list -----------------
-    function renderSavedList(){
-        const container = el('savedList');
-        container.innerHTML='';
-        if(!characters.length){ container.innerHTML='<div style="color:#9a516f">No saved characters yet.</div>'; return; }
-
-        characters.slice().reverse().forEach(ch=>{
-            const it = document.createElement('div'); it.className='item';
-            const faceMini = document.createElement('div');
-            faceMini.style.width='46px'; faceMini.style.height='46px'; faceMini.style.borderRadius='10px';
-            faceMini.style.background=ch.color; faceMini.style.display='flex'; faceMini.style.alignItems='center'; faceMini.style.justifyContent='center';
-            faceMini.innerText = ch.name.charAt(0).toUpperCase();
-            faceMini.style.fontWeight=700; faceMini.style.color='#4a2a3a';
-
-            const meta = document.createElement('div'); meta.className='meta';
-            meta.innerHTML = `<div style="font-weight:700">${escapeHtml(ch.name)} <span style="font-weight:500;color:#6a3747;font-size:13px">${ch.pronouns? '· '+escapeHtml(ch.pronouns):''}</span></div><div style="font-size:13px;color:#6a3747">${escapeHtml(ch.bio||'')}</div>`;
-
-            const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px';
-            const loadBtn = document.createElement('button'); loadBtn.className='btn small'; loadBtn.innerText='Load';
-            loadBtn.addEventListener('click', ()=>{ loadCharacterToEditor(ch.id); });
-            const delBtn = document.createElement('button'); delBtn.className='btn ghost small'; delBtn.innerText='Delete';
-            delBtn.addEventListener('click', ()=>{ if(confirm('Delete this character?')) deleteCharacter(ch.id); });
-            actions.appendChild(loadBtn); actions.appendChild(delBtn);
-
-            it.appendChild(faceMini); it.appendChild(meta); it.appendChild(actions);
-            container.appendChild(it);
-        });
-    }
-
-    // ----------------- Load character to form -----------------
-    function loadCharacterToEditor(id){
-        const ch = characters.find(c=>c.id===id); if(!ch) return;
-        activeId = ch.id;
-        el('name').value = ch.name; el('gender').value = ch.gender; el('bio').value = ch.bio||''; el('age').value = ch.age||'';
-        el('color').value = ch.color||'#ffd6ea';
-        updateFaceColor(el('color').value);
-
-        el('ears').value = ch.ears||'none';
-        updateFaceEars(el('ears').value);
-
-        if(['she/her','he/him','they/them'].includes(ch.pronouns)){
-            el('pronouns').value = ch.pronouns; el('pronounsCustom').style.display='none';
-        } else {
-            el('pronouns').value='custom'; el('pronounsCustom').style.display='block'; el('pronounsCustom').value=ch.pronouns;
-        }
-        renderPreview(ch.id);
-        window.scrollTo({top:0,behavior:'smooth'});
-    }
-
-    // ----------------- Delete character -----------------
-    function deleteCharacter(id){
-        characters = characters.filter(c=>c.id!==id);
-        persist();
-        renderSavedList();
-        if(activeId===id){ activeId=null; renderPreview(); updateFaceColor('#ffd6ea'); updateFaceEars('none'); }
-    }
-
-    // ----------------- Preview -----------------
-    function renderPreview(id){
-        const ch = characters.find(c=>c.id===id) || (activeId? characters.find(c=>c.id===activeId): null);
-        const nameEl = el('previewName'); const metaEl = el('previewMeta'); const bioEl = el('previewBio'); const petEl = el('petCount');
-        if(ch){
-            nameEl.textContent=ch.name;
-            metaEl.textContent=`${ch.gender}${ch.age?' · '+ch.age+' yrs':''} ${ch.pronouns?' · '+ch.pronouns:''}`;
-            bioEl.textContent=ch.bio||'—';
-            petEl.textContent=`Pets: ${ch.petCount||0}`;
-            activeId=ch.id;
-            updateFaceColor(ch.color||'#ffd6ea');
-            updateFaceEars(ch.ears||'none');
-        } else {
-            nameEl.textContent='—'; metaEl.textContent='—'; bioEl.textContent='No character selected.'; petEl.textContent='Pets: 0';
-            updateFaceColor('#ffd6ea');
-            updateFaceEars('none');
-        }
-    }
-
-    // ----------------- Face updates -----------------
-    function updateFaceColor(color){ el('face').style.background=color; }
-    function updateFaceEars(style){
-        const face = el('face');
-        face.classList.remove('ears-cat','ears-dog','ears-bunny','ears-fox');
-        if(style && style!=='none') face.classList.add('ears-'+style);
-    }
-
-    // ----------------- Avatar petting -----------------
-    function bindAvatarPet(){
-        const wrap = el('avatarWrap'); let lastPet=0;
-        wrap.addEventListener('click', petAction);
-        wrap.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') petAction(); });
-        function petAction(){
-            const ch = characters.find(c=>c.id===activeId);
-            popHeart(); animateFace();
-            if(!ch){ showReaction('Whoops — no character loaded. Save or load one to pet!'); return; }
-            ch.petCount = (ch.petCount||0)+1;
-            persist(); renderPreview(activeId);
-            const now = Date.now(); const since = now-lastPet; lastPet=now;
-            let msg='';
-            if(since<1500){ msg="Overwhelmed with cuddles! 💖"; }
-            else if(ch.petCount%10===0) msg=`${ch.name} is ecstatic! ${ch.petCount} pets!`;
-            else if(ch.petCount%5===0) msg=`${ch.name} purrs loudly.`;
-            else if(Math.random()<0.2) msg=`${ch.name} gives a happy chirp.`;
-            else msg = ['nuzzles you','purrs','wags their tail','giggles happily'][Math.floor(Math.random()*4)];
-            showReaction(capitalize(msg));
-        }
-    }
-
-    // ----------------- Heart animation -----------------
-    function popHeart(){
-        const hs = el('hearts');
-        const heart = document.createElement('div'); heart.innerText='💗';
-        heart.style.position='absolute'; heart.style.bottom='16px';
-        heart.style.left=(50+(Math.random()*60-30))+'%';
-        heart.style.transform='translateX(-50%) scale(0.6)'; heart.style.fontSize='18px'; heart.style.opacity='0'; heart.style.pointerEvents='none';
-        hs.appendChild(heart);
-        const anim = heart.animate([
-            {transform:'translateX(-50%) translateY(0) scale(0.6)', opacity:0},
-            {transform:'translateX(-50%) translateY(-40px) scale(1)', opacity:1},
-            {transform:'translateX(-50%) translateY(-80px) scale(0.8)', opacity:0}
-        ],{duration:700,easing:'cubic-bezier(.2,.8,.2,1)'});
-        anim.onfinish = ()=> heart.remove();
-    }
-
-    // ----------------- Face animation -----------------
-    function animateFace(){
-        const face = el('face'); const mouth = el('mouth'); const eyes = el('eyes');
-        mouth.animate([{transform:'scaleY(1)'},{transform:'scaleY(0.3)'},{transform:'scaleY(1)'}],{duration:400,iterations:1,easing:'ease-out'});
-        eyes.animate([{transform:'translateY(0)'},{transform:'translateY(2px)'},{transform:'translateY(0)'}],{duration:350});
-    }
-
-    // ----------------- Show reaction -----------------
-    function showReaction(text){ el('reaction').textContent = text; }
-
-    // ----------------- Helpers -----------------
-    function escapeHtml(t){ return (t||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
-
-    // ----------------- Keyboard shortcut -----------------
-    window.addEventListener('keydown', e=>{
-        if(e.key.toLowerCase()==='n' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
-            el('name').value = ['Luna','Nova','Astra','Poppy','Mina','Kira'][Math.floor(Math.random()*6)];
-        }
-    });
-</script>
+      let toastTimer = null;
+      function showToast(message) {
+        toast.textContent = message;
+        toast.style.opacity = "1";
+        toast.style.transform = "translateX(-50%) translateY(0)";
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateX(-50%) translateY(18px)";
+        }, 2600);
+      }
+    </script>
+  </body>
+</html>
