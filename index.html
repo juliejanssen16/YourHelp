@@ -79,7 +79,7 @@
         box-sizing: border-box;
       }
 
-      /* CHANGED: JS handles smooth scrolling (soft/extra soft) */
+      /* JS handles soft / extra-soft scrolling */
       html {
         scroll-behavior: auto;
       }
@@ -179,11 +179,9 @@
         display: block;
         object-fit: contain;
 
-        /* “Zoom in” to reduce transparent padding look */
         transform: scale(1.18);
         transform-origin: left center;
 
-        /* avoids baseline gap */
         line-height: 0;
       }
 
@@ -253,12 +251,8 @@
 
       /* -------------------------------------------
          Mobile header layout fix + collapse
-         - Desktop unchanged
-         - Mobile stacks to avoid overlap
-         - Mobile nav scrolls horizontally
          ------------------------------------------- */
 
-      /* smooth transitions for compact toggle */
       header,
       .wrap.nav,
       .brandLogo,
@@ -271,7 +265,6 @@
       }
 
       @media (max-width: 768px) {
-        /* Stack header content so logo can't overlay nav */
         .wrap.nav {
           flex-direction: column;
           align-items: flex-start;
@@ -282,12 +275,10 @@
           width: 100%;
         }
 
-        /* Keep logo from forcing overflow */
         .brandLogo {
           max-width: 100%;
         }
 
-        /* Nav becomes a single horizontally scrollable row */
         .navlinks {
           width: 100%;
           justify-content: flex-start;
@@ -303,7 +294,6 @@
           height: 6px;
         }
 
-        /* Compact mode on scroll */
         header.is-compact {
           box-shadow: 0 10px 30px rgba(20, 25, 50, 0.08);
         }
@@ -1169,12 +1159,12 @@
       syncSwitches();
 
       // -----------------------------
-      // Motion mode: make changes APPLY LIVE
+      // Motion mode: apply changes LIVE
       // -----------------------------
       let revealObs = null;
 
       function getScrollDuration() {
-        // Super noticeable difference
+        // normal: soft, reduced: EXTRA soft (as requested)
         return root.dataset.motion === "reduced" ? 1600 : 700;
       }
 
@@ -1182,7 +1172,6 @@
         const revealEls = Array.from(document.querySelectorAll(".reveal"));
 
         if (root.dataset.motion === "reduced") {
-          // show everything immediately (no reveal observer)
           revealEls.forEach((el) => el.classList.add("is-in"));
           if (revealObs) {
             revealObs.disconnect();
@@ -1191,7 +1180,6 @@
           return;
         }
 
-        // normal motion: enable reveal observer for items not yet in view
         if (!revealObs) {
           revealObs = new IntersectionObserver(
             (entries) => {
@@ -1208,7 +1196,6 @@
         });
       }
 
-      // Apply on load
       applyMotionMode();
 
       motionSwitch.addEventListener("click", () => {
@@ -1237,9 +1224,7 @@
       });
 
       // -----------------------------
-      // Soft anchor scrolling
-      // - default: soft
-      // - reduced motion: EXTRA soft
+      // Soft anchor scrolling (JS controlled)
       // -----------------------------
       function easeInOutCubic(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -1268,11 +1253,10 @@
 
         const y =
           window.scrollY + el.getBoundingClientRect().top - headerH - 10;
-
         const duration = getScrollDuration();
+
         smoothScrollToY(Math.max(0, y), duration);
 
-        // accessibility: focus target after scroll without moving it again
         if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
         setTimeout(() => el.focus({ preventScroll: true }), duration + 50);
       }
@@ -1293,9 +1277,16 @@
         });
       });
 
-      // Scroll to top (soft / extra soft)
+      // ✅ Top button: scroll up AND reset URL to base (no hash)
       document.getElementById("scrollTopBtn").addEventListener("click", () => {
         smoothScrollToY(0, getScrollDuration());
+
+        // remove #... and return to clean base URL
+        history.pushState(
+          null,
+          "",
+          window.location.pathname + window.location.search
+        );
       });
 
       // Active nav highlighting
@@ -1317,6 +1308,7 @@
         },
         { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 }
       );
+
       sections.forEach((sec) => activeObs.observe(sec));
 
       // Footer year
