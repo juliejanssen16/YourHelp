@@ -11,88 +11,34 @@
     />
 
     <style>
-.gridWithMascot {
-  position: relative;
-}
-
-/* FLOATING above the routines card */
-.mascotFloating {
-  position: absolute;
-
-  /* adjust these two numbers to fine-tune */
-  top: -110px;     /* lifts it ABOVE the cards */
-  right: 40px;     /* aligns it over the 3rd card */
-
-  width: min(300px, 45%);
-  height: auto;
-
-  object-fit: contain;
-  pointer-events: none;
-  user-select: none;
-
-  filter: drop-shadow(0 14px 28px rgba(20, 25, 50, 0.12));
-}
-
-/* Give the hero text a bit of breathing room so it won't collide */
-.hero .card h1,
-.hero .card .lead {
-  padding-right: min(240px, 42%);
-}
-
-/* Responsive: on smaller screens, center it above the title */
-@media (max-width: 960px) {
-  .mascotHero {
-    position: relative;
-    top: 0;
-    right: 0;
-    width: min(320px, 80%);
-    margin: 0 auto 10px;
-    display: block;
-  }
-
-  .hero .card h1,
-  .hero .card .lead {
-    padding-right: 0;
-  }
-}
-
-/* Extra small phones: keep it modest */
-@media (max-width: 420px) {
-  .mascotHero {
-    width: 88%;
-  }
-}
-
-
-
       /* -----------------------------
-       Pastel Pro Theme: Pink + Blue
+       Pastel Rose Theme
        ----------------------------- */
 
       :root {
         /* Core palette */
-        --bg: #fbfbff;
-        --panel: rgba(255, 255, 255, 0.78);
-        --panel-strong: rgba(255, 255, 255, 0.92);
-        --text: #1a1b2e;
-        --muted: rgba(26, 27, 46, 0.72);
+        --bg: #fff6fb;
+        --panel: rgba(255, 255, 255, 0.86);
+        --panel-strong: rgba(255, 255, 255, 0.96);
+        --text: #2c1f2f;
+        --muted: rgba(44, 31, 47, 0.7);
 
-        --pink: #ffd2e9;
-        --pink-strong: #ffb9dc;
-        --blue: #cfe8ff;
-        --blue-strong: #a8d6ff;
+        --pink: #ffd7ea;
+        --pink-strong: #ffc1de;
+        --rose: #f7b3c8;
+        --lilac: #e8d6ff;
 
-        --accent: #7aa7ff;
-        --accent-2: #ff79b0;
+        --accent: #f283b6;
+        --accent-2: #d58bd9;
 
         /* Shadows */
-        --shadow-sm: 0 8px 24px rgba(20, 25, 50, 0.08);
-        --shadow-md: 0 18px 50px rgba(20, 25, 50, 0.12);
-        --shadow-lg: 0 30px 80px rgba(20, 25, 50, 0.14);
+        --shadow-sm: 0 10px 24px rgba(92, 52, 76, 0.12);
+        --shadow-md: 0 20px 48px rgba(92, 52, 76, 0.14);
+        --shadow-lg: 0 34px 90px rgba(92, 52, 76, 0.16);
 
         /* Borders */
-        --border: rgba(30, 34, 64, 0.1);
-        --border-strong: rgba(30, 34, 64, 0.16);
+        --border: rgba(92, 52, 76, 0.12);
+        --border-strong: rgba(92, 52, 76, 0.2);
 
         /* Radius */
         --r-lg: 28px;
@@ -145,18 +91,18 @@
         color: var(--text);
         background:
           radial-gradient(
-            1100px 600px at 12% 6%,
-            rgba(255, 210, 233, 0.7),
+            1000px 520px at 12% 6%,
+            rgba(255, 209, 231, 0.9),
             transparent 55%
           ),
           radial-gradient(
             900px 520px at 92% 10%,
-            rgba(207, 232, 255, 0.85),
-            transparent 50%
+            rgba(248, 197, 218, 0.8),
+            transparent 52%
           ),
           radial-gradient(
-            900px 540px at 50% 95%,
-            rgba(255, 185, 220, 0.35),
+            820px 520px at 50% 98%,
+            rgba(232, 214, 255, 0.55),
             transparent 55%
           ),
           var(--bg);
@@ -171,7 +117,7 @@
       a:focus-visible,
       button:focus-visible,
       input:focus-visible {
-        outline: 3px solid rgba(122, 167, 255, 0.75);
+        outline: 3px solid rgba(242, 131, 182, 0.65);
         outline-offset: 3px;
         border-radius: 12px;
       }
@@ -212,8 +158,8 @@
         -webkit-backdrop-filter: blur(12px);
         background: linear-gradient(
           to bottom,
-          rgba(251, 251, 255, 0.88),
-          rgba(251, 251, 255, 0.55)
+          rgba(255, 246, 251, 0.92),
+          rgba(255, 246, 251, 0.62)
         );
         border-bottom: 1px solid var(--border);
       }
@@ -256,16 +202,16 @@
       }
 
       .chip {
-        padding: 10px 12px;
+        padding: 10px 14px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.55);
+        background: rgba(255, 255, 255, 0.7);
         border: 1px solid var(--border);
-        box-shadow: 0 8px 22px rgba(20, 25, 50, 0.06);
+        box-shadow: 0 8px 20px rgba(92, 52, 76, 0.08);
         transition:
           transform var(--dur) var(--ease),
           background var(--dur) var(--ease);
         font-weight: 650;
-        color: rgba(26, 27, 46, 0.82);
+        color: rgba(44, 31, 47, 0.82);
         display: inline-flex;
         gap: 10px;
         align-items: center;
@@ -273,13 +219,13 @@
       }
       .chip:hover {
         transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(255, 255, 255, 0.92);
       }
       .chip[data-active="true"] {
         background: linear-gradient(
           135deg,
-          rgba(255, 210, 233, 0.75),
-          rgba(207, 232, 255, 0.75)
+          rgba(255, 209, 231, 0.95),
+          rgba(232, 214, 255, 0.85)
         );
         border-color: var(--border-strong);
       }
@@ -288,7 +234,7 @@
         padding: 10px 14px;
         border-radius: 999px;
         border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.82);
         box-shadow: var(--shadow-sm);
         cursor: pointer;
         font-weight: 700;
@@ -307,8 +253,8 @@
       .btn.primary {
         background: linear-gradient(
           135deg,
-          rgba(255, 185, 220, 0.85),
-          rgba(168, 214, 255, 0.85)
+          rgba(247, 179, 200, 0.95),
+          rgba(232, 214, 255, 0.85)
         );
         border-color: rgba(30, 34, 64, 0.14);
       }
@@ -389,10 +335,10 @@
       /* Hero */
       .hero {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 22px;
-        align-items: stretch;
-        margin-top: 20px;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+        gap: 24px;
+        align-items: start;
+        margin-top: 16px;
       }
       @media (max-width: 960px) {
         .hero {
@@ -405,7 +351,7 @@
         border: 1px solid var(--border);
         border-radius: var(--r-lg);
         box-shadow: var(--shadow-md);
-        padding: clamp(18px, 3.2vw, 28px);
+        padding: clamp(20px, 3.4vw, 32px);
         position: relative;
         overflow: hidden;
       }
@@ -416,16 +362,16 @@
         inset: -2px;
         background:
           radial-gradient(
-            700px 220px at 10% 10%,
-            rgba(255, 185, 220, 0.45),
+            700px 260px at 10% 10%,
+            rgba(247, 179, 200, 0.5),
             transparent 55%
           ),
           radial-gradient(
-            520px 260px at 88% 0%,
-            rgba(168, 214, 255, 0.45),
+            520px 280px at 88% 0%,
+            rgba(232, 214, 255, 0.55),
             transparent 55%
           );
-        opacity: 0.55;
+        opacity: 0.7;
         pointer-events: none;
       }
       .card > * {
@@ -446,30 +392,46 @@
         max-width: 60ch;
       }
 
-      .pillrow {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 18px 0 4px;
-      }
-      .pill {
-        padding: 10px 12px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.65);
-        border: 1px solid var(--border);
-        box-shadow: 0 10px 26px rgba(20, 25, 50, 0.06);
-        font-weight: 650;
-        color: rgba(26, 27, 46, 0.8);
+      .hero-badge {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-      }
-      .dot {
-        width: 10px;
-        height: 10px;
+        gap: 8px;
+        padding: 8px 14px;
         border-radius: 999px;
-        background: linear-gradient(135deg, var(--accent-2), var(--accent));
-        box-shadow: 0 8px 20px rgba(122, 167, 255, 0.3);
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        font-weight: 700;
+        color: rgba(44, 31, 47, 0.78);
+        margin-bottom: 14px;
+      }
+
+      .hero-highlights {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+        margin: 20px 0 6px;
+      }
+      .highlight {
+        padding: 12px 14px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 22px rgba(92, 52, 76, 0.08);
+        font-weight: 650;
+        color: rgba(44, 31, 47, 0.8);
+        display: grid;
+        gap: 6px;
+      }
+      .highlight span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .highlight .sub {
+        margin: 0;
+        font-size: 12px;
+        color: rgba(44, 31, 47, 0.65);
       }
 
       .hero-actions {
@@ -500,9 +462,9 @@
       .stat {
         padding: 16px;
         border-radius: var(--r-md);
-        background: rgba(255, 255, 255, 0.62);
+        background: rgba(255, 255, 255, 0.74);
         border: 1px solid var(--border);
-        box-shadow: 0 12px 28px rgba(20, 25, 50, 0.07);
+        box-shadow: 0 12px 26px rgba(92, 52, 76, 0.08);
       }
       .stat .k {
         font-size: 12px;
@@ -526,9 +488,9 @@
         gap: 12px;
         padding: 14px 16px;
         border-radius: var(--r-md);
-        background: rgba(255, 255, 255, 0.62);
+        background: rgba(255, 255, 255, 0.78);
         border: 1px solid var(--border);
-        box-shadow: 0 12px 28px rgba(20, 25, 50, 0.07);
+        box-shadow: 0 12px 26px rgba(92, 52, 76, 0.08);
       }
       .toggleRow p {
         margin: 0;
@@ -561,8 +523,8 @@
         border-radius: 999px;
         background: linear-gradient(
           135deg,
-          rgba(255, 185, 220, 0.95),
-          rgba(168, 214, 255, 0.95)
+          rgba(247, 179, 200, 0.95),
+          rgba(232, 214, 255, 0.9)
         );
         box-shadow: var(--shadow-sm);
         transition: transform var(--dur) var(--ease);
@@ -580,7 +542,7 @@
         align-items: flex-end;
         justify-content: space-between;
         gap: 12px;
-        margin: 26px 0 12px;
+        margin: 30px 0 14px;
       }
       h2 {
         margin: 0;
@@ -597,7 +559,7 @@
       .grid3 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
+        gap: 16px;
       }
       @media (max-width: 980px) {
         .grid3 {
@@ -608,7 +570,7 @@
       .mini {
         padding: 18px;
         border-radius: var(--r-lg);
-        background: rgba(255, 255, 255, 0.62);
+        background: rgba(255, 255, 255, 0.78);
         border: 1px solid var(--border);
         box-shadow: var(--shadow-sm);
         transition:
@@ -629,15 +591,15 @@
         background:
           radial-gradient(
             320px 120px at 20% 0%,
-            rgba(255, 210, 233, 0.35),
+            rgba(255, 209, 231, 0.45),
             transparent 60%
           ),
           radial-gradient(
             340px 150px at 90% 10%,
-            rgba(207, 232, 255, 0.4),
+            rgba(232, 214, 255, 0.42),
             transparent 65%
           );
-        opacity: 0.65;
+        opacity: 0.7;
         pointer-events: none;
       }
       .mini > * {
@@ -661,7 +623,7 @@
         gap: 8px;
         padding: 8px 10px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.64);
+        background: rgba(255, 255, 255, 0.8);
         border: 1px solid var(--border);
         margin-top: 12px;
         font-weight: 650;
@@ -700,8 +662,8 @@
         border-radius: 16px;
         background: linear-gradient(
           135deg,
-          rgba(255, 185, 220, 0.85),
-          rgba(168, 214, 255, 0.85)
+          rgba(247, 179, 200, 0.9),
+          rgba(232, 214, 255, 0.85)
         );
         border: 1px solid rgba(30, 34, 64, 0.1);
         box-shadow: var(--shadow-sm);
@@ -752,6 +714,140 @@
         opacity: 1;
         transform: translateY(0);
       }
+
+      /* New layout additions */
+      .hero-card {
+        padding: clamp(24px, 4vw, 38px);
+      }
+
+      .hero-rail {
+        display: grid;
+        gap: 16px;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 24px;
+        align-items: stretch;
+      }
+      @media (max-width: 980px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+      }
+      .split .grid3 {
+        grid-template-columns: 1fr;
+      }
+
+      .media-card {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        padding: 20px;
+        box-shadow: var(--shadow-md);
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+
+      .media-card img {
+        width: 100%;
+        border-radius: 22px;
+        object-fit: contain;
+        background: linear-gradient(
+          160deg,
+          rgba(255, 209, 231, 0.6),
+          rgba(232, 214, 255, 0.5)
+        );
+        padding: 18px;
+      }
+
+      .media-note {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .support-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+        gap: 20px;
+      }
+      @media (max-width: 980px) {
+        .support-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .support-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .panel-soft {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: var(--r-lg);
+        border: 1px solid var(--border);
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      @media (max-width: 980px) {
+        .resource-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .resource-card {
+        padding: 20px;
+        border-radius: var(--r-lg);
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: var(--shadow-md);
+        position: relative;
+        overflow: hidden;
+      }
+      .resource-card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        background:
+          radial-gradient(
+            360px 160px at 10% 10%,
+            rgba(255, 209, 231, 0.4),
+            transparent 60%
+          ),
+          radial-gradient(
+            420px 180px at 90% 0%,
+            rgba(232, 214, 255, 0.45),
+            transparent 65%
+          );
+        opacity: 0.7;
+        pointer-events: none;
+      }
+      .resource-card > * {
+        position: relative;
+      }
+
+      .callout {
+        padding: 18px;
+        border-radius: 18px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 209, 231, 0.85),
+          rgba(232, 214, 255, 0.75)
+        );
+        border: 1px solid rgba(92, 52, 76, 0.16);
+        box-shadow: var(--shadow-sm);
+        color: rgba(44, 31, 47, 0.88);
+        font-weight: 650;
+      }
     </style>
   </head>
 
@@ -791,9 +887,12 @@
     </header>
 
     <main id="content" class="wrap">
-      <div class="hero">
-        <div class="card reveal">
-          <h1>Autism : what it is, how it feels, what helps.</h1>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="card hero-card reveal">
+          <span class="hero-badge">
+            <span aria-hidden="true">🌸</span> JourHelp • gentle support
+          </span>
+          <h1 id="hero-title">Autism: what it is, how it feels, what helps.</h1>
           <p class="lead">
             Autism is a neurodevelopmental difference that shapes communication,
             sensory processing, and patterns of thinking. This page takes a
@@ -801,16 +900,23 @@
             practical, and human.
           </p>
 
-          <div class="pillrow" aria-label="Key principles">
-            <span class="pill"
-              ><span class="dot"></span> Support over “fixing”</span
-            >
-            <span class="pill"
-              ><span class="dot"></span> Clear communication</span
-            >
-            <span class="pill"
-              ><span class="dot"></span> Sensory-friendly options</span
-            >
+          <div class="hero-highlights" aria-label="Key principles">
+            <div class="highlight">
+              <span><span aria-hidden="true">💗</span> Support over “fixing”</span>
+              <small class="sub">Reduce friction, honor identity.</small>
+            </div>
+            <div class="highlight">
+              <span
+                ><span aria-hidden="true">🗣️</span> Clear communication</span
+              >
+              <small class="sub">Concrete steps ease uncertainty.</small>
+            </div>
+            <div class="highlight">
+              <span
+                ><span aria-hidden="true">🫧</span> Sensory-friendly options</span
+              >
+              <small class="sub">Adjust the environment first.</small>
+            </div>
           </div>
 
           <div class="hero-actions">
@@ -826,7 +932,7 @@
           </div>
         </div>
 
-        <aside class="side">
+        <aside class="hero-rail">
           <div class="card reveal" style="padding: 18px">
             <div class="sectionHead" style="margin: 0 0 10px">
               <h2 style="font-size: 18px">Quick guide</h2>
@@ -890,7 +996,7 @@
             </div>
           </div>
         </aside>
-      </div>
+      </section>
 
       <section
         id="understanding"
@@ -907,47 +1013,58 @@
           </div>
         </div>
 
-        <div class="grid3 gridWithMascot">
+        <div class="split">
+          <div class="media-card">
             <img
-    class="mascotFloating"
-    src="MascotJourHelp.png"
-    alt="JourHelp mascot"
-    loading="lazy"
-  />
-          <article class="mini">
-            <h3>Communication & social style</h3>
-            <p>
-              Some people prefer direct language, find small talk tiring, or
-              process conversations more slowly. It’s not “lack of empathy” —
-              often it’s a difference in signaling and processing.
+              src="MascotJourHelp.png"
+              alt="JourHelp mascot"
+              loading="lazy"
+            />
+            <div class="callout">
+              Autism is not a problem to fix — it’s a different way of being.
+            </div>
+            <p class="media-note">
+              This guide focuses on understanding, practical support, and
+              sensory-friendly choices that respect autonomy.
             </p>
-            <span class="tag"
-              ><span aria-hidden="true">💬</span> Clarity helps</span
-            >
-          </article>
+          </div>
 
-          <article class="mini">
-            <h3>Sensory processing</h3>
-            <p>
-              Lights, sound, textures, smells — sensory input can be intense or
-              muted. What’s “fine” one day can be overwhelming another day.
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">🎧</span> Adjust the environment</span
-            >
-          </article>
-          <article class="mini">
-            <h3>Patterns, routines, focus</h3>
-            <p>
-              Many autistic people thrive with predictability, deep interests,
-              and structured routines. Change can be costly — not because it’s
-              “wrong,” but because it takes energy.
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">🧩</span> Support energy
-              management</span
-            >
-          </article>
+          <div class="grid3">
+            <article class="mini">
+              <h3>Communication & social style</h3>
+              <p>
+                Some people prefer direct language, find small talk tiring, or
+                process conversations more slowly. It’s not “lack of empathy”
+                — often it’s a difference in signaling and processing.
+              </p>
+              <span class="tag"
+                ><span aria-hidden="true">💬</span> Clarity helps</span
+              >
+            </article>
+
+            <article class="mini">
+              <h3>Sensory processing</h3>
+              <p>
+                Lights, sound, textures, smells — sensory input can be intense
+                or muted. What’s “fine” one day can be overwhelming another day.
+              </p>
+              <span class="tag"
+                ><span aria-hidden="true">🎧</span> Adjust the environment</span
+              >
+            </article>
+            <article class="mini">
+              <h3>Patterns, routines, focus</h3>
+              <p>
+                Many autistic people thrive with predictability, deep
+                interests, and structured routines. Change can be costly — not
+                because it’s “wrong,” but because it takes energy.
+              </p>
+              <span class="tag"
+                ><span aria-hidden="true">🧩</span> Support energy
+                management</span
+              >
+            </article>
+          </div>
         </div>
       </section>
 
@@ -962,52 +1079,62 @@
           </div>
         </div>
 
-        <div class="grid3 ">
+        <div class="support-grid">
+          <div class="support-stack">
+            <article class="mini">
+              <h3>Ask, don’t assume</h3>
+              <p>
+                “What helps in moments like this?” beats guessing. Needs can
+                change depending on stress, sleep, and setting.
+              </p>
+              <span class="tag"
+                ><span aria-hidden="true">✅</span> Collaborative</span
+              >
+            </article>
 
-          <article class="mini">
-            <h3>Ask, don’t assume</h3>
-            <p>
-              “What helps in moments like this?” beats guessing. Needs can
-              change depending on stress, sleep, and setting.
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">✅</span> Collaborative</span
-            >
-          </article>
+            <article class="mini">
+              <h3>Make instructions concrete</h3>
+              <p>
+                Use clear steps, written follow-ups, examples, and fewer hidden
+                expectations. That’s inclusive design — not special treatment.
+              </p>
+              <span class="tag"
+                ><span aria-hidden="true">📌</span> Reduce ambiguity</span
+              >
+            </article>
 
-          <article class="mini">
-            <h3>Make instructions concrete</h3>
-            <p>
-              Use clear steps, written follow-ups, examples, and fewer hidden
-              expectations. That’s inclusive design — not special treatment.
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">📌</span> Reduce ambiguity</span
-            >
-          </article>
+            <article class="mini">
+              <h3>Respect stimming</h3>
+              <p>
+                Stimming can regulate emotions and sensory load. If it’s safe,
+                it’s often helpful — not a “bad habit.”
+              </p>
+              <span class="tag"
+                ><span aria-hidden="true">🌿</span> Self-regulation</span
+              >
+            </article>
 
-          <article class="mini">
-            <h3>Respect stimming</h3>
-            <p>
-              Stimming can regulate emotions and sensory load. If it’s safe,
-              it’s often helpful — not a “bad habit.”
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">🌿</span> Self-regulation</span
-            >
-          </article>
-        </div>
+            <div class="panel-soft">
+              <h3 style="margin-top: 0">Support checklist</h3>
+              <ul class="list" style="margin-top: 8px">
+                <li>Offer choices and let people opt in or out.</li>
+                <li>Build predictable routines and gentle transitions.</li>
+                <li>Respect sensory boundaries without judgment.</li>
+              </ul>
+            </div>
+          </div>
 
-        <div class="card" style="margin-top: 14px">
-          <div class="quote">
-            <div class="mark" aria-hidden="true">“</div>
-            <div>
-              <blockquote>
-                A useful rule: support should reduce pain and increase choice —
-                without erasing identity. If something demands masking at any
-                cost, it’s worth rethinking.
-              </blockquote>
-              <cite>— Neurodiversity-affirming framing</cite>
+          <div class="card" style="padding: 22px">
+            <div class="quote">
+              <div class="mark" aria-hidden="true">“</div>
+              <div>
+                <blockquote>
+                  A useful rule: support should reduce pain and increase choice
+                  — without erasing identity. If something demands masking at
+                  any cost, it’s worth rethinking.
+                </blockquote>
+                <cite>— Neurodiversity-affirming framing</cite>
+              </div>
             </div>
           </div>
         </div>
@@ -1069,8 +1196,8 @@
           </div>
         </div>
 
-        <div class="grid3">
-          <article class="mini">
+        <div class="resource-grid">
+          <article class="resource-card">
             <h3>Learn & self-understand</h3>
             <p>
               Neurodiversity-affirming explanations and lived experience can
@@ -1112,7 +1239,7 @@
             >
           </article>
 
-          <article class="mini">
+          <article class="resource-card">
             <h3>Practical support & accommodations</h3>
             <p>
               Support is about reducing friction — not proving you “need it
@@ -1129,7 +1256,7 @@
             >
           </article>
 
-          <article class="mini">
+          <article class="resource-card">
             <h3>Community & connection</h3>
             <p>
               You don’t have to figure this out alone. Autistic-led spaces often
