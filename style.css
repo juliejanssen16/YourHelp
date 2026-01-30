@@ -26,8 +26,8 @@ body {
     #f6c2ff 80%
   );
   color: #3a1e2a;
-  font-family: ui-rounded, "Arial Rounded MT Bold", system-ui, -apple-system,
-    Segoe UI, sans-serif;
+  font-family: "OpenDyslexic", "OpenDyslexic3", ui-rounded,
+    "Arial Rounded MT Bold", system-ui, -apple-system, Segoe UI, sans-serif;
 }
 
 /* ---------- APP WRAPPER ---------- */
