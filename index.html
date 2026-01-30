@@ -4,83 +4,53 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <title>Autism — Understanding, Support, Neurodiversity</title>
+    <title>JourHelp — Friendly Guide to Understanding Autism</title>
     <meta
       name="description"
-      content="A modern, pastel-themed informational website about autism: understanding, support, and neurodiversity-affirming practices."
+      content="JourHelp offers a gentle, pastel-themed guide to understanding autism, self-care, and community resources."
     />
 
     <style>
-      /* -----------------------------
-       Pastel Rose Theme
-       ----------------------------- */
-
       :root {
-        /* Core palette */
         --bg: #fff6fb;
-        --panel: rgba(255, 255, 255, 0.86);
-        --panel-strong: rgba(255, 255, 255, 0.96);
+        --panel: rgba(255, 255, 255, 0.9);
+        --panel-strong: rgba(255, 255, 255, 0.98);
         --text: #2c1f2f;
         --muted: rgba(44, 31, 47, 0.7);
-
         --pink: #ffd7ea;
         --pink-strong: #ffc1de;
         --rose: #f7b3c8;
         --lilac: #e8d6ff;
-
+        --mint: #c8f6e6;
+        --blue: #d7f0ff;
+        --orange: #ffe2c2;
+        --purple: #e4dcff;
         --accent: #f283b6;
         --accent-2: #d58bd9;
 
-        /* Shadows */
         --shadow-sm: 0 10px 24px rgba(92, 52, 76, 0.12);
         --shadow-md: 0 20px 48px rgba(92, 52, 76, 0.14);
-        --shadow-lg: 0 34px 90px rgba(92, 52, 76, 0.16);
+        --border: rgba(92, 52, 76, 0.14);
 
-        /* Borders */
-        --border: rgba(92, 52, 76, 0.12);
-        --border-strong: rgba(92, 52, 76, 0.2);
-
-        /* Radius */
         --r-lg: 28px;
         --r-md: 18px;
         --r-sm: 14px;
 
-        /* Spacing */
         --max: 1120px;
         --pad: clamp(16px, 3vw, 28px);
 
-        /* Motion */
         --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
         --dur: 520ms;
 
-        /* Typography */
         --font:
           ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
           Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      }
-
-      /* High-contrast assist mode */
-      :root[data-contrast="high"] {
-        --panel: rgba(255, 255, 255, 0.95);
-        --muted: rgba(44, 31, 47, 0.82);
-        --border: rgba(92, 52, 76, 0.22);
-        --shadow-sm: 0 12px 28px rgba(92, 52, 76, 0.16);
-        --shadow-md: 0 24px 60px rgba(92, 52, 76, 0.22);
-      }
-
-      /* Reduced motion */
-      :root[data-motion="reduced"] * {
-        animation-duration: 1ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 1ms !important;
-        scroll-behavior: auto !important;
       }
 
       * {
         box-sizing: border-box;
       }
 
-      /* JS handles soft / extra-soft scrolling */
       html {
         scroll-behavior: auto;
       }
@@ -115,36 +85,12 @@
         text-decoration: none;
       }
       a:focus-visible,
-      button:focus-visible,
-      input:focus-visible {
+      button:focus-visible {
         outline: 3px solid rgba(242, 131, 182, 0.65);
         outline-offset: 3px;
         border-radius: 12px;
       }
 
-      /* NEW: remove ugly black outline on programmatic focus targets */
-      section:focus,
-      [tabindex="-1"]:focus {
-        outline: none !important;
-      }
-
-      /* Skip link */
-      .skip {
-        position: absolute;
-        left: -999px;
-        top: 10px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        background: var(--panel-strong);
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-        z-index: 1000;
-      }
-      .skip:focus {
-        left: 10px;
-      }
-
-      /* Layout */
       .wrap {
         width: min(var(--max), calc(100% - (var(--pad) * 2)));
         margin-inline: auto;
@@ -168,8 +114,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 0;
-        gap: 14px;
+        padding: 12px 0;
+        gap: 18px;
       }
 
       .brand {
@@ -180,22 +126,16 @@
         letter-spacing: -0.02em;
       }
 
-      /* Logo image styling (DESKTOP unchanged) */
       .brandLogo {
-        height: 100px;
-        width: 200px;
+        height: 70px;
+        width: 170px;
         display: block;
         object-fit: contain;
-
-        transform: scale(1.18);
-        transform-origin: left center;
-
-        line-height: 0;
       }
 
       .navlinks {
         display: flex;
-        gap: 8px;
+        gap: 10px;
         flex-wrap: wrap;
         justify-content: flex-end;
         align-items: center;
@@ -227,14 +167,94 @@
           rgba(255, 209, 231, 0.95),
           rgba(232, 214, 255, 0.85)
         );
-        border-color: var(--border-strong);
+        border-color: rgba(92, 52, 76, 0.2);
+      }
+
+      .chip .icon {
+        display: inline-grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(92, 52, 76, 0.12);
+        font-size: 14px;
+      }
+
+      main {
+        padding: 32px 0 70px;
+      }
+
+      section {
+        margin-top: 36px;
+      }
+
+      .hero-panel {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 218, 237, 0.85),
+          rgba(232, 214, 255, 0.75)
+        );
+        border-radius: 32px;
+        padding: clamp(28px, 4vw, 48px);
+        text-align: center;
+        box-shadow: var(--shadow-md);
+        border: 1px solid rgba(92, 52, 76, 0.12);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-icon {
+        width: 68px;
+        height: 68px;
+        border-radius: 22px;
+        margin: 0 auto 18px;
+        background: rgba(255, 255, 255, 0.85);
+        display: grid;
+        place-items: center;
+        color: var(--accent);
+        font-size: 30px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(32px, 4vw, 52px);
+        letter-spacing: -0.03em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(22px, 2.4vw, 30px);
+        letter-spacing: -0.02em;
+      }
+
+      h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        letter-spacing: -0.01em;
+      }
+
+      .lead {
+        margin: 0 auto 24px;
+        font-size: clamp(16px, 1.6vw, 19px);
+        color: var(--muted);
+        line-height: 1.6;
+        max-width: 64ch;
+      }
+
+      .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
       }
 
       .btn {
-        padding: 10px 14px;
+        padding: 12px 18px;
         border-radius: 999px;
         border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.82);
+        background: rgba(255, 255, 255, 0.86);
         box-shadow: var(--shadow-sm);
         cursor: pointer;
         font-weight: 700;
@@ -242,9 +262,8 @@
           transform var(--dur) var(--ease),
           box-shadow var(--dur) var(--ease);
         display: inline-flex;
-        gap: 10px;
+        gap: 8px;
         align-items: center;
-        white-space: nowrap;
       }
       .btn:hover {
         transform: translateY(-1px);
@@ -256,442 +275,191 @@
           rgba(247, 179, 200, 0.95),
           rgba(232, 214, 255, 0.85)
         );
-        border-color: rgba(30, 34, 64, 0.14);
       }
 
-      /* -------------------------------------------
-         Mobile header layout fix + collapse
-         ------------------------------------------- */
-
-      header,
-      .wrap.nav,
-      .brandLogo,
-      .chip,
-      .btn {
-        transition:
-          padding var(--dur) var(--ease),
-          box-shadow var(--dur) var(--ease),
-          height var(--dur) var(--ease),
-          width var(--dur) var(--ease),
-          transform var(--dur) var(--ease),
-          font-size var(--dur) var(--ease);
+      .section-head {
+        text-align: center;
+        margin-bottom: 22px;
       }
 
-      @media (max-width: 768px) {
-        .wrap.nav {
+      .section-sub {
+        margin: 8px auto 0;
+        color: var(--muted);
+        max-width: 70ch;
+        line-height: 1.6;
+      }
+
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      @media (max-width: 980px) {
+        .grid-4,
+        .grid-3,
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+
+        .nav {
           flex-direction: column;
           align-items: flex-start;
-          gap: 10px;
-        }
-
-        .brand {
-          width: 100%;
-        }
-
-        .brandLogo {
-          max-width: 100%;
         }
 
         .navlinks {
           width: 100%;
           justify-content: flex-start;
-          flex-wrap: nowrap;
           overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
           padding-bottom: 6px;
-        }
-        .navlinks > * {
-          flex: 0 0 auto;
-        }
-        .navlinks::-webkit-scrollbar {
-          height: 6px;
-        }
-
-        header.is-compact {
-          box-shadow: 0 10px 30px rgba(92, 52, 76, 0.1);
-        }
-        header.is-compact .wrap.nav {
-          padding: 6px 0;
-        }
-        header.is-compact .brandLogo {
-          height: 56px;
-          width: 150px;
-          transform: scale(1.06);
-        }
-        header.is-compact .chip {
-          padding: 8px 10px;
-          font-size: 14px;
-        }
-        header.is-compact .btn {
-          padding: 8px 12px;
-          font-size: 14px;
-        }
-      }
-
-      main {
-        padding: 34px 0 70px;
-      }
-
-      /* Hero */
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
-        gap: 24px;
-        align-items: start;
-        margin-top: 16px;
-      }
-      @media (max-width: 960px) {
-        .hero {
-          grid-template-columns: 1fr;
         }
       }
 
       .card {
         background: var(--panel);
-        border: 1px solid var(--border);
         border-radius: var(--r-lg);
-        box-shadow: var(--shadow-md);
-        padding: clamp(20px, 3.4vw, 32px);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        padding: 20px;
         position: relative;
         overflow: hidden;
       }
 
-      .card::before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        background:
-          radial-gradient(
-            700px 260px at 10% 10%,
-            rgba(247, 179, 200, 0.5),
-            transparent 55%
-          ),
-          radial-gradient(
-            520px 280px at 88% 0%,
-            rgba(232, 214, 255, 0.55),
-            transparent 55%
-          );
-        opacity: 0.7;
-        pointer-events: none;
-      }
-      .card > * {
-        position: relative;
+      .card-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+        margin-bottom: 14px;
+        border: 1px solid rgba(92, 52, 76, 0.12);
+        background: rgba(255, 255, 255, 0.9);
       }
 
-      h1 {
-        margin: 0 0 10px;
-        font-size: clamp(30px, 3.6vw, 46px);
-        line-height: 1.04;
-        letter-spacing: -0.03em;
-      }
-      .lead {
-        margin: 0 0 18px;
-        font-size: clamp(15px, 1.55vw, 18px);
+      .card .muted {
         color: var(--muted);
         line-height: 1.55;
-        max-width: 60ch;
+        margin: 0 0 16px;
       }
 
-      .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.78);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-sm);
+      .card-link {
         font-weight: 700;
-        color: rgba(44, 31, 47, 0.78);
-        margin-bottom: 14px;
-      }
-
-      .hero-highlights {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 12px;
-        margin: 20px 0 6px;
-      }
-      .highlight {
-        padding: 12px 14px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.72);
-        border: 1px solid var(--border);
-        box-shadow: 0 10px 22px rgba(92, 52, 76, 0.08);
-        font-weight: 650;
-        color: rgba(44, 31, 47, 0.8);
-        display: grid;
-        gap: 6px;
-      }
-      .highlight span {
+        color: var(--accent);
         display: inline-flex;
+        gap: 6px;
         align-items: center;
-        gap: 8px;
-      }
-      .highlight .sub {
-        margin: 0;
-        font-size: 12px;
-        color: rgba(44, 31, 47, 0.65);
       }
 
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 18px;
-      }
-
-      /* Side panel */
-      .side {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-
-      .statgrid {
+      .split-banner {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      @media (max-width: 520px) {
-        .statgrid {
-          grid-template-columns: 1fr;
-        }
+        gap: 18px;
       }
 
-      .stat {
-        padding: 16px;
-        border-radius: var(--r-md);
-        background: rgba(255, 255, 255, 0.74);
-        border: 1px solid var(--border);
-        box-shadow: 0 12px 26px rgba(92, 52, 76, 0.08);
-      }
-      .stat .k {
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: rgba(44, 31, 47, 0.6);
-        margin-bottom: 8px;
-        font-weight: 750;
-      }
-      .stat .v {
-        font-size: 16px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
-      }
-
-      .toggleRow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 16px;
-        border-radius: var(--r-md);
-        background: rgba(255, 255, 255, 0.78);
-        border: 1px solid var(--border);
-        box-shadow: 0 12px 26px rgba(92, 52, 76, 0.08);
-      }
-      .toggleRow p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.35;
-      }
-      .toggleRow strong {
-        color: rgba(44, 31, 47, 0.88);
-      }
-
-      .switch {
-        width: 54px;
-        height: 32px;
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        position: relative;
-        cursor: pointer;
-        flex: 0 0 auto;
-      }
-      .switch::after {
-        content: "";
-        position: absolute;
-        width: 26px;
-        height: 26px;
-        top: 2px;
-        left: 2px;
-        border-radius: 999px;
+      .callout {
         background: linear-gradient(
           135deg,
-          rgba(247, 179, 200, 0.95),
-          rgba(232, 214, 255, 0.9)
+          rgba(255, 218, 237, 0.82),
+          rgba(232, 214, 255, 0.78)
         );
-        box-shadow: var(--shadow-sm);
-        transition: transform var(--dur) var(--ease);
-      }
-      .switch[aria-checked="true"]::after {
-        transform: translateX(22px);
-      }
-
-      /* Sections */
-      section {
-        margin-top: 24px;
-      }
-      .sectionHead {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 12px;
-        margin: 30px 0 14px;
-      }
-      h2 {
-        margin: 0;
-        font-size: clamp(20px, 2.2vw, 28px);
-        letter-spacing: -0.02em;
-      }
-      .sub {
-        margin: 0;
-        color: var(--muted);
-        max-width: 70ch;
-        line-height: 1.5;
-      }
-
-      .grid3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-      }
-      @media (max-width: 980px) {
-        .grid3 {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .mini {
-        padding: 18px;
-        border-radius: var(--r-lg);
-        background: rgba(255, 255, 255, 0.78);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-sm);
-        transition:
-          transform var(--dur) var(--ease),
-          box-shadow var(--dur) var(--ease);
-        overflow: hidden;
-        position: relative;
-      }
-      .mini:hover {
-        transform: translateY(-2px);
+        border-radius: 32px;
+        padding: clamp(26px, 4vw, 42px);
+        text-align: center;
+        border: 1px solid rgba(92, 52, 76, 0.12);
         box-shadow: var(--shadow-md);
       }
 
-      .mini::before {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        background:
-          radial-gradient(
-            320px 120px at 20% 0%,
-            rgba(255, 209, 231, 0.45),
-            transparent 60%
-          ),
-          radial-gradient(
-            340px 150px at 90% 10%,
-            rgba(232, 214, 255, 0.42),
-            transparent 65%
-          );
-        opacity: 0.7;
-        pointer-events: none;
-      }
-      .mini > * {
-        position: relative;
+      .callout h3 {
+        font-size: clamp(24px, 3vw, 32px);
+        margin-bottom: 10px;
       }
 
-      .mini h3 {
-        margin: 0 0 10px;
-        font-size: 18px;
-        letter-spacing: -0.01em;
-      }
-      .mini p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.55;
+      .accordion {
+        display: grid;
+        gap: 16px;
       }
 
-      .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.8);
+      details.accordion-item {
+        background: var(--panel-strong);
+        border-radius: var(--r-lg);
         border: 1px solid var(--border);
-        margin-top: 12px;
-        font-weight: 650;
-        color: rgba(44, 31, 47, 0.78);
-        font-size: 13px;
+        box-shadow: var(--shadow-sm);
+        padding: 0;
+        overflow: hidden;
       }
 
-      /* list styling */
-      .list {
-        margin: 12px 0 0;
-        padding-left: 18px;
-        color: var(--muted);
-        line-height: 1.55;
+      details.accordion-item summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 22px;
+        cursor: pointer;
       }
+
+      details.accordion-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .accordion-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(92, 52, 76, 0.12);
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+      }
+
+      .accordion-title {
+        flex: 1;
+        font-weight: 700;
+      }
+
+      .accordion-chevron {
+        font-size: 18px;
+        color: rgba(44, 31, 47, 0.6);
+        transition: transform var(--dur) var(--ease);
+      }
+
+      details[open] .accordion-chevron {
+        transform: rotate(180deg);
+      }
+
+      .accordion-body {
+        padding: 0 22px 18px 82px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .list {
+        margin: 10px 0 0;
+        padding-left: 20px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
       .list li {
         margin: 8px 0;
       }
-      .list a {
-        text-decoration: underline;
-        text-underline-offset: 3px;
-        text-decoration-thickness: 1.5px;
-      }
-      .list a:hover {
-        opacity: 0.9;
-      }
 
-      /* Quote panel */
-      .quote {
-        display: flex;
-        gap: 14px;
-        align-items: flex-start;
-      }
-      .mark {
-        width: 44px;
-        height: 44px;
-        border-radius: 16px;
-        background: linear-gradient(
-          135deg,
-          rgba(247, 179, 200, 0.9),
-          rgba(232, 214, 255, 0.85)
-        );
-        border: 1px solid rgba(30, 34, 64, 0.1);
-        box-shadow: var(--shadow-sm);
-        display: grid;
-        place-items: center;
-        font-weight: 900;
-        letter-spacing: -0.03em;
-      }
-      blockquote {
-        margin: 0;
-        color: rgba(44, 31, 47, 0.85);
-        line-height: 1.55;
-        font-size: 16px;
-      }
-      cite {
-        display: block;
-        margin-top: 8px;
-        color: var(--muted);
-        font-style: normal;
-        font-size: 13px;
-      }
-
-      /* Footer */
       footer {
-        margin-top: 28px;
+        margin-top: 40px;
         padding: 24px 0 16px;
         color: rgba(44, 31, 47, 0.7);
       }
+
       .foot {
         display: flex;
         justify-content: space-between;
@@ -702,746 +470,562 @@
         padding-top: 18px;
       }
 
-      /* Reveal animation */
-      .reveal {
-        opacity: 0;
-        transform: translateY(12px);
-        transition:
-          opacity var(--dur) var(--ease),
-          transform var(--dur) var(--ease);
-      }
-      .reveal.is-in {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* New layout additions */
-      .hero-card {
-        padding: clamp(24px, 4vw, 38px);
-      }
-
-      .hero-rail {
-        display: grid;
-        gap: 16px;
-      }
-
-      .split {
-        display: grid;
-        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-        gap: 24px;
-        align-items: stretch;
-      }
-      @media (max-width: 980px) {
-        .split {
-          grid-template-columns: 1fr;
-        }
-      }
-      .split .grid3 {
-        grid-template-columns: 1fr;
-      }
-
-      .media-card {
-        background: rgba(255, 255, 255, 0.82);
-        border: 1px solid var(--border);
-        border-radius: var(--r-lg);
-        padding: 20px;
-        box-shadow: var(--shadow-md);
-        display: grid;
-        gap: 16px;
-        align-content: start;
-      }
-
-      .media-card img {
-        width: 100%;
-        border-radius: 22px;
-        object-fit: contain;
-        background: linear-gradient(
-          160deg,
-          rgba(255, 209, 231, 0.6),
-          rgba(232, 214, 255, 0.5)
-        );
-        padding: 18px;
-      }
-
-      .media-note {
-        font-size: 14px;
-        color: var(--muted);
-        line-height: 1.6;
-      }
-
-      .support-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
-        gap: 20px;
-      }
-      @media (max-width: 980px) {
-        .support-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .support-stack {
-        display: grid;
-        gap: 14px;
-      }
-
-      .panel-soft {
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: var(--r-lg);
-        border: 1px solid var(--border);
-        padding: 20px;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .resource-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-      }
-      @media (max-width: 980px) {
-        .resource-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .resource-card {
-        padding: 20px;
-        border-radius: var(--r-lg);
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: var(--shadow-md);
-        position: relative;
-        overflow: hidden;
-      }
-      .resource-card::before {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        background:
-          radial-gradient(
-            360px 160px at 10% 10%,
-            rgba(255, 209, 231, 0.4),
-            transparent 60%
-          ),
-          radial-gradient(
-            420px 180px at 90% 0%,
-            rgba(232, 214, 255, 0.45),
-            transparent 65%
-          );
-        opacity: 0.7;
-        pointer-events: none;
-      }
-      .resource-card > * {
-        position: relative;
-      }
-
-      .callout {
-        padding: 18px;
-        border-radius: 18px;
+      .floating-chat {
+        position: fixed;
+        right: 28px;
+        bottom: 28px;
+        width: 58px;
+        height: 58px;
+        border-radius: 999px;
         background: linear-gradient(
           135deg,
-          rgba(255, 209, 231, 0.85),
-          rgba(232, 214, 255, 0.75)
+          rgba(248, 131, 182, 0.95),
+          rgba(212, 141, 216, 0.9)
         );
-        border: 1px solid rgba(92, 52, 76, 0.16);
+        box-shadow: 0 14px 30px rgba(92, 52, 76, 0.2);
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 22px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .soft-line {
+        height: 3px;
+        width: 32px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          rgba(242, 131, 182, 0.9),
+          rgba(232, 214, 255, 0.9)
+        );
+        margin: 0 auto 12px;
+      }
+
+      .note-card {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        background: rgba(255, 239, 247, 0.9);
+        border-radius: var(--r-lg);
+        padding: 18px 22px;
+        border: 1px solid rgba(247, 179, 200, 0.5);
         box-shadow: var(--shadow-sm);
-        color: rgba(44, 31, 47, 0.88);
-        font-weight: 650;
+      }
+
+      .note-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(92, 52, 76, 0.12);
+        font-size: 20px;
+      }
+
+      .note-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .resource-link {
+        font-weight: 700;
+        color: var(--accent);
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
       }
     </style>
   </head>
 
   <body>
-    <a class="skip" href="#content">Skip to content</a>
-
     <header>
       <div class="wrap nav" aria-label="Primary navigation">
         <div class="brand">
-          <div>
-            <img
-              class="brandLogo"
-              src="YourHelpLogoLong-removebg-preview.png"
-              alt="JourHelp"
-            />
-            <div style="font-size: 12px; opacity: 0.62; font-weight: 700">
-              Autism • Neurodiversity • Support
-            </div>
-          </div>
+          <img
+            class="brandLogo"
+            src="YourHelpLogoLong-removebg-preview.png"
+            alt="JourHelp"
+          />
         </div>
 
         <nav class="navlinks">
-          <a class="chip" href="#understanding">Understanding</a>
-          <a class="chip" href="#support">Support</a>
-          <a class="chip" href="#sensory">Sensory</a>
-          <a class="chip" href="#resources">Resources</a>
-          <button
-            class="btn primary"
-            id="scrollTopBtn"
-            type="button"
-            aria-label="Scroll to top"
-          >
-            ↑ Top
-          </button>
+          <a class="chip" href="#home">
+            <span class="icon">🏠</span> Home
+          </a>
+          <a class="chip" href="#learn">
+            <span class="icon">📖</span> Learn
+          </a>
+          <a class="chip" href="#resources">
+            <span class="icon">✨</span> Resources
+          </a>
+          <a class="chip" href="#self-care">
+            <span class="icon">💗</span> Self-Care
+          </a>
+          <a class="chip" href="#faq">
+            <span class="icon">❓</span> FAQ
+          </a>
         </nav>
       </div>
     </header>
 
     <main id="content" class="wrap">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="card hero-card reveal">
-          <span class="hero-badge">
-            <span aria-hidden="true">🌸</span> JourHelp • gentle support
-          </span>
-          <h1 id="hero-title">Autism: what it is, how it feels, what helps.</h1>
+      <section id="home">
+        <div class="hero-panel">
+          <div class="hero-icon">💗</div>
+          <p class="soft-line" aria-hidden="true"></p>
+          <h1>Your Friendly Guide to Understanding Autism</h1>
           <p class="lead">
-            Autism is a neurodevelopmental difference that shapes communication,
-            sensory processing, and patterns of thinking. This page takes a
-            <strong>neurodiversity-affirming</strong> approach: informed,
-            practical, and human.
+            A safe, supportive space to learn, connect, and find resources.
+            We're here to help you on your journey with understanding and
+            compassion.
           </p>
-
-          <div class="hero-highlights" aria-label="Key principles">
-            <div class="highlight">
-              <span><span aria-hidden="true">💗</span> Support over “fixing”</span>
-              <small class="sub">Reduce friction, honor identity.</small>
-            </div>
-            <div class="highlight">
-              <span
-                ><span aria-hidden="true">🗣️</span> Clear communication</span
-              >
-              <small class="sub">Concrete steps ease uncertainty.</small>
-            </div>
-            <div class="highlight">
-              <span
-                ><span aria-hidden="true">🫧</span> Sensory-friendly options</span
-              >
-              <small class="sub">Adjust the environment first.</small>
-            </div>
-          </div>
-
           <div class="hero-actions">
-            <a class="btn" href="#resources">
-              <span aria-hidden="true">✨</span> Browse resources
-            </a>
-            <a class="btn" href="#support">
-              <span aria-hidden="true">🧠</span> Practical support
-            </a>
-            <a class="btn" href="#sensory">
-              <span aria-hidden="true">🎛️</span> Sensory settings
-            </a>
+            <a class="btn primary" href="#learn">Start Learning →</a>
+            <a class="btn" href="#resources">View Resources</a>
           </div>
         </div>
 
-        <aside class="hero-rail">
-          <div class="card reveal" style="padding: 18px">
-            <div class="sectionHead" style="margin: 0 0 10px">
-              <h2 style="font-size: 18px">Quick guide</h2>
-              <p class="sub" style="font-size: 13px">A few grounding truths.</p>
-            </div>
-
-            <div class="statgrid" role="list">
-              <div class="stat" role="listitem">
-                <div class="k">Autism is</div>
-                <div class="v">a spectrum of traits</div>
-              </div>
-              <div class="stat" role="listitem">
-                <div class="k">Needs vary</div>
-                <div class="v">by context + energy</div>
-              </div>
-              <div class="stat" role="listitem">
-                <div class="k">Support helps</div>
-                <div class="v">without changing identity</div>
-              </div>
-              <div class="stat" role="listitem">
-                <div class="k">Best practice</div>
-                <div class="v">listen, adapt, collaborate</div>
-              </div>
-            </div>
+        <section>
+          <div class="section-head">
+            <h2>How Can We Help You?</h2>
+            <p class="section-sub">
+              Explore our resources designed with care for individuals,
+              families, and caregivers.
+            </p>
           </div>
-
-          <div class="card reveal" style="padding: 18px">
-            <div class="sectionHead" style="margin: 0 0 12px">
-              <h2 style="font-size: 18px">Sensory settings</h2>
-              <p class="sub" style="font-size: 13px">Make this page calmer.</p>
-            </div>
-
-            <div class="toggleRow">
-              <div>
-                <strong>Reduce motion</strong>
-                <p>Less animation + no smooth scrolling.</p>
-              </div>
-              <button
-                class="switch"
-                id="motionSwitch"
-                type="button"
-                role="switch"
-                aria-checked="false"
-                aria-label="Reduce motion"
-              ></button>
-            </div>
-
-            <div class="toggleRow" style="margin-top: 10px">
-              <div>
-                <strong>Boost contrast</strong>
-                <p>Sharper borders + stronger clarity.</p>
-              </div>
-              <button
-                class="switch"
-                id="contrastSwitch"
-                type="button"
-                role="switch"
-                aria-checked="false"
-                aria-label="Boost contrast"
-              ></button>
-            </div>
+          <div class="grid-4">
+            <article class="card">
+              <div class="card-icon" style="background: #ffe5f0">📘</div>
+              <h3>Learn About Autism</h3>
+              <p class="muted">
+                Understand autism spectrum in a friendly, accessible way with
+                clear explanations.
+              </p>
+              <a class="card-link" href="#learn">Explore →</a>
+            </article>
+            <article class="card">
+              <div class="card-icon" style="background: #e9ddff">✨</div>
+              <h3>Helpful Resources</h3>
+              <p class="muted">
+                Discover support groups, services, and tools designed for the
+                autism community.
+              </p>
+              <a class="card-link" href="#resources">Explore →</a>
+            </article>
+            <article class="card">
+              <div class="card-icon" style="background: #d9f6ec">💚</div>
+              <h3>Self-Care Tips</h3>
+              <p class="muted">
+                Find calming techniques, sensory strategies, and wellness
+                practices.
+              </p>
+              <a class="card-link" href="#self-care">Explore →</a>
+            </article>
+            <article class="card">
+              <div class="card-icon" style="background: #e4dcff">❔</div>
+              <h3>FAQ</h3>
+              <p class="muted">
+                Get answers to common questions about autism and support
+                options.
+              </p>
+              <a class="card-link" href="#faq">Explore →</a>
+            </article>
           </div>
-        </aside>
+        </section>
+
+        <section class="split-banner">
+          <div class="callout">
+            <div class="hero-icon" style="width: 60px; height: 60px">
+              ❤️
+            </div>
+            <h3>You're Not Alone</h3>
+            <p class="lead" style="margin-bottom: 18px">
+              Whether you're autistic, a parent, caregiver, or simply want to
+              learn more, JourHelp is here to support you with understanding and
+              kindness.
+            </p>
+            <a class="btn" href="#self-care">Explore Self-Care →</a>
+          </div>
+        </section>
       </section>
 
-      <section
-        id="understanding"
-        class="reveal"
-        aria-labelledby="h-understanding"
-      >
-        <div class="sectionHead">
+      <section id="learn">
+        <div class="hero-panel" style="background: rgba(248, 231, 247, 0.9)">
+          <div class="hero-icon">🧠</div>
+          <h2>Learn About Autism</h2>
+          <p class="lead">
+            Understanding autism helps us create a more inclusive and
+            compassionate world. Explore these topics at your own pace.
+          </p>
+        </div>
+
+        <div class="accordion" style="margin-top: 24px">
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">🧠</span>
+              <span class="accordion-title">What is Autism?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Autism is a neurodevelopmental difference that shapes how people
+              communicate, process sensory input, and experience the world.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #e4dcff">🧩</span>
+              <span class="accordion-title">Common Characteristics</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Many autistic people share traits like intense focus, sensory
+              sensitivity, direct communication, and deep interests.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #c8f6e6">✨</span>
+              <span class="accordion-title">Autistic Strengths</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Strengths can include creativity, honesty, pattern recognition,
+              and strong memory. Many thrive in structured and supportive
+              settings.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #e4dcff">💬</span>
+              <span class="accordion-title">Communication Differences</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Some autistic people prefer clear, direct language and may use
+              different body language or eye contact styles.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe2c2">👁️</span>
+              <span class="accordion-title">Sensory Processing</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Sensory input can feel heightened or muted. Adjusting lights,
+              sound, and textures can make spaces more comfortable.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">🤝</span>
+              <span class="accordion-title">Supporting Autistic People</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Support is about listening, respecting autonomy, and reducing
+              stressors rather than forcing someone to mask or change who they
+              are.
+            </div>
+          </details>
+        </div>
+
+        <div class="note-card" style="margin-top: 24px">
+          <div class="note-icon">💗</div>
           <div>
-            <h2 id="h-understanding">Understanding autism</h2>
-            <p class="sub">
-              Autism shows up differently for different people. These are common
-              areas — not a checklist.
+            <strong>Remember</strong>
+            <p>
+              Every autistic person is unique. What works for one person may not
+              work for another. The best approach is always to listen, ask, and
+              respect individual needs and preferences.
             </p>
-          </div>
-        </div>
-
-        <div class="split">
-          <div class="media-card">
-            <img
-              src="MascotJourHelp.png"
-              alt="JourHelp mascot"
-              loading="lazy"
-            />
-            <div class="callout">
-              Autism is not a problem to fix — it’s a different way of being.
-            </div>
-            <p class="media-note">
-              This guide focuses on understanding, practical support, and
-              sensory-friendly choices that respect autonomy.
-            </p>
-          </div>
-
-          <div class="grid3">
-            <article class="mini">
-              <h3>Communication & social style</h3>
-              <p>
-                Some people prefer direct language, find small talk tiring, or
-                process conversations more slowly. It’s not “lack of empathy”
-                — often it’s a difference in signaling and processing.
-              </p>
-              <span class="tag"
-                ><span aria-hidden="true">💬</span> Clarity helps</span
-              >
-            </article>
-
-            <article class="mini">
-              <h3>Sensory processing</h3>
-              <p>
-                Lights, sound, textures, smells — sensory input can be intense
-                or muted. What’s “fine” one day can be overwhelming another day.
-              </p>
-              <span class="tag"
-                ><span aria-hidden="true">🎧</span> Adjust the environment</span
-              >
-            </article>
-            <article class="mini">
-              <h3>Patterns, routines, focus</h3>
-              <p>
-                Many autistic people thrive with predictability, deep
-                interests, and structured routines. Change can be costly — not
-                because it’s “wrong,” but because it takes energy.
-              </p>
-              <span class="tag"
-                ><span aria-hidden="true">🧩</span> Support energy
-                management</span
-              >
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="support" class="reveal" aria-labelledby="h-support">
-        <div class="sectionHead">
-          <div>
-            <h2 id="h-support">Support that respects autonomy</h2>
-            <p class="sub">
-              Good support isn’t about forcing someone to look “normal.” It’s
-              about reducing friction and building safety.
-            </p>
-          </div>
-        </div>
-
-        <div class="support-grid">
-          <div class="support-stack">
-            <article class="mini">
-              <h3>Ask, don’t assume</h3>
-              <p>
-                “What helps in moments like this?” beats guessing. Needs can
-                change depending on stress, sleep, and setting.
-              </p>
-              <span class="tag"
-                ><span aria-hidden="true">✅</span> Collaborative</span
-              >
-            </article>
-
-            <article class="mini">
-              <h3>Make instructions concrete</h3>
-              <p>
-                Use clear steps, written follow-ups, examples, and fewer hidden
-                expectations. That’s inclusive design — not special treatment.
-              </p>
-              <span class="tag"
-                ><span aria-hidden="true">📌</span> Reduce ambiguity</span
-              >
-            </article>
-
-            <article class="mini">
-              <h3>Respect stimming</h3>
-              <p>
-                Stimming can regulate emotions and sensory load. If it’s safe,
-                it’s often helpful — not a “bad habit.”
-              </p>
-              <span class="tag"
-                ><span aria-hidden="true">🌿</span> Self-regulation</span
-              >
-            </article>
-
-            <div class="panel-soft">
-              <h3 style="margin-top: 0">Support checklist</h3>
-              <ul class="list" style="margin-top: 8px">
-                <li>Offer choices and let people opt in or out.</li>
-                <li>Build predictable routines and gentle transitions.</li>
-                <li>Respect sensory boundaries without judgment.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="card" style="padding: 22px">
-            <div class="quote">
-              <div class="mark" aria-hidden="true">“</div>
-              <div>
-                <blockquote>
-                  A useful rule: support should reduce pain and increase choice
-                  — without erasing identity. If something demands masking at
-                  any cost, it’s worth rethinking.
-                </blockquote>
-                <cite>— Neurodiversity-affirming framing</cite>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <section id="sensory" class="reveal" aria-labelledby="h-sensory">
-        <div class="sectionHead">
-          <div>
-            <h2 id="h-sensory">Sensory-friendly ideas</h2>
-            <p class="sub">
-              Quick adjustments that often reduce overload. Take what fits,
-              ignore what doesn’t.
-            </p>
-          </div>
+      <section id="resources">
+        <div class="hero-panel" style="background: rgba(248, 231, 247, 0.9)">
+          <div class="hero-icon">✨</div>
+          <h2>Helpful Resources</h2>
+          <p class="lead">
+            A curated collection of trusted organizations, communities, and
+            tools to support you on your journey.
+          </p>
         </div>
 
-        <div class="grid3">
-          <article class="mini">
-            <h3>Sound</h3>
-            <p>
-              Noise-cancelling headphones, predictable playlists, “quiet
-              corners,” or asking for a lower-volume space.
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">🔇</span> Lower intensity</span
-            >
-          </article>
-          <article class="mini">
-            <h3>Light</h3>
-            <p>
-              Warm lamps over overhead lights, screen dimming, sunglasses
-              indoors (yes, it can be legit).
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">💡</span> Soften glare</span
-            >
-          </article>
-          <article class="mini">
-            <h3>Transitions</h3>
-            <p>
-              Timers, previewing changes, written plans, and
-              “one-step-at-a-time” checklists.
-            </p>
-            <span class="tag"
-              ><span aria-hidden="true">⏳</span> Predictability</span
-            >
-          </article>
-        </div>
+        <section style="margin-top: 26px">
+          <div class="section-head">
+            <div class="soft-line" aria-hidden="true"></div>
+            <h2>Organizations &amp; Support</h2>
+          </div>
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-icon" style="background: #ffe5f0">🌐</div>
+              <h3>Autism Society of America</h3>
+              <p class="muted">
+                National organization providing education, advocacy, and support
+                for autistic individuals and families.
+              </p>
+              <a class="resource-link" href="https://autismsociety.org" target="_blank" rel="noopener">
+                Visit website ↗
+              </a>
+            </article>
+            <article class="card">
+              <div class="card-icon" style="background: #e4dcff">💜</div>
+              <h3>Autistic Self Advocacy Network (ASAN)</h3>
+              <p class="muted">
+                Run by and for autistic people, advocating for disability rights
+                and acceptance.
+              </p>
+              <a class="resource-link" href="https://autisticadvocacy.org" target="_blank" rel="noopener">
+                Visit website ↗
+              </a>
+            </article>
+            <article class="card">
+              <div class="card-icon" style="background: #c8f6e6">👥</div>
+              <h3>Autism Science Foundation</h3>
+              <p class="muted">
+                Supporting autism research and providing science-based
+                information to families.
+              </p>
+              <a class="resource-link" href="https://autismsciencefoundation.org" target="_blank" rel="noopener">
+                Visit website ↗
+              </a>
+            </article>
+          </div>
+        </section>
+
+        <section style="margin-top: 30px">
+          <div class="section-head">
+            <div class="soft-line" aria-hidden="true"></div>
+            <h2>Community &amp; Connection</h2>
+          </div>
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-icon" style="background: #e4dcff">💬</div>
+              <h3>Wrong Planet</h3>
+              <p class="muted">
+                Online community for individuals on the autism spectrum, their
+                families, and others interested in autism.
+              </p>
+              <a class="resource-link" href="https://wrongplanet.net" target="_blank" rel="noopener">
+                Join community ↗
+              </a>
+            </article>
+            <article class="card">
+              <div class="card-icon" style="background: #ffe5f0">👥</div>
+              <h3>Autism Forums</h3>
+              <p class="muted">
+                A friendly discussion community for autistic individuals and
+                those who love them.
+              </p>
+              <a class="resource-link" href="https://www.autismforums.com" target="_blank" rel="noopener">
+                Join forum ↗
+              </a>
+            </article>
+          </div>
+        </section>
       </section>
 
-      <section id="resources" class="reveal" aria-labelledby="h-resources">
-        <div class="sectionHead">
-          <div>
-            <h2 id="h-resources">Resources & next steps</h2>
-            <p class="sub">
-              You don’t need to do everything at once. Pick one small step that
-              feels supportive — and ignore the rest for now.
-            </p>
-          </div>
+      <section id="self-care">
+        <div class="section-head">
+          <div class="soft-line" aria-hidden="true"></div>
+          <h2>Calming Techniques</h2>
         </div>
-
-        <div class="resource-grid">
-          <article class="resource-card">
-            <h3>Learn & self-understand</h3>
-            <p>
-              Neurodiversity-affirming explanations and lived experience can
-              help you name your patterns without shame.
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-icon" style="background: #c8f6e6">🌬️</div>
+            <h3>Deep Breathing</h3>
+            <p class="muted">
+              Simple breathing exercises to help calm your nervous system.
             </p>
             <ul class="list">
-              <li>
-                <a
-                  href="https://neuroclastic.com/"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  NeuroClastic
-                </a>
-                — autistic-led articles & perspectives
-              </li>
-              <li>
-                <a
-                  href="https://embrace-autism.com/"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Embrace Autism
-                </a>
-                — identity-affirming explanations & self-reflection tools
-              </li>
-              <li>
-                <a
-                  href="https://autisticadvocacy.org/"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Autistic Self Advocacy Network (ASAN)
-                </a>
-              </li>
+              <li>Try 4-7-8 breathing: inhale for 4 counts, hold for 7, exhale for 8</li>
+              <li>Box breathing: 4 counts in, hold 4, out 4, hold 4</li>
+              <li>Focus on slow, belly breaths</li>
+              <li>Practice in a comfortable, quiet space</li>
             </ul>
-            <span class="tag"
-              ><span aria-hidden="true">📘</span> Understanding</span
-            >
           </article>
 
-          <article class="resource-card">
-            <h3>Practical support & accommodations</h3>
-            <p>
-              Support is about reducing friction — not proving you “need it
-              badly enough.” These ideas can make daily life gentler.
-            </p>
+          <article class="card">
+            <div class="card-icon" style="background: #e4dcff">⏱️</div>
+            <h3>Grounding Exercises</h3>
+            <p class="muted">Techniques to bring you back to the present moment.</p>
             <ul class="list">
-              <li>Create a short “What helps me” note</li>
-              <li>Request written instructions or follow-ups</li>
-              <li>Ask for sensory adjustments or breaks</li>
-              <li>Use checklists instead of verbal-only tasks</li>
+              <li>5-4-3-2-1: Name 5 things you see, 4 you hear, 3 you feel</li>
+              <li>Hold a cold object or splash cold water on your face</li>
+              <li>Press your feet firmly into the ground</li>
+              <li>Describe your surroundings in detail</li>
             </ul>
-            <span class="tag"
-              ><span aria-hidden="true">🧠</span> Reduce load</span
-            >
           </article>
 
-          <article class="resource-card">
-            <h3>Community & connection</h3>
-            <p>
-              You don’t have to figure this out alone. Autistic-led spaces often
-              feel safer, slower, and more validating.
-            </p>
+          <article class="card">
+            <div class="card-icon" style="background: #ffd7ea">〰️</div>
+            <h3>Progressive Muscle Relaxation</h3>
+            <p class="muted">Release tension by tensing and relaxing muscle groups.</p>
             <ul class="list">
-              <li>Peer support groups (online or local)</li>
-              <li>Autistic-led communities & forums</li>
-              <li>Creators sharing lived autistic experience</li>
+              <li>Start with your toes and work up to your head</li>
+              <li>Tense each muscle group for 5 seconds, then release</li>
+              <li>Notice the difference between tension and relaxation</li>
+              <li>Take slow breaths throughout</li>
             </ul>
-            <span class="tag"
-              ><span aria-hidden="true">🤝</span> You’re not alone</span
-            >
           </article>
         </div>
 
-        <div class="card" style="margin-top: 14px">
-          <div class="quote">
-            <div class="mark" aria-hidden="true">“</div>
-            <div>
-              <blockquote>
-                A good next step is one that makes your life a little easier —
-                not one that exhausts you. You’re allowed to go slowly.
-              </blockquote>
-              <cite>— Gentle guidance</cite>
-            </div>
+        <section style="margin-top: 34px">
+          <div class="section-head">
+            <div class="soft-line" aria-hidden="true"></div>
+            <h2>Sensory Strategies</h2>
           </div>
-        </div>
+          <div class="grid-3">
+            <article class="card">
+              <div class="card-icon" style="background: #e4dcff">🎧</div>
+              <h3>Sound Management</h3>
+              <p class="muted">
+                Noise-cancelling headphones, predictable playlists, and finding
+                quiet corners can ease sensory overload.
+              </p>
+            </article>
 
-        <div class="hero-actions" style="margin-top: 16px">
-          <button class="btn" id="copyLinkBtn" type="button">
-            <span aria-hidden="true">🔗</span> Copy page link
-          </button>
-          <button class="btn primary" id="toastBtn" type="button">
-            <span aria-hidden="true">💖</span> Little affirmation
-          </button>
+            <article class="card">
+              <div class="card-icon" style="background: #ffe2c2">✨</div>
+              <h3>Stimming &amp; Movement</h3>
+              <p class="muted">
+                Gentle movement, fidget tools, or rocking can help regulate your
+                nervous system and release energy.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card-icon" style="background: #d7f0ff">🛡️</div>
+              <h3>Creating Safe Spaces</h3>
+              <p class="muted">
+                Design calming environments with soft lighting, comforting
+                textures, and predictable routines.
+              </p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section id="faq">
+        <div class="section-head">
+          <div class="soft-line" aria-hidden="true"></div>
+          <h2>Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion">
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">What causes autism?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Autism is influenced by a mix of genetic and environmental factors.
+              There is no single cause, and it is not caused by parenting.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">At what age is autism typically diagnosed?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Many people are identified in early childhood, but some are
+              diagnosed later in life depending on access to assessment and
+              support.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">Is there a "cure" for autism?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Autism is a lifelong neurodevelopmental difference, not an illness
+              to cure. Support focuses on wellbeing and autonomy.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">What is "stimming" and why do autistic people do it?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Stimming is self-stimulatory behavior that helps regulate emotions
+              or sensory input. It can be calming and supportive.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">Why do autistic people sometimes avoid eye contact?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Eye contact can feel uncomfortable or distracting. It does not
+              indicate disinterest or lack of empathy.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">Can autistic people have successful relationships?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Yes. With understanding and communication, autistic people can
+              have meaningful friendships, partnerships, and families.
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span class="accordion-icon" style="background: #ffe5f0">💬</span>
+              <span class="accordion-title">What is "masking" or "camouflaging"?</span>
+              <span class="accordion-chevron">⌄</span>
+            </summary>
+            <div class="accordion-body">
+              Masking is when autistic people hide traits to fit in socially.
+              It can be exhausting and impact mental health over time.
+            </div>
+          </details>
         </div>
       </section>
 
-     <footer>
-  <div class="foot">
-    <div style="font-weight: 750">
-      © <span id="year"></span> JourHelp
-    </div>
-
-    <div>
-      Created with care by
-      <a
-        href="https://juliejanssen.nl"
-        target="_blank"
-        rel="noopener"
-      >
-        Julie Janssen
-      </a>
-      ·
-      <div>
-  Contact:
-  <a href="mailto:jourhelp@icloud.com">
-    jourhelp@icloud.com
-  </a>
-</div>
-    </div>
-  </div>
-</footer>
+      <footer>
+        <div class="foot">
+          <div style="font-weight: 750">
+            © <span id="year"></span> JourHelp
+          </div>
+          <div>Made with ❤️ for the autism community</div>
+        </div>
+      </footer>
     </main>
 
-    <div
-      id="toast"
-      aria-live="polite"
-      aria-atomic="true"
-      style="
-        position: fixed;
-        left: 50%;
-        bottom: 22px;
-        transform: translateX(-50%) translateY(18px);
-        opacity: 0;
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid rgba(30, 34, 64, 0.14);
-        box-shadow: 0 18px 60px rgba(92, 52, 76, 0.2);
-        padding: 12px 14px;
-        border-radius: 16px;
-        z-index: 2000;
-        transition:
-          opacity var(--dur) var(--ease),
-          transform var(--dur) var(--ease);
-        max-width: min(560px, calc(100% - 24px));
-        color: rgba(44, 31, 47, 0.86);
-        font-weight: 650;
-      "
-    ></div>
+    <button class="floating-chat" type="button" aria-label="Open chat">
+      💬
+    </button>
 
     <script>
-      // -----------------------------
-      // Tiny JS for UX polish
-      // -----------------------------
-
-      const root = document.documentElement;
-      const toast = document.getElementById("toast");
-
-      // Persist settings
-      const savedMotion = localStorage.getItem("motion") || "normal";
-      const savedContrast = localStorage.getItem("contrast") || "normal";
-      if (savedMotion === "reduced") root.dataset.motion = "reduced";
-      if (savedContrast === "high") root.dataset.contrast = "high";
-
-      // Hook up switches
-      const motionSwitch = document.getElementById("motionSwitch");
-      const contrastSwitch = document.getElementById("contrastSwitch");
-
-      function syncSwitches() {
-        const motionReduced = root.dataset.motion === "reduced";
-        const contrastHigh = root.dataset.contrast === "high";
-        motionSwitch.setAttribute("aria-checked", String(motionReduced));
-        contrastSwitch.setAttribute("aria-checked", String(contrastHigh));
-      }
-      syncSwitches();
-
-      // -----------------------------
-      // Motion mode: apply changes LIVE
-      // -----------------------------
-      let revealObs = null;
-
-      function getScrollDuration() {
-        // normal: soft, reduced: EXTRA soft (as requested)
-        return root.dataset.motion === "reduced" ? 1600 : 700;
-      }
-
-      function applyMotionMode() {
-        const revealEls = Array.from(document.querySelectorAll(".reveal"));
-
-        if (root.dataset.motion === "reduced") {
-          revealEls.forEach((el) => el.classList.add("is-in"));
-          if (revealObs) {
-            revealObs.disconnect();
-            revealObs = null;
-          }
-          return;
-        }
-
-        if (!revealObs) {
-          revealObs = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((e) => {
-                if (e.isIntersecting) e.target.classList.add("is-in");
-              });
-            },
-            { threshold: 0.12 },
-          );
-        }
-
-        revealEls.forEach((el) => {
-          if (!el.classList.contains("is-in")) revealObs.observe(el);
-        });
-      }
-
-      applyMotionMode();
-
-      motionSwitch.addEventListener("click", () => {
-        const next = root.dataset.motion === "reduced" ? "normal" : "reduced";
-        if (next === "normal") delete root.dataset.motion;
-        else root.dataset.motion = "reduced";
-
-        localStorage.setItem("motion", next);
-        syncSwitches();
-        applyMotionMode();
-
-        showToast(
-          next === "reduced" ? "Motion reduced 🌿" : "Motion restored ✨",
-        );
-      });
-
-      contrastSwitch.addEventListener("click", () => {
-        const next = root.dataset.contrast === "high" ? "normal" : "high";
-        if (next === "normal") delete root.dataset.contrast;
-        else root.dataset.contrast = "high";
-        localStorage.setItem("contrast", next);
-        syncSwitches();
-        showToast(
-          next === "high" ? "Contrast boosted 🔎" : "Contrast normal 💫",
-        );
-      });
-
-      // -----------------------------
-      // Soft anchor scrolling (JS controlled)
-      // -----------------------------
+      // Smooth anchor scrolling
       function easeInOutCubic(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
@@ -1463,46 +1047,22 @@
 
       function scrollToElement(el) {
         if (!el) return;
-
         const headerEl = document.querySelector("header");
         const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
-
-        const y =
-          window.scrollY + el.getBoundingClientRect().top - headerH - 10;
-        const duration = getScrollDuration();
-
-        smoothScrollToY(Math.max(0, y), duration);
-
-        if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
-        setTimeout(() => el.focus({ preventScroll: true }), duration + 50);
+        const y = window.scrollY + el.getBoundingClientRect().top - headerH - 10;
+        smoothScrollToY(Math.max(0, y), 700);
       }
 
-      // Intercept in-page anchor clicks (nav + hero buttons)
       document.querySelectorAll('a[href^="#"]').forEach((a) => {
         a.addEventListener("click", (e) => {
           const href = a.getAttribute("href");
           if (!href || href === "#") return;
-
           const target = document.querySelector(href);
           if (!target) return;
-
           e.preventDefault();
           scrollToElement(target);
-
           history.pushState(null, "", href);
         });
-      });
-
-      // ✅ Top button: scroll up AND reset URL to base (no hash)
-      document.getElementById("scrollTopBtn").addEventListener("click", () => {
-        smoothScrollToY(0, getScrollDuration());
-
-        // remove #... and return to clean base URL
-        history.pushState(
-          null,
-          "",
-          window.location.pathname + window.location.search,
-        );
       });
 
       // Active nav highlighting
@@ -1529,98 +1089,6 @@
 
       // Footer year
       document.getElementById("year").textContent = new Date().getFullYear();
-
-      // Copy link
-      document
-        .getElementById("copyLinkBtn")
-        .addEventListener("click", async () => {
-          try {
-            await navigator.clipboard.writeText(window.location.href);
-            showToast("Link copied 🔗");
-          } catch {
-            showToast(
-              "Couldn’t copy automatically — you can copy from the address bar 🙂",
-            );
-          }
-        });
-
-      // Gentle affirmation
-      const affirmations = [
-        "You deserve support that fits you, not the other way around 💙",
-        "Your needs are real — and you’re allowed to honor them 🩷",
-        "You’re not “too much.” You’re a full person with a real nervous system 🌿",
-        "Clarity and comfort are valid goals ✨",
-        "It’s okay to take up space — gently, fully, honestly 🌸",
-        "You don’t have to earn rest. You’re allowed to recover 🫧",
-        "Your pace is valid. Slow is still progress 🐢✨",
-        "You’re allowed to need predictability. That’s not weakness 🧩",
-        "Small comforts count. They’re not ‘silly’ — they’re supportive 🧸",
-        "You can ask for clarity. You’re not being difficult 🗺️",
-        "It makes sense that this feels big. You’re not overreacting 🌿",
-        "You’re allowed to change your mind when new info lands 💫",
-        "You don’t owe anyone masking at the cost of your wellbeing 🩵",
-        "Your communication style is valid — direct is a form of kindness 💬",
-        "If something drains you, it matters. Your energy is worth protecting 🔋",
-        "You’re allowed to set boundaries even if they’re small 🧱",
-        "You can be proud of surviving the hard days 🌙",
-        "You don’t need to be ‘perfect’ to be respected 🌷",
-        "It’s okay to stim. Regulation is a skill, not a flaw 🌿",
-        "You deserve environments that meet you halfway 🏡",
-        "Your feelings are information, not an inconvenience 📡",
-        "You can take breaks without apologizing ⏸️",
-        "Needing support doesn’t make you less capable — it makes you human 🫶",
-        "You’re allowed to ask for written instructions. That’s accessibility 📌",
-        "You’re not broken — you’re wired differently, and that’s real 🌈",
-        "It’s okay if social stuff costs you. Your nervous system is working hard 🎧",
-        "Your comfort matters as much as anyone else’s 💗",
-        "You can choose what helps and leave what doesn’t — no guilt 🧠✨",
-        "You’re allowed to be both sensitive and strong 🌿💪",
-        "You don’t have to explain yourself to deserve kindness 🌸",
-        "You’re doing better than your brain is giving you credit for today 🫧",
-        "It’s okay if ‘easy’ things aren’t easy for you. That’s not your fault 🌱",
-        "You deserve to feel safe in your body and your space 🕯️",
-        "You’re allowed to need softness — and you’re allowed to protect it 🩷",
-      ];
-
-      document.getElementById("toastBtn").addEventListener("click", () => {
-        const msg =
-          affirmations[Math.floor(Math.random() * affirmations.length)];
-        showToast(msg);
-      });
-
-      let toastTimer = null;
-      function showToast(message) {
-        toast.textContent = message;
-        toast.style.opacity = "1";
-        toast.style.transform = "translateX(-50%) translateY(0)";
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-          toast.style.opacity = "0";
-          toast.style.transform = "translateX(-50%) translateY(18px)";
-        }, 2600);
-      }
-
-      // -----------------------------
-      // Collapse header on scroll (ONLY <= 768px)
-      // -----------------------------
-      const header = document.querySelector("header");
-
-      function updateHeaderCompact() {
-        const isSmall = window.matchMedia("(max-width: 768px)").matches;
-        if (!isSmall) {
-          header.classList.remove("is-compact");
-          return;
-        }
-        header.classList.toggle("is-compact", window.scrollY > 40);
-      }
-
-      updateHeaderCompact();
-      window.addEventListener(
-        "scroll",
-        () => window.requestAnimationFrame(updateHeaderCompact),
-        { passive: true },
-      );
-      window.addEventListener("resize", updateHeaderCompact);
     </script>
   </body>
 </html>
